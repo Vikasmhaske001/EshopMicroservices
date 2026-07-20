@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\..\..\..\Download+Sofware+Code\EShopMicroservices-main\src\BuildingBlocks\BuildingBlocks\Behaviors\LoggingBehavior.cs" Link="Behaviors\LoggingBehavior.cs" />
     <Compile Include="..\..\..\..\..\Download+Sofware+Code\EShopMicroservices-main\src\BuildingBlocks\BuildingBlocks\Exceptions\BadRequestException.cs" Link="Exceptions\BadRequestException.cs" />
     <Compile Include="..\..\..\..\..\Download+Sofware+Code\EShopMicroservices-main\src\BuildingBlocks\BuildingBlocks\Exceptions\InternalServerException.cs" Link="Exceptions\InternalServerException.cs" />
     <Compile Include="..\..\..\..\..\Download+Sofware+Code\EShopMicroservices-main\src\BuildingBlocks\BuildingBlocks\Exceptions\NotFoundException.cs" Link="Exceptions\NotFoundException.cs" />
