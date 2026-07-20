@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\..\..\..\Download+Sofware+Code\EShopMicroservices-main\src\BuildingBlocks\BuildingBlocks\Exceptions\BadRequestException.cs" Link="Exceptions\BadRequestException.cs" />
+    <Compile Include="..\..\..\..\..\Download+Sofware+Code\EShopMicroservices-main\src\BuildingBlocks\BuildingBlocks\Exceptions\InternalServerException.cs" Link="Exceptions\InternalServerException.cs" />
+    <Compile Include="..\..\..\..\..\Download+Sofware+Code\EShopMicroservices-main\src\BuildingBlocks\BuildingBlocks\Exceptions\NotFoundException.cs" Link="Exceptions\NotFoundException.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+	 <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.1" />
 	 <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
 	 <PackageReference Include="Mapster" Version="7.4.0" />
     <PackageReference Include="MediatR" Version="14.1.0" />
