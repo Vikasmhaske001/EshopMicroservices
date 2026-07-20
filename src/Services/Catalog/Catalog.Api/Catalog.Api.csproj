@@ -10,9 +10,6 @@
     <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Include="..\..\..\..\..\..\Download+Sofware+Code\EShopMicroservices-main\src\Services\Catalog\Catalog.API\Data\CatalogInitialData.cs" Link="Data\CatalogInitialData.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="9.0.0" />
