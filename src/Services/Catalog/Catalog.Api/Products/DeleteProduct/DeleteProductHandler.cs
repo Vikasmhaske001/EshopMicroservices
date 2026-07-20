@@ -14,8 +14,7 @@
         }
     }
     internal class DeleteProductCommandHandler
-        (IDocumentSession session,
-         ILogger<DeleteProductCommandHandler> logger)
+        (IDocumentSession session)
         : ICommandHandler<DeleteProductCommand, DeleteProductResult>
     {
 
@@ -23,9 +22,9 @@
                 DeleteProductCommand command,
                 CancellationToken cancellationToken)
         {
-            logger.LogInformation(
-                "DeleteProductCommandHandler.Handle called with {@Command}",
-                command);
+            //logger.LogInformation(
+            //    "DeleteProductCommandHandler.Handle called with {@Command}",
+            //    command);
 
             session.Delete<Product>(command.Id);
 
