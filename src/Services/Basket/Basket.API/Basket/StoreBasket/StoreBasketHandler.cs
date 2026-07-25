@@ -20,6 +20,8 @@ public class StoreBasketCommandHandler
     {
         //await DeductDiscount(command.Cart, cancellationToken);
 
+        ShoppingCart cart = command.Cart;
+
         await repository.StoreBasket(command.Cart, cancellationToken);
 
         return new StoreBasketResult(command.Cart.UserName);
