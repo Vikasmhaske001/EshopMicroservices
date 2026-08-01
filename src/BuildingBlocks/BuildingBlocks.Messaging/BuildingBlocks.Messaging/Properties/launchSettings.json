@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "BuildingBlocks.Messaging": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
