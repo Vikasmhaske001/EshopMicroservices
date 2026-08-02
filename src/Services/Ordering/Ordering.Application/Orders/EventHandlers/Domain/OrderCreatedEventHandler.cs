@@ -1,10 +1,11 @@
-﻿using MassTransit;
+using MassTransit;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.FeatureManagement;
 
 namespace Ordering.Application.Orders.EventHandlers.Domain;
 
 public class OrderCreatedEventHandler
-    (IPublishEndpoint publishEndpoint, IFeatureManager featureManager, ILogger<OrderCreatedEventHandler> logger)
+    (IServiceProvider serviceProvider, IFeatureManager featureManager, ILogger<OrderCreatedEventHandler> logger)
     : INotificationHandler<OrderCreatedEvent>
 {
     public async Task Handle(OrderCreatedEvent domainEvent, CancellationToken cancellationToken)
@@ -13,6 +14,13 @@ public class OrderCreatedEventHandler
 
         if (await featureManager.IsEnabledAsync("OrderFullfilment"))
         {
+            var publishEndpoint = serviceProvider.GetService<IPublishEndpoint>();
+            if (publishEndpoint is null)
+            {
+                logger.LogWarning("Order fulfillment is enabled, but no MassTransit publish endpoint is registered.");
+                return;
+            }
+
             var orderCreatedIntegrationEvent = domainEvent.order.ToOrderDto();
             await publishEndpoint.Publish(orderCreatedIntegrationEvent, cancellationToken);
         }
