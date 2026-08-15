@@ -35,10 +35,9 @@ public class CheckoutBasketCommandHandler
             return new CheckoutBasketResult(false);
         }
 
-        if (basket.Items.Count == 0)
-        {
-            throw new BadRequestException("Basket is empty and cannot be checked out.");
-        }
+        // Validate before publishing: an invalid basket must fail here with 400 rather than
+        // produce an event that Ordering's domain rejects after the caller already got 200 OK.
+        ValidateBasketForCheckout(basket);
 
         var eventMessage = command.BasketCheckoutDto.Adapt<BasketCheckoutEvent>();
         eventMessage.TotalPrice = basket.TotalPrice;
@@ -59,5 +58,38 @@ public class CheckoutBasketCommandHandler
         await repository.DeleteBasket(command.BasketCheckoutDto.UserName, cancellationToken);
 
         return new CheckoutBasketResult(true);
+    }
+
+    // Guards the obviously-invalid cases at the service boundary. Ordering's domain remains the
+    // authority on order invariants; this is not a copy of those rules.
+    private static void ValidateBasketForCheckout(ShoppingCart basket)
+    {
+        if (basket.Items.Count == 0)
+        {
+            throw new BadRequestException("Basket is empty and cannot be checked out.");
+        }
+
+        foreach (var item in basket.Items)
+        {
+            if (item.ProductId == Guid.Empty)
+            {
+                throw new BadRequestException("Basket contains an item with an empty ProductId.");
+            }
+
+            if (item.Quantity <= 0)
+            {
+                throw new BadRequestException($"Quantity must be greater than zero for product {item.ProductId}.");
+            }
+
+            if (item.Price <= 0)
+            {
+                throw new BadRequestException($"Price must be greater than zero for product {item.ProductId}.");
+            }
+
+            if (item.EffectivePrice <= 0)
+            {
+                throw new BadRequestException($"Effective price must be greater than zero for product {item.ProductId}.");
+            }
+        }
     }
 }

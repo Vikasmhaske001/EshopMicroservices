@@ -7,16 +7,37 @@ using Ordering.Application.Orders.Commands.CreateOrder;
 namespace Ordering.Application.Orders.EventHandlers.Integration;
 
 public class BasketCheckoutEventHandler
-    (ISender sender, ILogger<BasketCheckoutEventHandler> logger)
+    (ISender sender, IApplicationDbContext dbContext, ILogger<BasketCheckoutEventHandler> logger)
     : IConsumer<BasketCheckoutEvent>
 {
     public async Task Consume(ConsumeContext<BasketCheckoutEvent> context)
     {
-        logger.LogInformation("Integration Event handled: {IntegrationEvent} with {ItemCount} item(s)",
-            context.Message.GetType().Name, context.Message.Items.Count);
+        var message = context.Message;
 
-        var command = MapToCreateOrderCommand(context.Message);
-        await sender.Send(command);
+        if (await dbContext.ProcessedIntegrationEvents
+                .AnyAsync(e => e.Id == message.Id, context.CancellationToken))
+        {
+            logger.LogInformation(
+                "Integration event already processed, skipping: {IntegrationEvent} {EventId}",
+                message.GetType().Name, message.Id);
+            return;
+        }
+
+        logger.LogInformation(
+            "Integration Event handled: {IntegrationEvent} {EventId} with {ItemCount} item(s)",
+            message.GetType().Name, message.Id, message.Items.Count);
+
+        // Tracked here but not saved: CreateOrderHandler's SaveChangesAsync persists the order and
+        // this marker in one transaction, so an order can never exist without its marker.
+        dbContext.ProcessedIntegrationEvents.Add(new ProcessedIntegrationEvent
+        {
+            Id = message.Id,
+            EventType = message.GetType().Name,
+            ProcessedAt = DateTime.UtcNow
+        });
+
+        var command = MapToCreateOrderCommand(message);
+        await sender.Send(command, context.CancellationToken);
     }
 
     private static CreateOrderCommand MapToCreateOrderCommand(BasketCheckoutEvent message)
