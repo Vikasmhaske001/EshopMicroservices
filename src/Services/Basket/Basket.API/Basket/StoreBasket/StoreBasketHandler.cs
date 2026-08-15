@@ -29,11 +29,13 @@ public class StoreBasketCommandHandler
 
     private async Task DeductDiscount(ShoppingCart cart, CancellationToken cancellationToken)
     {
-        // Communicate with Discount.Grpc and calculate lastest prices of products into sc
+        // Communicate with Discount.Grpc and calculate lastest prices of products into sc.
+        // DiscountAmount is assigned (not subtracted from Price) so that storing the same
+        // basket repeatedly re-applies the same discount instead of compounding it.
         foreach (var item in cart.Items)
         {
             var coupon = await discountProto.GetDiscountAsync(new GetDiscountRequest { ProductName = item.ProductName }, cancellationToken: cancellationToken);
-            item.Price -= coupon.Amount;
+            item.DiscountAmount = coupon.Amount;
         }
     }
 }

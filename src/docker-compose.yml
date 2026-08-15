@@ -30,7 +30,7 @@ services:
     image: ${DOCKER_REGISTRY-}orderingapi
     build:
       context: .
-      dockerfile: Services/Ordering/Ordering.API/Dockerfile
+      dockerfile: Services/Ordering/Ordering.Api/Dockerfile
 
 
   discount.grpc:
@@ -48,4 +48,5 @@ services:
 volumes:
   postgres_catalog:
   postgres_basket:
+  discount_data:
 

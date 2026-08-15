@@ -11,8 +11,10 @@ public class LoggingBehavior<TRequest, TResponse>
 {
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        logger.LogInformation("[START] Handle request={Request} - Response={Response} - RequestData={RequestData}",
-            typeof(TRequest).Name, typeof(TResponse).Name, request);
+        // Only request/response type names are logged. Request payloads are never logged because
+        // they can carry sensitive data (card number, CVV, expiry, addresses).
+        logger.LogInformation("[START] Handle request={Request} - Response={Response}",
+            typeof(TRequest).Name, typeof(TResponse).Name);
 
         var timer = new Stopwatch();
         timer.Start();

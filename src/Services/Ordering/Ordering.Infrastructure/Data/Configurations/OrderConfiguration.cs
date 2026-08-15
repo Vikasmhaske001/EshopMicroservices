@@ -111,12 +111,13 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
                    paymentBuilder.Property(p => p.PaymentMethod);
                });
 
+        // No database default: the domain always assigns a status (Order.Create sets Pending),
+        // and a DB-level default of Draft contradicted it.
         builder.Property(o => o.Status)
-            .HasDefaultValue(OrderStatus.Draft)
             .HasConversion(
                 s => s.ToString(),
                 dbStatus => (OrderStatus)Enum.Parse(typeof(OrderStatus), dbStatus));
 
-        builder.Property(o => o.TotalPrice);
+        builder.Property(o => o.TotalPrice).HasPrecision(18, 2);
     }
 }

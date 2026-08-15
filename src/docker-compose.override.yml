@@ -120,8 +120,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
-      - ConnectionStrings__Database=Data Source=discountdb
-      
+      - ConnectionStrings__Database=Data Source=/data/discountdb
+
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/home/app/.aspnet/https/Discount.Grpc.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=Password@123
 
@@ -129,6 +129,7 @@ services:
       - "6002:8080"
       - "6062:8081"
     volumes:
+      - discount_data:/data
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${USERPROFILE}/.aspnet/https:/home/app/.aspnet/https:ro
