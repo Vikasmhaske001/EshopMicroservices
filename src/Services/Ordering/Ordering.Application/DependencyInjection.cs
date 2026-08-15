@@ -1,5 +1,6 @@
 ﻿using BuildingBlocks.Behaviors;
 using BuildingBlocks.Messaging.MassTransit;
+using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.FeatureManagement;
@@ -18,6 +19,10 @@ public static class DependencyInjection
             config.AddOpenBehavior(typeof(ValidationBehavior<,>));
             config.AddOpenBehavior(typeof(LoggingBehavior<,>));
         });
+
+        // Without this the existing CreateOrderCommandValidator is never resolved, so
+        // ValidationBehavior runs with an empty validator set and validates nothing.
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
         services.AddFeatureManagement();
 

@@ -35,8 +35,24 @@ public class CheckoutBasketCommandHandler
             return new CheckoutBasketResult(false);
         }
 
+        if (basket.Items.Count == 0)
+        {
+            throw new BadRequestException("Basket is empty and cannot be checked out.");
+        }
+
         var eventMessage = command.BasketCheckoutDto.Adapt<BasketCheckoutEvent>();
         eventMessage.TotalPrice = basket.TotalPrice;
+
+        // Carry the real basket lines on the event. EffectivePrice is sent because Basket owns
+        // discounting - Ordering must never call Discount.Grpc or re-apply the discount.
+        eventMessage.Items = basket.Items
+            .Select(item => new BasketCheckoutItem
+            {
+                ProductId = item.ProductId,
+                Quantity = item.Quantity,
+                Price = item.EffectivePrice
+            })
+            .ToList();
 
         await publishEndpoint.Publish(eventMessage, cancellationToken);
 
