@@ -24,7 +24,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// Behind the API gateway, external HTTPS is terminated at the gateway and internal traffic is
+// plain HTTP. Redirecting here answers proxied calls with a 307 to an internal hostname that no
+// external client can resolve, so it stays off by default and is opt-in via configuration.
+if (builder.Configuration.GetValue<bool>("UseHttpsRedirection"))
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseApiServices();
 

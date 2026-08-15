@@ -19,13 +19,12 @@ public class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
                                    orderId => orderId.Value,
                                    dbId => OrderId.Of(dbId));
 
+        // ProductId identifies a Catalog product and is intentionally NOT a foreign key.
+        // Ordering owns no product data, so a local constraint would reject valid orders for
+        // products Catalog knows about but this service has never seen.
         builder.Property(oi => oi.ProductId).HasConversion(
                                    productId => productId.Value,
                                    dbId => ProductId.Of(dbId));
-
-        builder.HasOne<Product>()
-            .WithMany()
-            .HasForeignKey(oi => oi.ProductId);
 
         builder.Property(oi => oi.Quantity).IsRequired();
 
