@@ -36,6 +36,12 @@ public class CustomExceptionHandler
                 exception.GetType().Name,
                 context.Response.StatusCode = StatusCodes.Status400BadRequest
             ),
+            ForbiddenAccessException =>
+            (
+                exception.Message,
+                exception.GetType().Name,
+                context.Response.StatusCode = StatusCodes.Status403Forbidden
+            ),
             NotFoundException =>
             (
                 exception.Message,

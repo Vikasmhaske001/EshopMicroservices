@@ -1,7 +1,15 @@
+using BuildingBlocks.Auth;
 using Catalog.API.Data;
 using HealthChecks.UI.Client;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Reads are public (see route-level RequireAuthorization on the write endpoints only); auth is
+// still wired up here so this service independently validates JWTs for its Admin-only mutations
+// rather than trusting the gateway blindly (defense in depth).
+builder.Services.AddJwtAuthentication(builder.Configuration);
+builder.Services.AddAuthorization(options =>
+    options.AddPolicy(AuthorizationPolicies.AdminOnly, policy => policy.RequireRole(AppRoles.Admin)));
 
 var assembly = typeof(Program).Assembly;
 builder.Services.AddMediatR(config =>
@@ -29,6 +37,9 @@ builder.Services.AddProblemDetails();
 builder.Services.AddHealthChecks().AddNpgSql(builder.Configuration.GetConnectionString("Database")!);
 
 var app = builder.Build();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapCarter();
 

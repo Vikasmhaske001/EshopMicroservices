@@ -32,6 +32,7 @@
             .WithName("UpdateProduct")
             .Produces<UpdateProductResponse>(StatusCodes.Status200OK)
             .ProducesProblem(StatusCodes.Status400BadRequest)
+            .RequireAuthorization(BuildingBlocks.Auth.AuthorizationPolicies.AdminOnly)
             .WithSummary("Update Product")
             .WithDescription("Update Product");
         }

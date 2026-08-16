@@ -1,3 +1,4 @@
+using BuildingBlocks.Auth;
 using BuildingBlocks.Behaviors;
 using BuildingBlocks.Exceptions.Handler;
 using BuildingBlocks.Messaging.MassTransit;
@@ -9,6 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 var assembly = typeof(Program).Assembly;
 builder.Services.AddCarter();
+
+// Basket holds per-user data, so every endpoint here requires a valid JWT; ownership within
+// that (which basket) is enforced per-endpoint via BasketOwnership.
+builder.Services.AddJwtAuthentication(builder.Configuration);
+builder.Services.AddAuthorization();
 builder.Services.AddMediatR(config =>
 {
     config.RegisterServicesFromAssembly(assembly);
@@ -55,6 +61,9 @@ builder.Services.AddHealthChecks()
     .AddRedis(builder.Configuration.GetConnectionString("Redis")!);
 
 var app = builder.Build();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapCarter();
 

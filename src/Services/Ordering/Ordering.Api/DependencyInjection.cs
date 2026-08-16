@@ -1,4 +1,5 @@
-﻿using BuildingBlocks.Exceptions.Handler;
+﻿using BuildingBlocks.Auth;
+using BuildingBlocks.Exceptions.Handler;
 using Carter;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -11,6 +12,12 @@ public static class DependencyInjection
     {
         services.AddCarter();
 
+        // Every Ordering endpoint requires a valid JWT; ownership/role checks are then applied
+        // per-endpoint (customer-scoped vs Admin-only) rather than through a single blanket rule.
+        services.AddJwtAuthentication(configuration);
+        services.AddAuthorization(options =>
+            options.AddPolicy(AuthorizationPolicies.AdminOnly, policy => policy.RequireRole(AppRoles.Admin)));
+
         services.AddExceptionHandler<CustomExceptionHandler>();
         services.AddHealthChecks()
             .AddSqlServer(configuration.GetConnectionString("Database")!);
@@ -20,6 +27,9 @@ public static class DependencyInjection
 
     public static WebApplication UseApiServices(this WebApplication app)
     {
+        app.UseAuthentication();
+        app.UseAuthorization();
+
         app.MapCarter();
 
         app.UseExceptionHandler(options => { });

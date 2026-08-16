@@ -1,4 +1,5 @@
-﻿using Carter;
+﻿using System.Security.Claims;
+using Carter;
 using MediatR;
 using Ordering.Application.Dtos;
 using Ordering.Application.Orders.Queries.GetOrdersByCustomer;
@@ -16,14 +17,17 @@ public class GetOrdersByCustomer : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGet("/orders/customer/{customerId}", async (Guid customerId, ISender sender) =>
+        app.MapGet("/orders/customer/{customerId}", async (Guid customerId, ClaimsPrincipal user, ISender sender) =>
         {
+            OrderOwnership.EnsureOwnerOrAdmin(user, customerId);
+
             var result = await sender.Send(new GetOrdersByCustomerQuery(customerId));
 
             var response = result.Adapt<GetOrdersByCustomerResponse>();
 
             return Results.Ok(response);
         })
+        .RequireAuthorization()
         .WithName("GetOrdersByCustomer")
         .Produces<GetOrdersByCustomerResponse>(StatusCodes.Status200OK)
         .ProducesProblem(StatusCodes.Status400BadRequest)

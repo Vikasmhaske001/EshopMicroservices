@@ -1,3 +1,5 @@
+using BuildingBlocks.Auth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.RateLimiting;
 
 const string AngularClientPolicy = "AngularClient";
@@ -20,6 +22,20 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod());
 });
 
+// Coarse-grained gate for external traffic. Routes opt out via the YARP-recognized
+// AuthorizationPolicy: "anonymous" (public reads, /auth/*); everything else falls back to
+// RequireAuthenticatedUser. Each downstream service re-validates the token itself and applies
+// its own fine-grained (ownership/role) rules - the gateway is not the only line of defense.
+builder.Services.AddJwtAuthentication(builder.Configuration);
+builder.Services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+
+    options.AddPolicy(AuthorizationPolicies.AdminOnly, policy => policy.RequireRole(AppRoles.Admin));
+});
+
 builder.Services.AddRateLimiter(rateLimiterOptions =>
 {
     rateLimiterOptions.AddFixedWindowLimiter("fixed", options =>
@@ -32,8 +48,11 @@ builder.Services.AddRateLimiter(rateLimiterOptions =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-// CORS runs before the rate limiter so preflight requests are answered rather than throttled.
+// CORS runs before auth so preflight requests are answered rather than challenged/throttled.
 app.UseCors(AngularClientPolicy);
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseRateLimiter();
 

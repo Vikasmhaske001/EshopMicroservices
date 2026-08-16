@@ -48,7 +48,25 @@ services:
     restart: always
     ports:
       - "1433:1433"
-  
+
+  identitydb:
+    container_name: identitydb
+    image: postgres:18
+
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: IdentityDb
+
+    restart: always
+
+    ports:
+      - "5435:5432"
+
+    volumes:
+      - postgres_identity:/var/lib/postgresql
+
+
   messagebroker:
     container_name: messagebroker
     hostname: ecommerce-mq
@@ -70,6 +88,7 @@ services:
       ASPNETCORE_Kestrel__Certificates__Default__Password: Password@123
 
       ConnectionStrings__Database: "Server=catalogdb;Port=5432;Database=CatalogDb;User Id=postgres;Password=postgres;Include Error Detail=true"
+      Jwt__Key: "dev-only-signing-key-do-not-use-in-production-CHANGE-ME-32chars+"
 
     depends_on:
       - catalogdb
@@ -99,8 +118,9 @@ services:
       - MessageBroker__Host=amqp://ecommerce-mq:5672
       - MessageBroker__UserName=guest
       - MessageBroker__Password=guest
+      - Jwt__Key=dev-only-signing-key-do-not-use-in-production-CHANGE-ME-32chars+
 
-    
+
     depends_on:
       - basketdb
       - distributedcache
@@ -146,6 +166,7 @@ services:
       - MessageBroker__UserName=guest
       - MessageBroker__Password=guest
       - FeatureManagement__OrderFullfilment=false
+      - Jwt__Key=dev-only-signing-key-do-not-use-in-production-CHANGE-ME-32chars+
     depends_on:
       - orderdb
       - messagebroker
@@ -165,10 +186,37 @@ services:
 
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/home/app/.aspnet/https/YarpApiGateway.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=Password@123
+      - Jwt__Key=dev-only-signing-key-do-not-use-in-production-CHANGE-ME-32chars+
+
+    depends_on:
+      - identity.api
 
     ports:
       - "6004:8080"
       - "6064:8081"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${USERPROFILE}/.aspnet/https:/home/app/.aspnet/https:ro
+
+  identity.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/home/app/.aspnet/https/Identity.Api.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=Password@123
+
+      - ConnectionStrings__Database=Server=identitydb;Port=5432;Database=IdentityDb;User Id=postgres;Password=postgres;Include Error Detail=true
+      - Jwt__Key=dev-only-signing-key-do-not-use-in-production-CHANGE-ME-32chars+
+
+    depends_on:
+      - identitydb
+
+    ports:
+      - "6005:8080"
+      - "6065:8081"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro

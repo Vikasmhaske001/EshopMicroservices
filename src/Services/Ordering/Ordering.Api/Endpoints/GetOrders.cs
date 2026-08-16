@@ -1,4 +1,5 @@
-﻿using BuildingBlocks.Pagination;
+﻿using BuildingBlocks.Auth;
+using BuildingBlocks.Pagination;
 using Carter;
 using MediatR;
 using Ordering.Application.Dtos;
@@ -17,6 +18,8 @@ public class GetOrders : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
+        // Unfiltered, cross-customer order listing - Admin only. Customers use
+        // /orders/customer/{customerId} or /orders/{orderName} for their own orders.
         app.MapGet("/orders", async ([AsParameters] PaginationRequest request, ISender sender) =>
         {
             var result = await sender.Send(new GetOrdersQuery(request));
@@ -25,6 +28,7 @@ public class GetOrders : ICarterModule
 
             return Results.Ok(response);
         })
+        .RequireAuthorization(AuthorizationPolicies.AdminOnly)
         .WithName("GetOrders")
         .Produces<GetOrdersResponse>(StatusCodes.Status200OK)
         .ProducesProblem(StatusCodes.Status400BadRequest)

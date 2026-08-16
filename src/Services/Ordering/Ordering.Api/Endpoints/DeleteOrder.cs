@@ -1,4 +1,5 @@
-﻿using Carter;
+﻿using BuildingBlocks.Auth;
+using Carter;
 using MediatR;
 using Ordering.Application.Orders.Commands.DeleteOrder;
 
@@ -24,6 +25,7 @@ public class DeleteOrder : ICarterModule
 
             return Results.Ok(response);
         })
+        .RequireAuthorization(AuthorizationPolicies.AdminOnly)
         .WithName("DeleteOrder")
         .Produces<DeleteOrderResponse>(StatusCodes.Status200OK)
         .ProducesProblem(StatusCodes.Status400BadRequest)
