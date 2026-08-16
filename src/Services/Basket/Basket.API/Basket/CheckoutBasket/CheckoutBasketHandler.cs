@@ -39,7 +39,22 @@ public class CheckoutBasketCommandHandler
         // produce an event that Ordering's domain rejects after the caller already got 200 OK.
         ValidateBasketForCheckout(basket);
 
+        // Reuse the event Id from an earlier attempt if one already got as far as publishing for
+        // this basket (see ShoppingCart.CheckoutEventId). A brand-new basket gets a fresh Id.
+        var isRetryOfPublishedCheckout = basket.CheckoutEventId is not null;
+        var checkoutEventId = basket.CheckoutEventId ?? Guid.NewGuid();
+
+        if (!isRetryOfPublishedCheckout)
+        {
+            // Persist the intent to publish BEFORE publishing. If the process dies between here
+            // and DeleteBasket, the basket survives with this Id already recorded, so the next
+            // checkout attempt takes the branch above instead of generating a new event Id.
+            basket.CheckoutEventId = checkoutEventId;
+            await repository.StoreBasket(basket, cancellationToken);
+        }
+
         var eventMessage = command.BasketCheckoutDto.Adapt<BasketCheckoutEvent>();
+        eventMessage = eventMessage with { Id = checkoutEventId };
         eventMessage.TotalPrice = basket.TotalPrice;
 
         // Carry the real basket lines on the event. EffectivePrice is sent because Basket owns
