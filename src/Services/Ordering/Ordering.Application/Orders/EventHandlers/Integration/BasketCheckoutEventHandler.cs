@@ -49,7 +49,7 @@ public class BasketCheckoutEventHandler
 
         // Prices arrive already discounted by Basket; they are used as-is.
         var orderItems = message.Items
-            .Select(item => new OrderItemDto(orderId, item.ProductId, item.Quantity, item.Price))
+            .Select(item => new OrderItemDto(orderId, item.ProductId, item.Quantity, item.Price, item.ProductName))
             .ToList();
 
         var orderDto = new OrderDto(

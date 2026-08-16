@@ -16,10 +16,13 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
                         orderId => orderId.Value,
                         dbId => OrderId.Of(dbId));
 
-        builder.HasOne<Customer>()
-          .WithMany()
-          .HasForeignKey(o => o.CustomerId)
-          .IsRequired();
+        // CustomerId identifies the authenticated user who placed the order and is intentionally
+        // NOT a foreign key. Ordering owns no user/customer data (Identity.Api does) - a local
+        // constraint would reject valid orders for any customer Ordering has never locally seen,
+        // exactly the bug the ProductId FK caused before it was removed.
+        builder.Property(o => o.CustomerId).HasConversion(
+                        customerId => customerId.Value,
+                        dbId => CustomerId.Of(dbId));
 
         builder.HasMany(o => o.OrderItems)
             .WithOne()

@@ -6,7 +6,7 @@ services:
 
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: CatalogDb
 
     restart: always
@@ -17,13 +17,19 @@ services:
     volumes:
       - postgres_catalog:/var/lib/postgresql
 
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
   basketdb:
     container_name: basketdb
     image: postgres:18
 
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: BasketDb
 
     restart: always
@@ -33,21 +39,40 @@ services:
 
     volumes:
       - postgres_basket:/var/lib/postgresql
-  
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
   distributedcache:
      container_name: distributedcache
      restart: always
      ports:
        - "6379:6379"
 
+     healthcheck:
+       test: ["CMD", "redis-cli", "ping"]
+       interval: 5s
+       timeout: 5s
+       retries: 10
+
   orderdb:
     container_name: orderdb
     environment:
-      SA_PASSWORD: "Password@123"
+      SA_PASSWORD: ${SA_PASSWORD}
       ACCEPT_EULA: "Y"
     restart: always
     ports:
       - "1433:1433"
+
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P \"${SA_PASSWORD}\" -C -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
 
   identitydb:
     container_name: identitydb
@@ -55,7 +80,7 @@ services:
 
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: IdentityDb
 
     restart: always
@@ -66,17 +91,30 @@ services:
     volumes:
       - postgres_identity:/var/lib/postgresql
 
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
 
   messagebroker:
     container_name: messagebroker
     hostname: ecommerce-mq
     environment:
       RABBITMQ_DEFAULT_USER: "guest"
-      RABBITMQ_DEFAULT_PASS: "guest"
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
     restart: always
     ports:
       - "15672:15672"
       - "5672:5672"
+
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
 
   catalog.api:
     environment:
@@ -85,13 +123,14 @@ services:
       ASPNETCORE_HTTPS_PORTS: 8081
 
       ASPNETCORE_Kestrel__Certificates__Default__Path: /home/app/.aspnet/https/Catalog.Api.pfx
-      ASPNETCORE_Kestrel__Certificates__Default__Password: Password@123
+      ASPNETCORE_Kestrel__Certificates__Default__Password: ${CERT_PASSWORD}
 
-      ConnectionStrings__Database: "Server=catalogdb;Port=5432;Database=CatalogDb;User Id=postgres;Password=postgres;Include Error Detail=true"
-      Jwt__Key: "dev-only-signing-key-do-not-use-in-production-CHANGE-ME-32chars+"
+      ConnectionStrings__Database: "Server=catalogdb;Port=5432;Database=CatalogDb;User Id=postgres;Password=${POSTGRES_PASSWORD};Include Error Detail=true"
+      Jwt__Key: ${JWT_KEY}
 
     depends_on:
-      - catalogdb
+      catalogdb:
+        condition: service_healthy
 
     ports:
       - "6000:8080"
@@ -109,23 +148,27 @@ services:
       - ASPNETCORE_HTTPS_PORTS=8081
 
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/home/app/.aspnet/https/Basket.API.pfx
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=Password@123
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
 
-      - ConnectionStrings__Database=Server=basketdb;Port=5432;Database=BasketDb;User Id=postgres;Password=postgres;Include Error Detail=true
+      - ConnectionStrings__Database=Server=basketdb;Port=5432;Database=BasketDb;User Id=postgres;Password=${POSTGRES_PASSWORD};Include Error Detail=true
       - ConnectionStrings__Redis=distributedcache:6379
       - GrpcSettings__DiscountUrl=https://discount.grpc:8081
-      
+
       - MessageBroker__Host=amqp://ecommerce-mq:5672
       - MessageBroker__UserName=guest
-      - MessageBroker__Password=guest
-      - Jwt__Key=dev-only-signing-key-do-not-use-in-production-CHANGE-ME-32chars+
+      - MessageBroker__Password=${RABBITMQ_PASSWORD}
+      - Jwt__Key=${JWT_KEY}
 
 
     depends_on:
-      - basketdb
-      - distributedcache
-      - discount.grpc
-      - messagebroker
+      basketdb:
+        condition: service_healthy
+      distributedcache:
+        condition: service_healthy
+      discount.grpc:
+        condition: service_started
+      messagebroker:
+        condition: service_healthy
 
     ports:
       - "6001:8080"
@@ -143,7 +186,7 @@ services:
       - ConnectionStrings__Database=Data Source=/data/discountdb
 
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/home/app/.aspnet/https/Discount.Grpc.pfx
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=Password@123
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
 
     ports:
       - "6002:8080"
@@ -160,16 +203,18 @@ services:
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/home/app/.aspnet/https/Ordering.Api.pfx
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=Password@123
-      - ConnectionStrings__Database=Server=orderdb;Database=OrderDb;User Id=sa;Password=Password@123;Encrypt=False;TrustServerCertificate=True
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
+      - ConnectionStrings__Database=Server=orderdb;Database=OrderDb;User Id=sa;Password=${SA_PASSWORD};Encrypt=False;TrustServerCertificate=True
       - MessageBroker__Host=amqp://ecommerce-mq:5672
       - MessageBroker__UserName=guest
-      - MessageBroker__Password=guest
+      - MessageBroker__Password=${RABBITMQ_PASSWORD}
       - FeatureManagement__OrderFullfilment=false
-      - Jwt__Key=dev-only-signing-key-do-not-use-in-production-CHANGE-ME-32chars+
+      - Jwt__Key=${JWT_KEY}
     depends_on:
-      - orderdb
-      - messagebroker
+      orderdb:
+        condition: service_healthy
+      messagebroker:
+        condition: service_healthy
     ports:
       - "6003:8080"
       - "6063:8081"
@@ -185,11 +230,12 @@ services:
       - ASPNETCORE_HTTPS_PORTS=8081
 
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/home/app/.aspnet/https/YarpApiGateway.pfx
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=Password@123
-      - Jwt__Key=dev-only-signing-key-do-not-use-in-production-CHANGE-ME-32chars+
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
+      - Jwt__Key=${JWT_KEY}
 
     depends_on:
-      - identity.api
+      identity.api:
+        condition: service_started
 
     ports:
       - "6004:8080"
@@ -206,13 +252,14 @@ services:
       - ASPNETCORE_HTTPS_PORTS=8081
 
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/home/app/.aspnet/https/Identity.Api.pfx
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=Password@123
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
 
-      - ConnectionStrings__Database=Server=identitydb;Port=5432;Database=IdentityDb;User Id=postgres;Password=postgres;Include Error Detail=true
-      - Jwt__Key=dev-only-signing-key-do-not-use-in-production-CHANGE-ME-32chars+
+      - ConnectionStrings__Database=Server=identitydb;Port=5432;Database=IdentityDb;User Id=postgres;Password=${POSTGRES_PASSWORD};Include Error Detail=true
+      - Jwt__Key=${JWT_KEY}
 
     depends_on:
-      - identitydb
+      identitydb:
+        condition: service_healthy
 
     ports:
       - "6005:8080"

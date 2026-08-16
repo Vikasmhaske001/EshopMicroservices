@@ -29,5 +29,7 @@ public class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
         builder.Property(oi => oi.Quantity).IsRequired();
 
         builder.Property(oi => oi.Price).IsRequired().HasPrecision(18, 2);
+
+        builder.Property(oi => oi.ProductName).HasMaxLength(100).IsRequired();
     }
 }

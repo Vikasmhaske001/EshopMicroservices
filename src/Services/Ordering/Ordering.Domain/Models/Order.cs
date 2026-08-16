@@ -50,12 +50,13 @@ public class Order : Aggregate<OrderId>
         AddDomainEvent(new OrderUpdatedEvent(this));
     }
 
-    public void Add(ProductId productId, int quantity, decimal price)
+    public void Add(ProductId productId, int quantity, decimal price, string productName)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(quantity);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(price);
+        ArgumentException.ThrowIfNullOrWhiteSpace(productName);
 
-        var orderItem = new OrderItem(Id, productId, quantity, price);
+        var orderItem = new OrderItem(Id, productId, quantity, price, productName);
         _orderItems.Add(orderItem);
     }
 

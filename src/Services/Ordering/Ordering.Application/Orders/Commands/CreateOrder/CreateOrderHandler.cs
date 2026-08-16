@@ -33,7 +33,7 @@ public class CreateOrderHandler(IApplicationDbContext dbContext)
 
         foreach (var orderItemDto in orderDto.OrderItems)
         {
-            newOrder.Add(ProductId.Of(orderItemDto.ProductId), orderItemDto.Quantity, orderItemDto.Price);
+            newOrder.Add(ProductId.Of(orderItemDto.ProductId), orderItemDto.Quantity, orderItemDto.Price, orderItemDto.ProductName);
         }
         return newOrder;
     }

@@ -48,6 +48,7 @@ public class CheckoutBasketCommandHandler
             .Select(item => new BasketCheckoutItem
             {
                 ProductId = item.ProductId,
+                ProductName = item.ProductName,
                 Quantity = item.Quantity,
                 Price = item.EffectivePrice
             })

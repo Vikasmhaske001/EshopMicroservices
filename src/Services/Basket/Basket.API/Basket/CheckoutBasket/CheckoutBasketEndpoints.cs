@@ -1,6 +1,6 @@
-﻿using System.Security.Claims;
-using Basket.API.Basket;
+using System.Security.Claims;
 using Basket.API.Dtos;
+using BuildingBlocks.Auth;
 
 namespace Basket.API.Basket.CheckoutBasket;
 
@@ -13,8 +13,10 @@ public class CheckoutBasketEndpoints : ICarterModule
     {
         app.MapPost("/basket/checkout", async (CheckoutBasketRequest request, ClaimsPrincipal user, ISender sender) =>
         {
-            BasketOwnership.EnsureOwnerOrAdmin(user, request.BasketCheckoutDto.UserName);
-            BasketOwnership.EnsureOwnerOrAdmin(user, request.BasketCheckoutDto.CustomerId);
+            // UserName and CustomerId are always the caller's own - overwritten server-side so
+            // the client cannot check out under someone else's identity by editing the request.
+            request.BasketCheckoutDto.UserName = user.GetUserName();
+            request.BasketCheckoutDto.CustomerId = user.GetUserId();
 
             var command = request.Adapt<CheckoutBasketCommand>();
 
