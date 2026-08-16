@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Basket.API.Dtos;
 using BuildingBlocks.Auth;
+using BuildingBlocks.Exceptions;
 
 namespace Basket.API.Basket.CheckoutBasket;
 
@@ -13,6 +14,13 @@ public class CheckoutBasketEndpoints : ICarterModule
     {
         app.MapPost("/basket/checkout", async (CheckoutBasketRequest request, ClaimsPrincipal user, ISender sender) =>
         {
+            // A null body previously reached the field assignment below before any validator ran,
+            // producing a 500 NullReferenceException instead of a 400 for malformed input.
+            if (request.BasketCheckoutDto is null)
+            {
+                throw new BadRequestException("BasketCheckoutDto is required.");
+            }
+
             // UserName and CustomerId are always the caller's own - overwritten server-side so
             // the client cannot check out under someone else's identity by editing the request.
             request.BasketCheckoutDto.UserName = user.GetUserName();

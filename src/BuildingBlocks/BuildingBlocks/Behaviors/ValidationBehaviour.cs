@@ -13,10 +13,14 @@ using System.Windows.Input;
 
 namespace BuildingBlocks.Behaviors
 {
+    // Was constrained to ICommand<TResponse>, so queries were never validated regardless of
+    // whether a validator existed for them (e.g. a client could request PageSize=1000000).
+    // IRequest<TResponse> is the common base of both ICommand<T> and IQuery<T>; a request type
+    // with no registered validator behaves exactly as before (empty validators list, no-op).
     public class ValidationBehavior<TRequest, TResponse>
     (IEnumerable<IValidator<TRequest>> validators)
     : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : ICommand<TResponse>
+    where TRequest : IRequest<TResponse>
     {
         public async Task<TResponse> Handle(
             TRequest request,

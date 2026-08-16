@@ -1,5 +1,6 @@
 using BuildingBlocks.Auth;
 using BuildingBlocks.Logging;
+using BuildingBlocks.Swagger;
 using Catalog.API.Data;
 using HealthChecks.UI.Client;
 
@@ -39,9 +40,13 @@ builder.Services.AddProblemDetails();
 
 builder.Services.AddHealthChecks().AddNpgSql(builder.Configuration.GetConnectionString("Database")!);
 
+builder.Services.AddSwaggerWithJwtAuth("Catalog.Api");
+
 var app = builder.Build();
 
 app.UseCorrelationId();
+
+app.UseSwaggerWithUi();
 
 app.UseAuthentication();
 app.UseAuthorization();

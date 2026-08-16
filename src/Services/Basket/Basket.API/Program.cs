@@ -3,6 +3,7 @@ using BuildingBlocks.Behaviors;
 using BuildingBlocks.Exceptions.Handler;
 using BuildingBlocks.Logging;
 using BuildingBlocks.Messaging.MassTransit;
+using BuildingBlocks.Swagger;
 using Discount.Grpc;
 using HealthChecks.UI.Client;
 using Microsoft.Extensions.Caching.Distributed;
@@ -25,6 +26,12 @@ builder.Services.AddMediatR(config =>
     config.AddOpenBehavior(typeof(ValidationBehavior<,>));
     config.AddOpenBehavior(typeof(LoggingBehavior<,>));
 });
+
+// Was missing entirely: StoreBasketCommandValidator/CheckoutBasketCommandValidator existed but
+// were never registered, so ValidationBehavior resolved an empty validator list and validated
+// nothing (e.g. an empty UserName would have sailed through FluentValidation, though it still
+// happened to fail later via other checks).
+builder.Services.AddValidatorsFromAssembly(assembly);
 
 builder.Services.AddMarten(opts =>
 {
@@ -64,9 +71,13 @@ builder.Services.AddHealthChecks()
     .AddNpgSql(builder.Configuration.GetConnectionString("Database")!)
     .AddRedis(builder.Configuration.GetConnectionString("Redis")!);
 
+builder.Services.AddSwaggerWithJwtAuth("Basket.API");
+
 var app = builder.Build();
 
 app.UseCorrelationId();
+
+app.UseSwaggerWithUi();
 
 app.UseAuthentication();
 app.UseAuthorization();
