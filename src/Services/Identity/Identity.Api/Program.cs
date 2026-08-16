@@ -1,5 +1,6 @@
 using BuildingBlocks.Auth;
 using BuildingBlocks.Exceptions.Handler;
+using BuildingBlocks.Logging;
 using Carter;
 using FluentValidation;
 using HealthChecks.UI.Client;
@@ -10,6 +11,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddSerilogDefaults("Identity.Api");
 
 builder.Services.AddCarter();
 
@@ -41,6 +44,8 @@ builder.Services.AddHealthChecks()
     .AddNpgSql(builder.Configuration.GetConnectionString("Database")!);
 
 var app = builder.Build();
+
+app.UseCorrelationId();
 
 app.MapCarter();
 

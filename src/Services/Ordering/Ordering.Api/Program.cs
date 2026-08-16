@@ -1,9 +1,12 @@
+using BuildingBlocks.Logging;
 using Ordering.Api;
 using Ordering.Application;
 using Ordering.Infrastructure;
 using Ordering.Infrastructure.Data.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddSerilogDefaults("Ordering.Api");
 
 // Add services to the container.
 builder.Services
@@ -16,6 +19,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.UseCorrelationId();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

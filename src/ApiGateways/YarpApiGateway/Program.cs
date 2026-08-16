@@ -1,10 +1,13 @@
 using BuildingBlocks.Auth;
+using BuildingBlocks.Logging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.RateLimiting;
 
 const string AngularClientPolicy = "AngularClient";
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddSerilogDefaults("YarpApiGateway");
 
 // Add services to the container.
 builder.Services.AddReverseProxy()
@@ -48,6 +51,11 @@ builder.Services.AddRateLimiter(rateLimiterOptions =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+// First middleware: the correlation id assigned/reused here is written onto the request headers,
+// so it rides along on the proxied call to whichever service YARP forwards to - the entry point
+// for the whole system is the right place to mint it once.
+app.UseCorrelationId();
+
 // CORS runs before auth so preflight requests are answered rather than challenged/throttled.
 app.UseCors(AngularClientPolicy);
 

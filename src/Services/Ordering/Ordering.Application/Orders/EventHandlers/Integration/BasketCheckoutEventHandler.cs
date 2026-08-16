@@ -1,8 +1,10 @@
+using BuildingBlocks.Logging;
 using BuildingBlocks.Messaging.Events;
 using MassTransit;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Ordering.Application.Orders.Commands.CreateOrder;
+using SerilogLogContext = Serilog.Context.LogContext;
 
 namespace Ordering.Application.Orders.EventHandlers.Integration;
 
@@ -12,6 +14,15 @@ public class BasketCheckoutEventHandler
 {
     public async Task Consume(ConsumeContext<BasketCheckoutEvent> context)
     {
+        // The correlation id travels as a transport header set by Basket at publish time (not
+        // part of the BasketCheckoutEvent contract itself). Pushing it into LogContext here means
+        // every log line for the rest of this consume call - including the nested CreateOrderCommand
+        // handling via LoggingBehavior - is tagged with the same id the original HTTP request had.
+        context.Headers.TryGetHeader(CorrelationIdMiddleware.HeaderName, out var correlationIdHeader);
+        using var _ = correlationIdHeader is string correlationId
+            ? SerilogLogContext.PushProperty("CorrelationId", correlationId)
+            : null;
+
         var message = context.Message;
 
         if (await dbContext.ProcessedIntegrationEvents

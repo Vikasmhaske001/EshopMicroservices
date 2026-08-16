@@ -1,18 +1,20 @@
 ﻿namespace Ordering.Application.Orders.Commands.CreateOrder;
 
-public class CreateOrderHandler(IApplicationDbContext dbContext)
+public class CreateOrderHandler(IApplicationDbContext dbContext, ILogger<CreateOrderHandler> logger)
     : ICommandHandler<CreateOrderCommand, CreateOrderResult>
 {
     public async Task<CreateOrderResult> Handle(CreateOrderCommand command, CancellationToken cancellationToken)
     {
         //create Order entity from command object
         //save to database
-        //return result 
+        //return result
 
         var order = CreateNewOrder(command.Order);
 
         dbContext.Orders.Add(order);
         await dbContext.SaveChangesAsync(cancellationToken);
+
+        logger.LogInformation("Order created {OrderId} for customer {CustomerId}", order.Id.Value, order.CustomerId.Value);
 
         return new CreateOrderResult(order.Id.Value);
     }

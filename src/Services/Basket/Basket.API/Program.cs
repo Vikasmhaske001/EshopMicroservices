@@ -1,6 +1,7 @@
 using BuildingBlocks.Auth;
 using BuildingBlocks.Behaviors;
 using BuildingBlocks.Exceptions.Handler;
+using BuildingBlocks.Logging;
 using BuildingBlocks.Messaging.MassTransit;
 using Discount.Grpc;
 using HealthChecks.UI.Client;
@@ -8,8 +9,11 @@ using Microsoft.Extensions.Caching.Distributed;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddSerilogDefaults("Basket.API");
+
 var assembly = typeof(Program).Assembly;
 builder.Services.AddCarter();
+builder.Services.AddHttpContextAccessor();
 
 // Basket holds per-user data, so every endpoint here requires a valid JWT; ownership within
 // that (which basket) is enforced per-endpoint via BasketOwnership.
@@ -61,6 +65,8 @@ builder.Services.AddHealthChecks()
     .AddRedis(builder.Configuration.GetConnectionString("Redis")!);
 
 var app = builder.Build();
+
+app.UseCorrelationId();
 
 app.UseAuthentication();
 app.UseAuthorization();

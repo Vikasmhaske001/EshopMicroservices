@@ -1,8 +1,11 @@
 using BuildingBlocks.Auth;
+using BuildingBlocks.Logging;
 using Catalog.API.Data;
 using HealthChecks.UI.Client;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddSerilogDefaults("Catalog.Api");
 
 // Reads are public (see route-level RequireAuthorization on the write endpoints only); auth is
 // still wired up here so this service independently validates JWTs for its Admin-only mutations
@@ -37,6 +40,8 @@ builder.Services.AddProblemDetails();
 builder.Services.AddHealthChecks().AddNpgSql(builder.Configuration.GetConnectionString("Database")!);
 
 var app = builder.Build();
+
+app.UseCorrelationId();
 
 app.UseAuthentication();
 app.UseAuthorization();

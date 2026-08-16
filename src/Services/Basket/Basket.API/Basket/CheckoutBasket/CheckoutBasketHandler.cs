@@ -1,6 +1,9 @@
-﻿using BuildingBlocks.Messaging.Events;
+﻿using BuildingBlocks.Logging;
+using BuildingBlocks.Messaging.Events;
 using MassTransit;
 using Basket.API.Dtos;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace Basket.API.Basket.CheckoutBasket;
 
@@ -19,7 +22,8 @@ public class CheckoutBasketCommandValidator
 }
 
 public class CheckoutBasketCommandHandler
-    (IBasketRepository repository, IPublishEndpoint publishEndpoint)
+    (IBasketRepository repository, IPublishEndpoint publishEndpoint,
+     IHttpContextAccessor httpContextAccessor, ILogger<CheckoutBasketCommandHandler> logger)
     : ICommandHandler<CheckoutBasketCommand, CheckoutBasketResult>
 {
     public async Task<CheckoutBasketResult> Handle(CheckoutBasketCommand command, CancellationToken cancellationToken)
@@ -28,6 +32,8 @@ public class CheckoutBasketCommandHandler
         // Set totalprice on basketcheckout event message
         // send basket checkout event to rabbitmq using masstransit
         // delete the basket
+
+        logger.LogInformation("Checkout started for {UserName}", command.BasketCheckoutDto.UserName);
 
         var basket = await repository.GetBasket(command.BasketCheckoutDto.UserName, cancellationToken);
         if (basket == null)
@@ -69,9 +75,24 @@ public class CheckoutBasketCommandHandler
             })
             .ToList();
 
-        await publishEndpoint.Publish(eventMessage, cancellationToken);
+        // Carry the correlation id as a transport header rather than adding it to the business
+        // event contract - Ordering reads it back off ConsumeContext.Headers.
+        var correlationId = httpContextAccessor.HttpContext?.GetCorrelationId();
+
+        await publishEndpoint.Publish(eventMessage, context =>
+        {
+            if (correlationId is not null)
+            {
+                context.Headers.Set(CorrelationIdMiddleware.HeaderName, correlationId);
+            }
+        }, cancellationToken);
+
+        logger.LogInformation("Checkout event published {EventId} for {UserName}",
+            checkoutEventId, command.BasketCheckoutDto.UserName);
 
         await repository.DeleteBasket(command.BasketCheckoutDto.UserName, cancellationToken);
+
+        logger.LogInformation("Basket deleted for {UserName}", command.BasketCheckoutDto.UserName);
 
         return new CheckoutBasketResult(true);
     }
