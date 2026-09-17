@@ -1,0 +1,13 @@
+.app-header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+
+  h1 {
+    margin: 0;
+    font: var(--mat-sys-title-large);
+  }
+}
+
+main {
+  padding: 1.5rem;
+}
