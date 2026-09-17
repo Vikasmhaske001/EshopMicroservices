@@ -11,11 +11,22 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
     catchError((error: unknown) => {
       const appError = toAppError(error);
-      snackBar.open(appError.detail ?? appError.title, 'Dismiss', { duration: 5000 });
+
+      // Login/register render their own inline, contextual error message - a generic snackbar on
+      // top of that would be redundant, and "You need to sign in" is a confusing thing to say to
+      // someone who is actively trying to sign in.
+      if (!isAuthFormRequest(req.url)) {
+        snackBar.open(appError.detail ?? appError.title, 'Dismiss', { duration: 5000 });
+      }
+
       return throwError(() => appError);
     })
   );
 };
+
+function isAuthFormRequest(url: string): boolean {
+  return url.includes('/auth/login') || url.includes('/auth/register');
+}
 
 function toAppError(error: unknown): AppError {
   if (error instanceof HttpErrorResponse) {

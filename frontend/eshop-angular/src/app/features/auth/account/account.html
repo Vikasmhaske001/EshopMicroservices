@@ -1,0 +1,10 @@
+<div class="account-card">
+  <h2>My Account</h2>
+
+  @if (authService.currentUser(); as user) {
+    <p><strong>Username:</strong> {{ user.userName }}</p>
+    <p><strong>Roles:</strong> {{ user.roles.join(', ') }}</p>
+
+    <button mat-flat-button (click)="logout()">Log out</button>
+  }
+</div>
