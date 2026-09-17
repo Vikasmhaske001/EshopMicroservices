@@ -19,5 +19,9 @@ public class JwtSettings
     /// </summary>
     public string Key { get; set; } = default!;
 
-    public int ExpirationMinutes { get; set; } = 60;
+    /// <summary>Access token lifetime. Kept short now that a refresh token exists to renew it.</summary>
+    public int ExpirationMinutes { get; set; } = 15;
+
+    /// <summary>Only meaningful to Identity.Api (the issuer) - resource services never read this.</summary>
+    public int RefreshTokenExpirationDays { get; set; } = 7;
 }

@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using BuildingBlocks.Auth;
 using Identity.Api.Data;
@@ -13,7 +14,7 @@ namespace Identity.Api.Auth;
 /// </summary>
 public class TokenService(JwtSettings jwtSettings) : ITokenService
 {
-    public (string Token, DateTime ExpiresAt) CreateToken(ApplicationUser user, IList<string> roles)
+    public (string Token, DateTime ExpiresAt) CreateAccessToken(ApplicationUser user, IList<string> roles)
     {
         var expiresAt = DateTime.UtcNow.AddMinutes(jwtSettings.ExpirationMinutes);
 
@@ -39,4 +40,9 @@ public class TokenService(JwtSettings jwtSettings) : ITokenService
 
         return (new JwtSecurityTokenHandler().WriteToken(token), expiresAt);
     }
+
+    public string GenerateRefreshToken() => Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+
+    public string HashRefreshToken(string refreshToken) =>
+        Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(refreshToken)));
 }
