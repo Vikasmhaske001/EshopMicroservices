@@ -1,0 +1,19 @@
+<mat-card class="product-card">
+  <!-- Catalog.Api stores only an `imageFile` name with no static-file endpoint behind it yet,
+       so there is no real image URL to point to - a placeholder is the honest option. -->
+  <div class="product-image-placeholder">
+    <mat-icon>shopping_bag</mat-icon>
+  </div>
+
+  <mat-card-content>
+    <h3 class="product-name">
+      <a [routerLink]="['/products', product().id]">{{ product().name }}</a>
+    </h3>
+    <p class="product-categories">{{ product().categories.join(', ') }}</p>
+    <p class="product-price">{{ product().price | currency }}</p>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <a mat-button [routerLink]="['/products', product().id]">View Details</a>
+  </mat-card-actions>
+</mat-card>

@@ -1,0 +1,48 @@
+<section class="filters">
+  <mat-form-field appearance="outline" class="search-field">
+    <mat-label>Search products</mat-label>
+    <input matInput [formControl]="searchControl" placeholder="e.g. iPhone" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="category-field">
+    <mat-label>Category</mat-label>
+    <mat-select [value]="category() ?? ''" (selectionChange)="onCategoryChange($event.value)">
+      <mat-option value="">All categories</mat-option>
+      @for (c of categories(); track c) {
+        <mat-option [value]="c">{{ c }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="sort-field">
+    <mat-label>Sort by</mat-label>
+    <mat-select [value]="sortOption()" (selectionChange)="onSortChange($event.value)">
+      <mat-option value="name-asc">Name (A-Z)</mat-option>
+      <mat-option value="name-desc">Name (Z-A)</mat-option>
+      <mat-option value="price-asc">Price (Low to High)</mat-option>
+      <mat-option value="price-desc">Price (High to Low)</mat-option>
+    </mat-select>
+  </mat-form-field>
+</section>
+
+@if (loading()) {
+  <mat-progress-bar mode="indeterminate" />
+}
+
+@if (result(); as page) {
+  @if (page.data.length > 0) {
+    <div class="product-grid">
+      @for (product of page.data; track product.id) {
+        <app-product-card [product]="product" />
+      }
+    </div>
+
+    <app-pagination-control
+      [pageIndex]="pageIndex()"
+      [totalPages]="page.totalPages"
+      (pageChange)="onPageChange($event)"
+    />
+  } @else {
+    <p class="empty-state">No products found.</p>
+  }
+}
