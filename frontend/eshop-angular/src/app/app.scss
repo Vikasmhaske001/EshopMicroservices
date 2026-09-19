@@ -2,6 +2,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   padding: 1rem 1.5rem;
   border-bottom: 1px solid var(--mat-sys-outline-variant);
 
@@ -14,15 +16,26 @@
       text-decoration: none;
     }
   }
+
+  @media (max-width: 599px) {
+    padding: 0.75rem 1rem;
+  }
 }
 
 .auth-status {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.5rem;
+  row-gap: 0.25rem;
 
   a {
     color: inherit;
+  }
+
+  @media (max-width: 599px) {
+    gap: 0.4rem;
+    font-size: 0.9rem;
   }
 }
 
@@ -51,4 +64,8 @@
 
 main {
   padding: 1.5rem;
+
+  @media (max-width: 599px) {
+    padding: 1rem;
+  }
 }

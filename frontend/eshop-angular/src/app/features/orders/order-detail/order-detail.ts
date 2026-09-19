@@ -7,10 +7,11 @@ import { catchError, map, of, switchMap } from 'rxjs';
 import { AuthService } from '../../../core/auth/auth.service';
 import { Order, getOrderStatusLabel, getOrderTotal } from '../../../shared/models/order.model';
 import { OrdersService } from '../orders.service';
+import { LoadingSpinner } from '../../../shared/components/loading-spinner/loading-spinner';
 
 @Component({
   selector: 'app-order-detail',
-  imports: [RouterLink, MatButtonModule, CurrencyPipe],
+  imports: [RouterLink, MatButtonModule, CurrencyPipe, LoadingSpinner],
   templateUrl: './order-detail.html',
   styleUrl: './order-detail.scss',
 })

@@ -1,8 +1,13 @@
+.table-scroll {
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
 .admin-table {
   width: 100%;
+  min-width: 560px;
   max-width: 720px;
   border-collapse: collapse;
-  margin-bottom: 1rem;
 
   th,
   td {
@@ -10,6 +15,10 @@
     padding: 0.5rem;
     border-bottom: 1px solid var(--mat-sys-outline-variant);
   }
+}
+
+.empty-state {
+  color: var(--mat-sys-on-surface-variant);
 }
 
 .status-select {

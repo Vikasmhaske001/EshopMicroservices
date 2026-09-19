@@ -106,8 +106,8 @@
       @if (statusMessage()) {
         <p class="status-message">{{ statusMessage() }}</p>
       }
-      @if (errorMessage()) {
-        <p class="form-error">{{ errorMessage() }}</p>
+      @if (errorMessage(); as message) {
+        <app-error-banner [message]="message" />
       }
 
       <button mat-flat-button type="submit" [disabled]="submitting()">

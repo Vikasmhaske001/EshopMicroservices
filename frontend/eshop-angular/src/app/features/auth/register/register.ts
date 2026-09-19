@@ -6,10 +6,18 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AuthService } from '../../../core/auth/auth.service';
 import { AppError } from '../../../shared/models/app-error.model';
+import { ErrorBanner } from '../../../shared/components/error-banner/error-banner';
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule, RouterLink, MatButtonModule, MatFormFieldModule, MatInputModule],
+  imports: [
+    ReactiveFormsModule,
+    RouterLink,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ErrorBanner,
+  ],
   templateUrl: './register.html',
   styleUrl: './register.scss',
 })

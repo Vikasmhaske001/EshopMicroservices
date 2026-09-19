@@ -4,7 +4,7 @@
 </a>
 
 @if (product() === undefined) {
-  <p>Loading...</p>
+  <app-loading-spinner label="Loading product..." />
 } @else if (product() === null) {
   <p>Product not found.</p>
 } @else {

@@ -1,8 +1,15 @@
+.table-scroll {
+  // Admin tables don't reflow into cards on narrow screens (this is a utility screen, not a
+  // full back-office) - a horizontal scroll keeps every column readable instead of squashing them.
+  overflow-x: auto;
+  margin-bottom: 2rem;
+}
+
 .admin-table {
   width: 100%;
+  min-width: 500px;
   max-width: 720px;
   border-collapse: collapse;
-  margin-bottom: 2rem;
 
   th,
   td {
@@ -14,6 +21,11 @@
 
 .actions {
   white-space: nowrap;
+}
+
+.empty-state {
+  color: var(--mat-sys-on-surface-variant);
+  margin-bottom: 1.5rem;
 }
 
 form {
@@ -29,8 +41,4 @@ form {
 .form-actions {
   display: flex;
   gap: 0.5rem;
-}
-
-.form-error {
-  color: var(--mat-sys-error);
 }

@@ -1,7 +1,7 @@
 <a mat-button routerLink="/products">Continue shopping</a>
 
 @if (order() === undefined) {
-  <p>Loading...</p>
+  <app-loading-spinner label="Loading order..." />
 } @else if (order() === null) {
   <p>Order not found.</p>
 } @else {

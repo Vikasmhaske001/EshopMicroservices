@@ -10,10 +10,11 @@ import { CatalogService } from '../catalog.service';
 import { Product } from '../../../shared/models/product.model';
 import { AuthService } from '../../../core/auth/auth.service';
 import { BasketService } from '../../basket/basket.service';
+import { LoadingSpinner } from '../../../shared/components/loading-spinner/loading-spinner';
 
 @Component({
   selector: 'app-product-detail',
-  imports: [RouterLink, MatButtonModule, MatIconModule, CurrencyPipe],
+  imports: [RouterLink, MatButtonModule, MatIconModule, CurrencyPipe, LoadingSpinner],
   templateUrl: './product-detail.html',
   styleUrl: './product-detail.scss',
 })

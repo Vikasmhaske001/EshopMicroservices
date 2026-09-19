@@ -2,13 +2,17 @@ import { CurrencyPipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { map } from 'rxjs';
 import { CatalogService } from '../../catalog/catalog.service';
 import { AppError } from '../../../shared/models/app-error.model';
 import { Product } from '../../../shared/models/product.model';
+import { ErrorBanner } from '../../../shared/components/error-banner/error-banner';
+import { ConfirmDialog } from '../../../shared/components/confirm-dialog/confirm-dialog';
 
 @Component({
   selector: 'app-product-admin',
@@ -19,6 +23,7 @@ import { Product } from '../../../shared/models/product.model';
     MatInputModule,
     MatProgressBarModule,
     CurrencyPipe,
+    ErrorBanner,
   ],
   templateUrl: './product-admin.html',
   styleUrl: './product-admin.scss',
@@ -26,6 +31,8 @@ import { Product } from '../../../shared/models/product.model';
 export class ProductAdmin {
   private readonly catalogService = inject(CatalogService);
   private readonly fb = inject(FormBuilder);
+  private readonly dialog = inject(MatDialog);
+  private readonly snackBar = inject(MatSnackBar);
 
   protected readonly products = signal<Product[]>([]);
   protected readonly loading = signal(true);
@@ -107,6 +114,11 @@ export class ProductAdmin {
     request.subscribe({
       next: () => {
         this.saving.set(false);
+        this.snackBar.open(
+          editingId ? `Updated "${payload.name}".` : `Created "${payload.name}".`,
+          'Dismiss',
+          { duration: 4000 }
+        );
         this.cancelEdit();
         this.loadProducts();
       },
@@ -118,13 +130,27 @@ export class ProductAdmin {
   }
 
   deleteProduct(product: Product): void {
-    if (!confirm(`Delete "${product.name}"? This cannot be undone.`)) {
-      return;
-    }
+    this.dialog
+      .open(ConfirmDialog, {
+        data: {
+          title: 'Delete product',
+          message: `Delete "${product.name}"? This cannot be undone.`,
+          confirmLabel: 'Delete',
+        },
+      })
+      .afterClosed()
+      .subscribe((confirmed) => {
+        if (!confirmed) {
+          return;
+        }
 
-    this.catalogService.deleteProduct(product.id).subscribe({
-      next: () => this.loadProducts(),
-      error: () => {},
-    });
+        this.catalogService.deleteProduct(product.id).subscribe({
+          next: () => {
+            this.snackBar.open(`Deleted "${product.name}".`, 'Dismiss', { duration: 4000 });
+            this.loadProducts();
+          },
+          error: () => {},
+        });
+      });
   }
 }

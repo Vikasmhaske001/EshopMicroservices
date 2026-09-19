@@ -3,6 +3,7 @@ import { Component, inject, signal } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Order, OrderStatus, getOrderStatusLabel, getOrderTotal } from '../../../shared/models/order.model';
 import { PaginationControl } from '../../../shared/components/pagination-control/pagination-control';
 import { OrdersService } from '../../orders/orders.service';
@@ -17,6 +18,7 @@ const PAGE_SIZE = 10;
 })
 export class OrderAdmin {
   private readonly ordersService = inject(OrdersService);
+  private readonly snackBar = inject(MatSnackBar);
 
   protected readonly loading = signal(true);
   protected readonly orders = signal<Order[]>([]);
@@ -62,6 +64,9 @@ export class OrderAdmin {
     this.ordersService.updateOrder({ ...order, status }).subscribe({
       next: () => {
         this.updatingId.set(null);
+        this.snackBar.open(`Order ${order.orderName} marked ${getOrderStatusLabel(status)}.`, 'Dismiss', {
+          duration: 4000,
+        });
         this.loadOrders();
       },
       error: () => this.updatingId.set(null),

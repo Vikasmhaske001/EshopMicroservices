@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AuthService } from '../../../core/auth/auth.service';
 import { AppError } from '../../../shared/models/app-error.model';
+import { ErrorBanner } from '../../../shared/components/error-banner/error-banner';
 
 @Component({
   selector: 'app-login',
@@ -17,6 +18,7 @@ import { AppError } from '../../../shared/models/app-error.model';
     MatFormFieldModule,
     MatInputModule,
     MatProgressSpinnerModule,
+    ErrorBanner,
   ],
   templateUrl: './login.html',
   styleUrl: './login.scss',

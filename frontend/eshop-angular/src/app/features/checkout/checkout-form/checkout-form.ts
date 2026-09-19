@@ -12,6 +12,7 @@ import { Order } from '../../../shared/models/order.model';
 import { BasketService } from '../../basket/basket.service';
 import { OrdersService } from '../../orders/orders.service';
 import { BasketCheckoutRequest, CheckoutService } from '../checkout.service';
+import { ErrorBanner } from '../../../shared/components/error-banner/error-banner';
 
 const EMPTY_GUID = '00000000-0000-0000-0000-000000000000';
 const PAYMENT_METHOD_CREDIT_CARD = 1;
@@ -20,7 +21,15 @@ const POLL_TIMEOUT_MS = 20000;
 
 @Component({
   selector: 'app-checkout-form',
-  imports: [ReactiveFormsModule, RouterLink, MatButtonModule, MatFormFieldModule, MatInputModule, CurrencyPipe],
+  imports: [
+    ReactiveFormsModule,
+    RouterLink,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    CurrencyPipe,
+    ErrorBanner,
+  ],
   templateUrl: './checkout-form.html',
   styleUrl: './checkout-form.scss',
 })

@@ -51,6 +51,11 @@ fieldset {
   mat-form-field {
     flex: 1;
   }
+
+  @media (max-width: 599px) {
+    flex-direction: column;
+    gap: 0;
+  }
 }
 
 .demo-notice {
@@ -61,10 +66,6 @@ fieldset {
 
 .status-message {
   color: var(--mat-sys-primary);
-}
-
-.form-error {
-  color: var(--mat-sys-error);
 }
 
 .empty-state {
