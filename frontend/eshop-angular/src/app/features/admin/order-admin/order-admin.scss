@@ -1,0 +1,23 @@
+.admin-table {
+  width: 100%;
+  max-width: 720px;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+
+  th,
+  td {
+    text-align: left;
+    padding: 0.5rem;
+    border-bottom: 1px solid var(--mat-sys-outline-variant);
+  }
+}
+
+.status-select {
+  width: 140px;
+
+  // Compact the field vertically to fit a table row - the default outline appearance has
+  // more vertical padding than a table cell calls for.
+  ::ng-deep .mat-mdc-text-field-wrapper {
+    padding-top: 0;
+  }
+}

@@ -2,3 +2,10 @@
   max-width: 360px;
   margin: 2rem auto;
 }
+
+.account-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}

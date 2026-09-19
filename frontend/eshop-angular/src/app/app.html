@@ -9,6 +9,10 @@
           <span class="basket-badge">{{ basketService.itemCount() }}</span>
         }
       </a>
+      <a routerLink="/orders">My Orders</a>
+      @if (authService.roles().includes('Admin')) {
+        <a routerLink="/admin/products">Admin</a>
+      }
       <a routerLink="/account">Hi, {{ user.userName }}</a>
       <button mat-button (click)="logout()">Log out</button>
     } @else {

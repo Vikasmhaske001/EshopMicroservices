@@ -43,4 +43,20 @@ export class CatalogService {
       .get<{ products: Product[] }>(`${this.productsUrl}/category/${encodeURIComponent(category)}`)
       .pipe(map((res) => res.products));
   }
+
+  // Admin-only writes (backend enforces AuthorizationPolicies.AdminOnly independently of the
+  // adminGuard on the client - this is convenience, not the real access control).
+  createProduct(product: Omit<Product, 'id'>): Observable<string> {
+    return this.http
+      .post<{ id: string }>(this.productsUrl, product)
+      .pipe(map((res) => res.id));
+  }
+
+  updateProduct(product: Product): Observable<void> {
+    return this.http.put<{ isSuccess: boolean }>(this.productsUrl, product).pipe(map(() => void 0));
+  }
+
+  deleteProduct(id: string): Observable<void> {
+    return this.http.delete<{ isSuccess: boolean }>(`${this.productsUrl}/${id}`).pipe(map(() => void 0));
+  }
 }
