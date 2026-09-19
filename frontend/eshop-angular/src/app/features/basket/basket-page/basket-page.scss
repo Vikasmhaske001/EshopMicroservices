@@ -1,0 +1,18 @@
+.basket-summary {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1rem 0;
+  font: var(--mat-sys-title-large);
+}
+
+.basket-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.empty-state {
+  color: var(--mat-sys-on-surface-variant);
+  margin-bottom: 1rem;
+}

@@ -21,7 +21,9 @@ export function decodeJwtUser(token: string): AuthUser | null {
     const payload = JSON.parse(atob(padded)) as JwtPayload;
 
     return {
+      id: payload.sub,
       userName: payload.name,
+      email: payload.email,
       roles: Array.isArray(payload.role) ? payload.role : [payload.role],
     };
   } catch {

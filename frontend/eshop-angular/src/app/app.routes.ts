@@ -13,6 +13,22 @@ export const routes: Routes = [
     loadComponent: () => import('./features/auth/account/account').then((m) => m.Account),
   },
   {
+    path: 'basket',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/basket/basket-page/basket-page').then((m) => m.BasketPage),
+  },
+  {
+    path: 'checkout',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/checkout/checkout-form/checkout-form').then((m) => m.CheckoutForm),
+  },
+  {
+    path: 'orders/:id',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/orders/order-detail/order-detail').then((m) => m.OrderDetail),
+  },
+  {
     path: '',
     loadChildren: () => import('./features/auth/auth.routes').then((m) => m.AUTH_ROUTES),
   },

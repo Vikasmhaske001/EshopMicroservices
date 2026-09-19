@@ -68,7 +68,9 @@ export class AuthService {
       accessTokenExpiresAt: response.expiresAt,
       refreshToken: response.refreshToken,
     });
-    this.currentUserSignal.set({ userName: response.userName, roles: response.roles });
+    // Decoding the token we just received (rather than trusting response.userName/roles
+    // separately) keeps one source of truth and is how id/email become available too.
+    this.currentUserSignal.set(decodeJwtUser(response.token));
   }
 
   private clearSession(): void {

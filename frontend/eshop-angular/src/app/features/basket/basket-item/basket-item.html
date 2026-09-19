@@ -1,0 +1,38 @@
+<div class="basket-item">
+  <div class="item-info">
+    <span class="item-name">{{ item().productName }}</span>
+    <span class="item-unit-price">
+      {{ item().effectivePrice | currency }} each
+      @if (item().discountAmount > 0) {
+        <span class="item-discount">(save {{ item().discountAmount | currency }} each)</span>
+      }
+    </span>
+  </div>
+
+  <div class="item-quantity">
+    <button
+      mat-icon-button
+      type="button"
+      [disabled]="item().quantity <= 1"
+      (click)="quantityChange.emit(item().quantity - 1)"
+      aria-label="Decrease quantity"
+    >
+      <mat-icon>remove</mat-icon>
+    </button>
+    <span class="quantity-value">{{ item().quantity }}</span>
+    <button
+      mat-icon-button
+      type="button"
+      (click)="quantityChange.emit(item().quantity + 1)"
+      aria-label="Increase quantity"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+
+  <span class="item-line-total">{{ item().effectivePrice * item().quantity | currency }}</span>
+
+  <button mat-icon-button type="button" (click)="remove.emit()" aria-label="Remove item">
+    <mat-icon>delete</mat-icon>
+  </button>
+</div>

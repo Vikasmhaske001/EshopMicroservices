@@ -1,0 +1,47 @@
+<a mat-button routerLink="/products">Continue shopping</a>
+
+@if (order() === undefined) {
+  <p>Loading...</p>
+} @else if (order() === null) {
+  <p>Order not found.</p>
+} @else {
+  <article class="order-detail">
+    <h2>Order {{ order()!.orderName }}</h2>
+    <p class="status">Status: <strong>{{ statusLabel() }}</strong></p>
+
+    <section>
+      <h3>Items</h3>
+      <div class="order-items">
+        @for (item of order()!.orderItems; track item.productId) {
+          <div class="order-item">
+            <span>{{ item.productName }} &times; {{ item.quantity }}</span>
+            <span>{{ item.price * item.quantity | currency }}</span>
+          </div>
+        }
+        <div class="order-item total">
+          <span>Total</span>
+          <span>{{ total() | currency }}</span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h3>Shipping Address</h3>
+      <p>
+        {{ order()!.shippingAddress.firstName }} {{ order()!.shippingAddress.lastName }}<br />
+        {{ order()!.shippingAddress.addressLine }}<br />
+        {{ order()!.shippingAddress.state }}, {{ order()!.shippingAddress.country }}
+        {{ order()!.shippingAddress.zipCode }}<br />
+        {{ order()!.shippingAddress.emailAddress }}
+      </p>
+    </section>
+
+    <section>
+      <h3>Payment</h3>
+      <p>
+        {{ order()!.payment.cardName }}<br />
+        {{ maskCardNumber(order()!.payment.cardNumber) }} (exp {{ order()!.payment.expiration }})
+      </p>
+    </section>
+  </article>
+}

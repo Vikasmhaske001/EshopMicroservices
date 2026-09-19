@@ -3,6 +3,12 @@
 
   <div class="auth-status">
     @if (authService.currentUser(); as user) {
+      <a routerLink="/basket" class="basket-link" aria-label="Basket">
+        <mat-icon>shopping_cart</mat-icon>
+        @if (basketService.itemCount() > 0) {
+          <span class="basket-badge">{{ basketService.itemCount() }}</span>
+        }
+      </a>
       <a routerLink="/account">Hi, {{ user.userName }}</a>
       <button mat-button (click)="logout()">Log out</button>
     } @else {

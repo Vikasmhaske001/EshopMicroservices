@@ -1,0 +1,118 @@
+@if (basketService.cart(); as cart) {
+  <!-- Checkout deletes the basket server-side as soon as it accepts the order, so the cart goes
+       empty partway through submission - a plain "cart.items.length === 0" check would hide the
+       status/error message a submission produces right after that happens. Only treat this as
+       the true empty-basket state when nothing is in progress and nothing already failed. -->
+  @if (cart.items.length === 0 && !submitting() && !statusMessage() && !errorMessage()) {
+    <p class="empty-state">Your basket is empty - add something before checking out.</p>
+    <a mat-flat-button routerLink="/products">Browse products</a>
+  } @else {
+    <h2>Checkout</h2>
+
+    @if (cart.items.length > 0) {
+      <section class="order-summary">
+        <h3>Order Summary</h3>
+        @for (item of cart.items; track item.productId) {
+          <div class="summary-line">
+            <span>{{ item.productName }} &times; {{ item.quantity }}</span>
+            <span>{{ item.effectivePrice * item.quantity | currency }}</span>
+          </div>
+        }
+        <div class="summary-line total">
+          <span>Total</span>
+          <span>{{ cart.totalPrice | currency }}</span>
+        </div>
+      </section>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <fieldset>
+        <legend>Shipping &amp; Billing Address</legend>
+
+        <div class="field-row">
+          <mat-form-field appearance="outline">
+            <mat-label>First name</mat-label>
+            <input matInput formControlName="firstName" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Last name</mat-label>
+            <input matInput formControlName="lastName" />
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="emailAddress" />
+          @if (form.controls.emailAddress.touched && form.controls.emailAddress.hasError('email')) {
+            <mat-error>Enter a valid email address.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Address</mat-label>
+          <input matInput formControlName="addressLine" />
+        </mat-form-field>
+
+        <div class="field-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Country</mat-label>
+            <input matInput formControlName="country" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>State</mat-label>
+            <input matInput formControlName="state" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Zip code</mat-label>
+            <input matInput formControlName="zipCode" />
+          </mat-form-field>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Payment</legend>
+        <p class="demo-notice">Demo only - no real payment is processed. Any values work.</p>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Name on card</mat-label>
+          <input matInput formControlName="cardName" />
+        </mat-form-field>
+
+        <div class="field-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Card number</mat-label>
+            <input matInput formControlName="cardNumber" placeholder="4111111111111111" />
+            @if (form.controls.cardNumber.touched && form.controls.cardNumber.hasError('pattern')) {
+              <mat-error>Enter 13-19 digits, no spaces.</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Expiration (MM/YY)</mat-label>
+            <input matInput formControlName="expiration" placeholder="12/28" />
+            @if (form.controls.expiration.touched && form.controls.expiration.hasError('pattern')) {
+              <mat-error>Use MM/YY format.</mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>CVV</mat-label>
+            <input matInput formControlName="cvv" />
+            @if (form.controls.cvv.touched && form.controls.cvv.hasError('pattern')) {
+              <mat-error>3 or 4 digits.</mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </fieldset>
+
+      @if (statusMessage()) {
+        <p class="status-message">{{ statusMessage() }}</p>
+      }
+      @if (errorMessage()) {
+        <p class="form-error">{{ errorMessage() }}</p>
+      }
+
+      <button mat-flat-button type="submit" [disabled]="submitting()">
+        {{ statusMessage() ?? 'Place Order' }}
+      </button>
+    </form>
+  }
+}
