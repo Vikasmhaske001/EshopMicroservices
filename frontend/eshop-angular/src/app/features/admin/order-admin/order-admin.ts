@@ -1,10 +1,10 @@
 import { InrPipe } from '../../../shared/pipes/inr.pipe';
 import { Component, inject, signal } from '@angular/core';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatSelectModule } from '@angular/material/select';
 import { NotificationService } from '../../../core/notifications/notification.service';
 import { Order, OrderStatus, getOrderStatusLabel, getOrderTotal } from '../../../shared/models/order.model';
+import { AdminNav } from '../../../shared/components/admin-nav/admin-nav';
+import { EsInput } from '../../../shared/components/form-field/es-input';
 import { PaginationControl } from '../../../shared/components/pagination-control/pagination-control';
 import { OrdersService } from '../../orders/orders.service';
 
@@ -12,7 +12,7 @@ const PAGE_SIZE = 10;
 
 @Component({
   selector: 'app-order-admin',
-  imports: [MatFormFieldModule, MatSelectModule, MatProgressBarModule, InrPipe, PaginationControl],
+  imports: [MatProgressBarModule, InrPipe, PaginationControl, AdminNav, EsInput],
   templateUrl: './order-admin.html',
   styleUrl: './order-admin.scss',
 })
@@ -53,6 +53,10 @@ export class OrderAdmin {
   onPageChange(page: number): void {
     this.pageIndex.set(page - 1);
     this.loadOrders();
+  }
+
+  onStatusChange(order: Order, event: Event): void {
+    this.changeStatus(order, Number((event.target as HTMLSelectElement).value) as OrderStatus);
   }
 
   changeStatus(order: Order, status: OrderStatus): void {

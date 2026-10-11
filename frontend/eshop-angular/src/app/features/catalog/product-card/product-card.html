@@ -1,19 +1,38 @@
-<mat-card class="product-card">
-  <!-- Catalog.Api stores only an `imageFile` name with no static-file endpoint behind it yet,
-       so there is no real image URL to point to - a placeholder is the honest option. -->
-  <div class="product-image-placeholder">
-    <mat-icon>shopping_bag</mat-icon>
-  </div>
+<article class="card">
+  <a class="media" [routerLink]="['/products', product().id]" tabindex="-1" aria-hidden="true">
+    <app-product-image [category]="category()" [imageFile]="product().imageFile" />
+  </a>
 
-  <mat-card-content>
-    <h3 class="product-name">
+  <div class="body">
+    <p class="eyebrow">{{ category() }}</p>
+    <h3 class="name">
       <a [routerLink]="['/products', product().id]">{{ product().name }}</a>
     </h3>
-    <p class="product-categories">{{ (product().categories ?? []).join(', ') }}</p>
-    <p class="product-price">{{ product().price | inr }}</p>
-  </mat-card-content>
 
-  <mat-card-actions>
-    <a mat-button [routerLink]="['/products', product().id]">View Details</a>
-  </mat-card-actions>
-</mat-card>
+    <div class="buy">
+      <span class="price">{{ product().price | inr }}</span>
+
+      @if (inBasket() > 0) {
+        <button
+          type="button"
+          class="in-basket"
+          [disabled]="adding()"
+          [attr.aria-label]="'In basket, ' + inBasket() + '. Add one more ' + product().name"
+          (click)="add.emit(product())"
+        >
+          &#10003; In basket &middot; {{ inBasket() }}
+        </button>
+      } @else {
+        <button
+          type="button"
+          class="es-btn es-btn--sm"
+          [disabled]="adding()"
+          [attr.aria-label]="'Add ' + product().name + ' to basket'"
+          (click)="add.emit(product())"
+        >
+          Add
+        </button>
+      }
+    </div>
+  </div>
+</article>

@@ -45,6 +45,38 @@ export const AppValidators = {
     return value.trim().length === 0 ? { blank: true } : null;
   },
 
+  /** Comma-separated list with at least one non-empty entry, each at most 50 characters. */
+  categoryList: (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+    if (typeof value !== 'string' || value.trim() === '') {
+      return null; // required/notBlank own the empty case
+    }
+    const items = value
+      .split(',')
+      .map((item) => item.trim())
+      .filter((item) => item.length > 0);
+    if (items.length === 0) {
+      return { categoryList: true };
+    }
+    return items.some((item) => item.length > 50) ? { categoryItemTooLong: true } : null;
+  },
+
+  /** Image file name with a web image extension, no path separators. */
+  imageFileName: matches(/^[\w][\w .-]*\.(png|jpe?g|webp|gif|svg)$/i, 'imageFileName'),
+
+  /** At most N decimal places (money is stored with 2). */
+  maxDecimals:
+    (places: number): ValidatorFn =>
+    (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      if (value === null || value === undefined || value === '') {
+        return null;
+      }
+      const text = String(value);
+      const dot = text.indexOf('.');
+      return dot !== -1 && text.length - dot - 1 > places ? { maxDecimals: { places } } : null;
+    },
+
   /** MM/YY card expiry that is not in the past (valid through the end of the stated month). */
   cardNotExpired:
     (now: () => Date = () => new Date()): ValidatorFn =>

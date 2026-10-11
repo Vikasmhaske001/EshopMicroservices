@@ -58,6 +58,57 @@ describe('AppValidators', () => {
     }
   });
 
+  describe('categoryList', () => {
+    it('accepts one or more comma-separated categories', () => {
+      expect(AppValidators.categoryList(ctl('Smart Phone'))).toBeNull();
+      expect(AppValidators.categoryList(ctl('Smart Phone, Camera ,'))).toBeNull();
+    });
+
+    it('rejects input with no real entries', () => {
+      expect(AppValidators.categoryList(ctl(', ,'))).toEqual({ categoryList: true });
+    });
+
+    it('rejects an entry over 50 characters', () => {
+      expect(AppValidators.categoryList(ctl('x'.repeat(51)))).toEqual({ categoryItemTooLong: true });
+    });
+
+    it('leaves empty input to required', () => {
+      expect(AppValidators.categoryList(ctl(''))).toBeNull();
+    });
+  });
+
+  describe('imageFileName', () => {
+    it('accepts web image names', () => {
+      expect(AppValidators.imageFileName(ctl('product-1.png'))).toBeNull();
+      expect(AppValidators.imageFileName(ctl('My Photo.JPEG'))).toBeNull();
+    });
+
+    it('rejects paths, missing or non-image extensions', () => {
+      expect(AppValidators.imageFileName(ctl('../secret.png'))).toEqual({ imageFileName: true });
+      expect(AppValidators.imageFileName(ctl('a/b.png'))).toEqual({ imageFileName: true });
+      expect(AppValidators.imageFileName(ctl('photo'))).toEqual({ imageFileName: true });
+      expect(AppValidators.imageFileName(ctl('script.exe'))).toEqual({ imageFileName: true });
+    });
+  });
+
+  describe('maxDecimals', () => {
+    const twoPlaces = AppValidators.maxDecimals(2);
+
+    it('allows up to the limit', () => {
+      expect(twoPlaces(ctl(10))).toBeNull();
+      expect(twoPlaces(ctl(10.5))).toBeNull();
+      expect(twoPlaces(ctl(10.55))).toBeNull();
+    });
+
+    it('rejects more decimals than allowed', () => {
+      expect(twoPlaces(ctl(10.555))).toEqual({ maxDecimals: { places: 2 } });
+    });
+
+    it('ignores empty values', () => {
+      expect(twoPlaces(ctl(null))).toBeNull();
+    });
+  });
+
   describe('cardNotExpired', () => {
     const now = () => new Date(2026, 9, 15); // October 2026
     const validator = AppValidators.cardNotExpired(now);

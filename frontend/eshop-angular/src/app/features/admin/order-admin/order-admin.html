@@ -1,50 +1,61 @@
-<h2>Manage Orders</h2>
-
-@if (loading()) {
-  <mat-progress-bar mode="indeterminate" />
-} @else if (orders().length > 0) {
-  <div class="table-scroll">
-    <table class="admin-table">
-      <thead>
-        <tr>
-          <th>Order</th>
-          <th>Customer</th>
-          <th>Items</th>
-          <th>Total</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (order of orders(); track order.id) {
-          <tr>
-            <td>{{ order.orderName }}</td>
-            <td>{{ order.shippingAddress.firstName }} {{ order.shippingAddress.lastName }}</td>
-            <td>{{ order.orderItems.length }}</td>
-            <td>{{ orderTotal(order) | inr }}</td>
-            <td>
-              <mat-form-field appearance="outline" class="status-select">
-                <mat-select
-                  [value]="order.status"
-                  [disabled]="updatingId() === order.id"
-                  (selectionChange)="changeStatus(order, $event.value)"
-                >
-                  @for (option of statusOptions; track option.value) {
-                    <mat-option [value]="option.value">{{ option.label }}</mat-option>
-                  }
-                </mat-select>
-              </mat-form-field>
-            </td>
-          </tr>
-        }
-      </tbody>
-    </table>
+<section class="page">
+  <div class="head">
+    <div>
+      <h1>Manage orders</h1>
+      <p class="subtitle">Every customer's orders. Change a status to update it for the customer.</p>
+    </div>
+    <app-admin-nav />
   </div>
 
-  <app-pagination-control
-    [pageIndex]="pageIndex() + 1"
-    [totalPages]="totalPages()"
-    (pageChange)="onPageChange($event)"
-  />
-} @else {
-  <p class="empty-state">No orders yet.</p>
-}
+  @if (loading()) {
+    <mat-progress-bar mode="indeterminate" />
+  } @else if (orders().length > 0) {
+    <div class="table-card">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th scope="col">Order</th>
+            <th scope="col">Customer</th>
+            <th scope="col" class="num">Items</th>
+            <th scope="col" class="num">Total</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (order of orders(); track order.id) {
+            <tr>
+              <td class="order-name">{{ order.orderName }}</td>
+              <td>{{ order.shippingAddress.firstName }} {{ order.shippingAddress.lastName }}</td>
+              <td class="num">{{ order.orderItems.length }}</td>
+              <td class="num total">{{ orderTotal(order) | inr }}</td>
+              <td>
+                <select
+                  esInput
+                  class="es-input--sm status-select"
+                  [attr.aria-label]="'Status of order ' + order.orderName"
+                  [disabled]="updatingId() === order.id"
+                  (change)="onStatusChange(order, $event)"
+                >
+                  @for (option of statusOptions; track option.value) {
+                    <option [value]="option.value" [selected]="option.value === order.status">{{ option.label }}</option>
+                  }
+                </select>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <app-pagination-control
+      [pageIndex]="pageIndex() + 1"
+      [totalPages]="totalPages()"
+      (pageChange)="onPageChange($event)"
+    />
+  } @else {
+    <div class="empty">
+      <h2>No orders yet</h2>
+      <p>Orders customers place will show up here.</p>
+    </div>
+  }
+</section>

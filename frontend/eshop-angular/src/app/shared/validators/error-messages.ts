@@ -46,6 +46,14 @@ export function getErrorMessage(
       return 'Use only letters, numbers and - . _ @ +';
     case 'passwordPolicy':
       return 'Include a lowercase letter and a number.';
+    case 'categoryList':
+      return 'Enter at least one category, separated by commas.';
+    case 'categoryItemTooLong':
+      return 'Each category must be at most 50 characters.';
+    case 'imageFileName':
+      return 'Use a file name ending in .png, .jpg, .jpeg, .webp, .gif or .svg.';
+    case 'maxDecimals':
+      return `Use at most ${detail.places} decimal places.`;
     case 'cardExpired':
       return 'This card has expired.';
     case 'pattern':

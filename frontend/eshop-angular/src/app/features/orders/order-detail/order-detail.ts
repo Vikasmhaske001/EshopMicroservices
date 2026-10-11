@@ -1,17 +1,19 @@
-import { InrPipe } from '../../../shared/pipes/inr.pipe';
 import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
 import { catchError, map, of, switchMap } from 'rxjs';
 import { AuthService } from '../../../core/auth/auth.service';
-import { Order, getOrderStatusLabel, getOrderTotal } from '../../../shared/models/order.model';
-import { OrdersService } from '../orders.service';
 import { LoadingSpinner } from '../../../shared/components/loading-spinner/loading-spinner';
+import { ProductImage } from '../../../shared/components/product-image/product-image';
+import { StatusBadge } from '../../../shared/components/status-badge/status-badge';
+import { Order, getOrderTotal } from '../../../shared/models/order.model';
+import { InrPipe } from '../../../shared/pipes/inr.pipe';
+import { CatalogLookup } from '../../catalog/catalog-lookup.service';
+import { OrdersService } from '../orders.service';
 
 @Component({
   selector: 'app-order-detail',
-  imports: [RouterLink, MatButtonModule, InrPipe, LoadingSpinner],
+  imports: [RouterLink, InrPipe, LoadingSpinner, ProductImage, StatusBadge],
   templateUrl: './order-detail.html',
   styleUrl: './order-detail.scss',
 })
@@ -19,6 +21,7 @@ export class OrderDetail {
   private readonly route = inject(ActivatedRoute);
   private readonly authService = inject(AuthService);
   private readonly ordersService = inject(OrdersService);
+  protected readonly categoryById = inject(CatalogLookup).categoryById;
 
   // undefined = still loading, null = not found / request failed, Order = loaded
   protected readonly order = toSignal(
@@ -39,15 +42,14 @@ export class OrderDetail {
     { initialValue: undefined }
   );
 
-  protected readonly statusLabel = computed(() => {
-    const order = this.order();
-    return order ? getOrderStatusLabel(order.status) : '';
-  });
-
   protected readonly total = computed(() => {
     const order = this.order();
     return order ? getOrderTotal(order) : 0;
   });
+
+  protected readonly itemCount = computed(
+    () => this.order()?.orderItems.reduce((sum, item) => sum + item.quantity, 0) ?? 0
+  );
 
   maskCardNumber(cardNumber: string): string {
     return `•••• •••• •••• ${cardNumber.slice(-4)}`;

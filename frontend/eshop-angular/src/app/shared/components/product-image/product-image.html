@@ -1,0 +1,42 @@
+@if (showImage()) {
+  <img class="photo" [src]="src()" [alt]="alt()" loading="lazy" (error)="onImageError()" />
+} @else {
+  <div class="art" [attr.role]="alt() ? 'img' : null" [attr.aria-label]="alt() || null" [attr.aria-hidden]="alt() ? null : true">
+    @switch (kind()) {
+      @case ('phone') {
+        <div class="phone"><div class="phone-screen"><div class="phone-notch"></div></div></div>
+      }
+      @case ('camera') {
+        <div class="camera">
+          <div class="camera-bump"></div>
+          <div class="camera-lens"></div>
+          <div class="camera-dot"></div>
+        </div>
+      }
+      @case ('appliance') {
+        <div class="appliance">
+          <div class="appliance-dials"><span></span><span></span></div>
+          <div class="appliance-drum"></div>
+        </div>
+      }
+      @case ('kitchen') {
+        <div class="kitchen">
+          <div class="kitchen-knob"></div>
+          <div class="kitchen-lid"></div>
+          <div class="kitchen-pot">
+            <div class="kitchen-stripe"></div>
+            <div class="kitchen-handle left"></div>
+            <div class="kitchen-handle right"></div>
+          </div>
+        </div>
+      }
+      @default {
+        <div class="generic"><div class="generic-dot"></div></div>
+      }
+    }
+  </div>
+}
+
+@if (caption(); as text) {
+  <span class="caption">{{ text }}</span>
+}

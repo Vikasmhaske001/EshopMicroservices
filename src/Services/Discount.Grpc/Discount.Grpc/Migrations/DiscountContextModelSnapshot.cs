@@ -41,14 +41,14 @@ namespace Discount.Grpc.Migrations
                         new
                         {
                             Id = 1,
-                            Amount = 150,
+                            Amount = 5000,
                             Description = "IPhone Discount",
                             ProductName = "IPhone X"
                         },
                         new
                         {
                             Id = 2,
-                            Amount = 100,
+                            Amount = 3000,
                             Description = "Samsung Discount",
                             ProductName = "Samsung 10"
                         });

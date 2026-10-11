@@ -1,8 +1,8 @@
-// Include theming for Angular Material with `mat.theme()`.
-// This Sass mixin will define CSS variables that are used for styling Angular Material
-// components according to the Material 3 design spec.
-// Learn more about theming and how to use it for your application's
-// custom components at https://material.angular.dev/guide/theming
+// Global theme for the "Mango & Grape" redesign (design_handoff_eshop_redesign, concept 1d).
+//
+// Every colour, radius and shadow in the app comes from the --es-* tokens below. Angular Material is
+// still used underneath (menus, selects, snackbars), so its --mat-sys-* colours are pointed at the
+// same tokens - that is what removes the stock M3 azure look.
 @use '@angular/material' as mat;
 
 html {
@@ -10,56 +10,317 @@ html {
   @include mat.theme(
     (
       color: (
-        primary: mat.$azure-palette,
-        tertiary: mat.$blue-palette,
+        primary: mat.$yellow-palette,
+        tertiary: mat.$violet-palette,
       ),
-      typography: Roboto,
+      typography: (
+        plain-family: 'Plus Jakarta Sans, system-ui, sans-serif',
+        brand-family: 'Plus Jakarta Sans, system-ui, sans-serif',
+        bold-weight: 800,
+        medium-weight: 600,
+        regular-weight: 400,
+      ),
       density: 0,
     )
   );
+
+  // ---- Design tokens ------------------------------------------------------------------------
+  --es-ink: #1d1230;
+  --es-text-2: #3d3550;
+  --es-muted: #57506a;
+  --es-subtle: #8a8296;
+  --es-grape: #4b2a99;
+  --es-grape-soft: #f1ecff;
+  --es-grape-border: #d9ccf7;
+  --es-grape-ring: #ece4ff;
+  --es-grape-tint: #e5dcfb;
+  --es-grape-deep: #2e1a66;
+  --es-mango: #ffb703;
+  --es-mango-hover: #f5a300;
+  --es-mango-soft: #fff4dc;
+  --es-mango-line: #ffd166;
+  --es-bg: #fffdf8;
+  --es-surface: #ffffff;
+  --es-input-bg: #fffdf8;
+  --es-line: #efe6d4;
+  --es-line-2: #f0e8d8;
+  --es-line-3: #e6dcc8;
+  --es-input-border: #e0d6c2;
+  --es-row-line: #f4ede0;
+  --es-table-head: #fffaf0;
+  --es-hover-bg: #faf6ee;
+  --es-error: #b42318;
+  --es-error-ring: #d92d20;
+  --es-error-bg: #fff6f5;
+  --es-error-border: #f4c7c1;
+  --es-error-ink: #7a1610;
+  --es-notice-ink: #3d2a00;
+
+  --es-font: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --es-header-height: 76px;
+  --es-content-max: 1296px;
+  --es-gutter: 48px;
+
+  --es-radius-card: 18px;
+  --es-radius-panel: 20px;
+  --es-radius-media: 24px;
+  --es-radius-btn: 14px;
+  --es-radius-ctl: 12px;
+
+  --es-shadow-card-hover: 0 18px 36px -20px rgb(29 18 48 / 35%);
+  --es-shadow-summary: 0 18px 36px -28px rgb(29 18 48 / 35%);
+  --es-shadow-signin: 0 30px 60px -40px rgb(29 18 48 / 40%);
+
+  // ---- Material system colours -> design tokens -----------------------------------------------
+  // Mango is the primary action colour (text on it is always ink, never white); grape is the brand.
+  --mat-sys-primary: var(--es-mango);
+  --mat-sys-on-primary: var(--es-ink);
+  --mat-sys-primary-container: var(--es-mango-soft);
+  --mat-sys-on-primary-container: var(--es-notice-ink);
+  --mat-sys-secondary: var(--es-grape);
+  --mat-sys-on-secondary: #fff;
+  --mat-sys-secondary-container: var(--es-grape-soft);
+  --mat-sys-on-secondary-container: var(--es-grape-deep);
+  --mat-sys-tertiary: var(--es-grape);
+  --mat-sys-on-tertiary: #fff;
+  --mat-sys-tertiary-container: var(--es-grape-soft);
+  --mat-sys-on-tertiary-container: var(--es-grape-deep);
+  --mat-sys-error: var(--es-error);
+  --mat-sys-error-container: var(--es-error-bg);
+  --mat-sys-on-error-container: var(--es-error-ink);
+  --mat-sys-background: var(--es-bg);
+  --mat-sys-on-background: var(--es-ink);
+  --mat-sys-surface: var(--es-surface);
+  --mat-sys-on-surface: var(--es-ink);
+  --mat-sys-on-surface-variant: var(--es-muted);
+  --mat-sys-surface-container-lowest: var(--es-bg);
+  --mat-sys-surface-container-low: var(--es-bg);
+  --mat-sys-surface-container: var(--es-hover-bg);
+  --mat-sys-surface-container-high: var(--es-grape-soft);
+  --mat-sys-surface-container-highest: var(--es-grape-soft);
+  --mat-sys-outline: var(--es-line-3);
+  --mat-sys-outline-variant: var(--es-line-2);
+
+  // Spinners, progress bars and dialogs follow the brand too.
+  --mat-progress-spinner-active-indicator-color: var(--es-grape);
+  --mat-progress-bar-active-indicator-color: var(--es-grape);
+  --mat-progress-bar-track-color: var(--es-grape-soft);
+  --mat-dialog-container-shape: var(--es-radius-panel);
+  --mat-dialog-container-color: var(--es-surface);
+  --mat-dialog-subhead-color: var(--es-ink);
+  --mat-dialog-supporting-text-color: var(--es-text-2);
+  // Material splits each font into family / size / weight / line-height tokens.
+  --mat-dialog-subhead-font: var(--es-font);
+  --mat-dialog-subhead-size: 20px;
+  --mat-dialog-subhead-weight: 800;
+  --mat-dialog-subhead-line-height: 1.3;
+  --mat-dialog-supporting-text-font: var(--es-font);
+  --mat-dialog-supporting-text-size: 15px;
+  --mat-dialog-supporting-text-weight: 400;
+  --mat-dialog-supporting-text-line-height: 1.6;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
-  // Default the application to a light color theme. This can be changed to
-  // `dark` to enable the dark color theme, or to `light dark` to defer to the
-  // user's system settings.
-  color-scheme: light;
-
-  // Set a default background, font and text colors for the application using
-  // Angular Material's system-level CSS variables. Learn more about these
-  // variables at https://material.angular.dev/guide/system-variables
-  background-color: var(--mat-sys-surface);
-  color: var(--mat-sys-on-surface);
-  font: var(--mat-sys-body-medium);
-
-  // Reset the user agent margin.
   margin: 0;
-  height: 100%;
+  min-height: 100%;
+  background: var(--es-bg);
+  color: var(--es-ink);
+  font: 400 15px/1.5 var(--es-font);
+  color-scheme: light;
+  -webkit-font-smoothing: antialiased;
 }
-/* You can add global styles to this file, and also import other style files */
 
-// Pop-up messages (see core/notifications/notification.service.ts). These classes are applied to
-// the snackbar container, so overriding Material's snackbar tokens here restyles the whole toast.
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--es-grape);
+}
+
+// Visible focus for every interactive element (design: grape ring, never removed).
+:focus-visible {
+  outline: 2px solid var(--es-grape);
+  outline-offset: 2px;
+}
+
+// ---- Shared building blocks -------------------------------------------------------------------
+
+// Primary call-to-action: mango with ink text, no Material ripple/elevation look.
+.es-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 48px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: var(--es-radius-btn);
+  background: var(--es-mango);
+  color: var(--es-ink);
+  font: 800 15px/1 var(--es-font);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+
+  &:hover:not(:disabled) {
+    background: var(--es-mango-hover);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+
+  &.es-btn--sm {
+    height: 40px;
+    padding: 0 16px;
+    border-radius: var(--es-radius-ctl);
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  &.es-btn--lg {
+    height: 56px;
+    font-size: 16px;
+  }
+}
+
+// Destructive variant: same shape, error colours (delete confirmation).
+.es-btn.es-btn--danger {
+  background: var(--es-error);
+  color: #fff;
+
+  &:hover:not(:disabled) {
+    background: var(--es-error-ring);
+  }
+}
+
+// Text-style input used by <input esInput>, <select esInput> and <textarea esInput>. Global because
+// the element is projected into <app-field> and also used on its own (admin tables).
+.es-input {
+  width: 100%;
+  height: 48px;
+  padding: 0 14px;
+  border: 1px solid var(--es-input-border);
+  border-radius: var(--es-radius-ctl);
+  background: var(--es-input-bg);
+  color: var(--es-ink);
+  font: 400 15px/1 var(--es-font);
+  outline: 0;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    background-color 0.15s ease;
+
+  &::placeholder {
+    color: var(--es-subtle);
+  }
+
+  &:focus {
+    border-color: var(--es-grape);
+    background: var(--es-surface);
+    box-shadow: 0 0 0 4px var(--es-grape-ring);
+  }
+
+  &.es-input--tall {
+    height: 50px;
+  }
+
+  &.es-input--sm {
+    height: 40px;
+    padding: 0 12px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  &:is(textarea) {
+    height: auto;
+    min-height: 110px;
+    padding: 12px 14px;
+    line-height: 1.5;
+    resize: vertical;
+  }
+
+  // Invalid and touched: red ring (Angular adds the ng-* classes).
+  &.ng-invalid.ng-touched,
+  &[aria-invalid='true'] {
+    border-color: var(--es-error-ring);
+    box-shadow: 0 0 0 2px var(--es-error-ring);
+  }
+}
+
+.es-btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  padding: 0 20px;
+  border: 1.5px solid currentcolor;
+  border-radius: var(--es-radius-ctl);
+  background: transparent;
+  font: 700 14px/1 var(--es-font);
+  cursor: pointer;
+}
+
+// Menus (account / navigation) share the card look.
+.es-menu.mat-mdc-menu-panel {
+  --mat-menu-container-shape: 14px;
+  --mat-menu-item-label-text-font: 600 14px/1.4 var(--es-font);
+  min-width: 200px;
+  border: 1px solid var(--es-line);
+}
+
+// ---- Pop-up messages (core/notifications/notification.service.ts) ---------------------------------
 .toast {
+  --mat-snack-bar-container-shape: 14px;
+  --mat-snack-bar-container-color: var(--es-ink);
   --mat-snack-bar-supporting-text-color: #fff;
+  --mat-snack-bar-button-color: var(--es-mango);
+  --mat-snack-bar-supporting-text-font: var(--es-font);
+  --mat-snack-bar-supporting-text-size: 14px;
+  --mat-snack-bar-supporting-text-weight: 600;
+  --mat-snack-bar-supporting-text-line-height: 1.4;
 
   &.toast-success {
-    --mat-snack-bar-container-color: #1b5e20;
-    --mat-snack-bar-button-color: #c8e6c9;
+    --mat-snack-bar-container-color: var(--es-grape-soft);
+    --mat-snack-bar-supporting-text-color: var(--es-grape-deep);
+    --mat-snack-bar-button-color: var(--es-grape);
   }
 
   &.toast-error {
-    --mat-snack-bar-container-color: #b3261e;
-    --mat-snack-bar-button-color: #ffdad6;
+    --mat-snack-bar-container-color: var(--es-error-bg);
+    --mat-snack-bar-supporting-text-color: var(--es-error-ink);
+    --mat-snack-bar-button-color: var(--es-error);
   }
 
   &.toast-warning {
-    --mat-snack-bar-container-color: #8a5100;
-    --mat-snack-bar-button-color: #ffddb3;
+    --mat-snack-bar-container-color: var(--es-mango-soft);
+    --mat-snack-bar-supporting-text-color: var(--es-notice-ink);
+    --mat-snack-bar-button-color: var(--es-grape);
   }
 
   &.toast-info {
-    --mat-snack-bar-container-color: #1f3a5f;
-    --mat-snack-bar-button-color: #cfe5ff;
+    --mat-snack-bar-container-color: var(--es-ink);
+    --mat-snack-bar-supporting-text-color: #fff;
+    --mat-snack-bar-button-color: var(--es-mango);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
   }
 }

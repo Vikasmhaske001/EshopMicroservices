@@ -1,10 +1,12 @@
+import { AdminNav } from '../../../shared/components/admin-nav/admin-nav';
+import { EsInput } from '../../../shared/components/form-field/es-input';
+import { FormField } from '../../../shared/components/form-field/form-field';
+import { ProductImage } from '../../../shared/components/product-image/product-image';
 import { InrPipe } from '../../../shared/pipes/inr.pipe';
+import { AppValidators } from '../../../shared/validators/app-validators';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NotificationService } from '../../../core/notifications/notification.service';
 import { map } from 'rxjs';
@@ -18,12 +20,13 @@ import { ConfirmDialog } from '../../../shared/components/confirm-dialog/confirm
   selector: 'app-product-admin',
   imports: [
     ReactiveFormsModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
     MatProgressBarModule,
     InrPipe,
+    AdminNav,
     ErrorBanner,
+    EsInput,
+    FormField,
+    ProductImage,
   ],
   templateUrl: './product-admin.html',
   styleUrl: './product-admin.scss',
@@ -41,11 +44,15 @@ export class ProductAdmin {
   protected readonly errorMessage = signal<string | null>(null);
 
   protected readonly form = this.fb.nonNullable.group({
-    name: ['', Validators.required],
-    categories: ['', Validators.required],
-    description: ['', Validators.required],
-    imageFile: ['', Validators.required],
-    price: [0, [Validators.required, Validators.min(0.01)]],
+    name: ['', [Validators.required, AppValidators.notBlank, Validators.maxLength(100)]],
+    categories: ['', [Validators.required, AppValidators.notBlank, AppValidators.categoryList]],
+    description: ['', [Validators.required, AppValidators.notBlank, Validators.maxLength(1000)]],
+    imageFile: ['', [Validators.required, AppValidators.imageFileName]],
+    // Catalog.Api requires Price > 0; the upper bound keeps typos (an extra zero) from slipping in.
+    price: [
+      0,
+      [Validators.required, Validators.min(0.01), Validators.max(10000000), AppValidators.maxDecimals(2)],
+    ],
   });
 
   constructor() {
@@ -134,6 +141,7 @@ export class ProductAdmin {
           title: 'Delete product',
           message: `Delete "${product.name}"? This cannot be undone.`,
           confirmLabel: 'Delete',
+          destructive: true,
         },
       })
       .afterClosed()

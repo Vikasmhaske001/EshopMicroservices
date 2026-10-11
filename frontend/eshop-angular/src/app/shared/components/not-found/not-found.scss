@@ -1,14 +1,32 @@
 .not-found {
-  max-width: 360px;
-  margin: 3rem auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 96px 0;
   text-align: center;
 
-  h2 {
-    font-size: 3rem;
-    margin-bottom: 0;
+  @media (max-width: 560px) {
+    padding: 56px 0;
   }
+}
 
-  p {
-    color: var(--mat-sys-on-surface-variant);
-  }
+.code {
+  color: var(--es-grape);
+  font: 800 96px/1 var(--es-font);
+  letter-spacing: -0.04em;
+}
+
+h1 {
+  font: 800 28px/1.2 var(--es-font);
+  letter-spacing: -0.02em;
+}
+
+.hint {
+  color: var(--es-muted);
+  font-size: 16px;
+}
+
+.es-btn {
+  margin-top: 14px;
 }

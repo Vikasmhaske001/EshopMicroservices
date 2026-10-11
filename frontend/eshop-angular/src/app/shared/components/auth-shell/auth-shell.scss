@@ -1,0 +1,75 @@
+:host {
+  display: block;
+  padding: 72px 0;
+
+  @media (max-width: 900px) {
+    padding: 32px 0;
+  }
+}
+
+.shell {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  max-width: 1000px;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid var(--es-line);
+  border-radius: var(--es-radius-media);
+  background: var(--es-surface);
+  box-shadow: var(--es-shadow-signin);
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    max-width: 520px;
+  }
+}
+
+.brand-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 48px;
+  min-height: 450px;
+  padding: 48px;
+  background: var(--es-grape);
+  color: #fff;
+
+  @media (max-width: 900px) {
+    display: none;
+  }
+}
+
+.mark {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--es-radius-btn);
+  background: var(--es-mango);
+  color: var(--es-ink);
+  font: 800 22px/1 var(--es-font);
+}
+
+.headline {
+  font: 800 40px/1.05 var(--es-font);
+  letter-spacing: -0.03em;
+}
+
+.blurb {
+  margin-top: 14px;
+  color: var(--es-grape-tint);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.form-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 18px;
+  padding: 48px;
+
+  @media (max-width: 560px) {
+    padding: 28px 20px;
+  }
+}

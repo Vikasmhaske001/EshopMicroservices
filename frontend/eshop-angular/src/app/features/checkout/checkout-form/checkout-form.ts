@@ -1,21 +1,21 @@
-import { NotificationService } from '../../../core/notifications/notification.service';
-import { FieldError } from '../../../shared/components/field-error/field-error';
-import { InrPipe } from '../../../shared/pipes/inr.pipe';
-import { AppValidators } from '../../../shared/validators/app-validators';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { TimeoutError, catchError, first, map, of, switchMap, throwError, timeout, timer } from 'rxjs';
 import { AuthService } from '../../../core/auth/auth.service';
+import { NotificationService } from '../../../core/notifications/notification.service';
+import { ErrorBanner } from '../../../shared/components/error-banner/error-banner';
+import { EsInput } from '../../../shared/components/form-field/es-input';
+import { FormField } from '../../../shared/components/form-field/form-field';
+import { ProductImage } from '../../../shared/components/product-image/product-image';
 import { AppError } from '../../../shared/models/app-error.model';
 import { Order } from '../../../shared/models/order.model';
+import { InrPipe } from '../../../shared/pipes/inr.pipe';
+import { AppValidators } from '../../../shared/validators/app-validators';
 import { BasketService } from '../../basket/basket.service';
+import { CatalogLookup } from '../../catalog/catalog-lookup.service';
 import { OrdersService } from '../../orders/orders.service';
 import { BasketCheckoutRequest, CheckoutService } from '../checkout.service';
-import { ErrorBanner } from '../../../shared/components/error-banner/error-banner';
 
 const EMPTY_GUID = '00000000-0000-0000-0000-000000000000';
 const PAYMENT_METHOD_CREDIT_CARD = 1;
@@ -27,12 +27,11 @@ const POLL_TIMEOUT_MS = 20000;
   imports: [
     ReactiveFormsModule,
     RouterLink,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
     InrPipe,
     ErrorBanner,
-    FieldError,
+    EsInput,
+    FormField,
+    ProductImage,
   ],
   templateUrl: './checkout-form.html',
   styleUrl: './checkout-form.scss',
@@ -45,6 +44,7 @@ export class CheckoutForm {
   private readonly ordersService = inject(OrdersService);
   private readonly checkoutService = inject(CheckoutService);
   private readonly notifications = inject(NotificationService);
+  protected readonly categoryById = inject(CatalogLookup).categoryById;
 
   protected readonly form = this.fb.nonNullable.group({
     // Limits mirror Ordering.Application's AddressDtoValidator/PaymentDtoValidator, so the user is

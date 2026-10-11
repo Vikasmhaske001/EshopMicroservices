@@ -1,23 +1,38 @@
-<div class="pagination-control">
+<nav class="pagination" aria-label="Pagination">
   <button
-    mat-icon-button
     type="button"
+    class="page arrow"
     [disabled]="pageIndex() <= 1"
     (click)="previous()"
     aria-label="Previous page"
   >
-    <mat-icon>chevron_left</mat-icon>
+    &#8249;
   </button>
 
-  <span class="pagination-status">Page {{ pageIndex() }} of {{ totalPages() || 1 }}</span>
+  @for (item of pages(); track $index) {
+    @if (item === 'gap') {
+      <span class="gap" aria-hidden="true">&hellip;</span>
+    } @else {
+      <button
+        type="button"
+        class="page"
+        [class.current]="item === pageIndex()"
+        [attr.aria-current]="item === pageIndex() ? 'page' : null"
+        [attr.aria-label]="'Page ' + item"
+        (click)="goTo(item)"
+      >
+        {{ item }}
+      </button>
+    }
+  }
 
   <button
-    mat-icon-button
     type="button"
+    class="page arrow"
     [disabled]="pageIndex() >= totalPages()"
     (click)="next()"
     aria-label="Next page"
   >
-    <mat-icon>chevron_right</mat-icon>
+    &#8250;
   </button>
-</div>
+</nav>

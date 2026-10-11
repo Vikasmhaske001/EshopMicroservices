@@ -1,14 +1,13 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { AuthService } from '../../../core/auth/auth.service';
 import { NotificationService } from '../../../core/notifications/notification.service';
 import { AppError } from '../../../shared/models/app-error.model';
 import { ErrorBanner } from '../../../shared/components/error-banner/error-banner';
-import { FieldError } from '../../../shared/components/field-error/field-error';
+import { AuthShell } from '../../../shared/components/auth-shell/auth-shell';
+import { EsInput } from '../../../shared/components/form-field/es-input';
+import { FormField } from '../../../shared/components/form-field/form-field';
 import { AppValidators } from '../../../shared/validators/app-validators';
 
 @Component({
@@ -16,11 +15,10 @@ import { AppValidators } from '../../../shared/validators/app-validators';
   imports: [
     ReactiveFormsModule,
     RouterLink,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
+    AuthShell,
+    EsInput,
     ErrorBanner,
-    FieldError,
+    FormField,
   ],
   templateUrl: './register.html',
   styleUrl: './register.scss',
@@ -45,6 +43,7 @@ export class Register {
     ],
   });
 
+  protected readonly showPassword = signal(false);
   protected readonly submitting = signal(false);
   protected readonly errorMessage = signal<string | null>(null);
 

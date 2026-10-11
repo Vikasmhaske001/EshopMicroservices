@@ -1,32 +1,29 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { catchError, debounceTime, distinctUntilChanged, finalize, map, of, switchMap, tap } from 'rxjs';
+import { catchError, finalize, map, of, switchMap, tap } from 'rxjs';
+import { AuthService } from '../../../core/auth/auth.service';
+import { PaginationControl } from '../../../shared/components/pagination-control/pagination-control';
+import { Product } from '../../../shared/models/product.model';
+import { BasketService } from '../../basket/basket.service';
+import { CatalogSearch } from '../catalog-search.service';
 import { CatalogService, GetProductsParams } from '../catalog.service';
 import { ProductCard } from '../product-card/product-card';
-import { PaginationControl } from '../../../shared/components/pagination-control/pagination-control';
 
 type SortOption = 'name-asc' | 'name-desc' | 'price-asc' | 'price-desc';
 
+interface CategoryStat {
+  name: string;
+  count: number;
+}
+
 const PAGE_SIZE = 9;
 const CATEGORY_SAMPLE_SIZE = 50; // backend's MaxPageSize - the only way to enumerate categories today
+const SKELETON_COUNT = 8;
 
 @Component({
   selector: 'app-product-list',
-  imports: [
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatProgressBarModule,
-    ProductCard,
-    PaginationControl,
-  ],
+  imports: [ProductCard, PaginationControl],
   templateUrl: './product-list.html',
   styleUrl: './product-list.scss',
 })
@@ -34,29 +31,53 @@ export class ProductList {
   private readonly catalogService = inject(CatalogService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly authService = inject(AuthService);
+  private readonly basketService = inject(BasketService);
+  private readonly catalogSearch = inject(CatalogSearch);
 
-  protected readonly searchControl = new FormControl<string>('', { nonNullable: true });
-
+  protected readonly searchTerm = this.catalogSearch.term;
   protected readonly pageIndex = signal(1);
   protected readonly category = signal<string | undefined>(undefined);
   protected readonly sortBy = signal<'name' | 'price'>('name');
   protected readonly sortDirection = signal<'asc' | 'desc'>('asc');
   protected readonly loading = signal(false);
+  protected readonly failed = signal(false);
+  protected readonly addingId = signal<string | null>(null);
 
-  private readonly searchTerm = toSignal(
-    this.searchControl.valueChanges.pipe(debounceTime(300), distinctUntilChanged()),
-    { initialValue: '' }
-  );
+  protected readonly skeletons = Array.from({ length: SKELETON_COUNT }, (_, i) => i);
 
   protected readonly sortOption = computed<SortOption>(() => `${this.sortBy()}-${this.sortDirection()}`);
 
-  protected readonly categories = toSignal(
+  /** Total product count and per-category counts, from one big unfiltered page. */
+  protected readonly stats = toSignal(
     this.catalogService.getProducts({ pageNumber: 1, pageSize: CATEGORY_SAMPLE_SIZE }).pipe(
-      map((result) => [...new Set(result.data.flatMap((p) => p.categories ?? []))].sort()),
-      catchError(() => of([] as string[]))
+      map((result) => {
+        const counts = new Map<string, number>();
+        for (const product of result.data) {
+          for (const name of product.categories) {
+            counts.set(name, (counts.get(name) ?? 0) + 1);
+          }
+        }
+        const categories: CategoryStat[] = [...counts.entries()]
+          .map(([name, count]) => ({ name, count }))
+          .sort((a, b) => a.name.localeCompare(b.name));
+        return { total: result.count, categories };
+      }),
+      catchError(() => of({ total: 0, categories: [] as CategoryStat[] }))
     ),
-    { initialValue: [] as string[] }
+    { initialValue: { total: 0, categories: [] as CategoryStat[] } }
   );
+
+  /** productId -> quantity already in the basket, for the "In basket" state on cards. */
+  protected readonly basketQuantities = computed(() => {
+    const quantities = new Map<string, number>();
+    for (const item of this.basketService.cart()?.items ?? []) {
+      quantities.set(item.productId, item.quantity);
+    }
+    return quantities;
+  });
+
+  private readonly reloadTick = signal(0);
 
   private readonly queryParams = computed<GetProductsParams>(() => ({
     pageNumber: this.pageIndex(),
@@ -68,11 +89,17 @@ export class ProductList {
   }));
 
   protected readonly result = toSignal(
-    toObservable(this.queryParams).pipe(
-      tap(() => this.loading.set(true)),
-      switchMap((params) =>
+    toObservable(computed(() => ({ params: this.queryParams(), tick: this.reloadTick() }))).pipe(
+      tap(() => {
+        this.loading.set(true);
+        this.failed.set(false);
+      }),
+      switchMap(({ params }) =>
         this.catalogService.getProducts(params).pipe(
-          catchError(() => of(null)),
+          catchError(() => {
+            this.failed.set(true);
+            return of(null);
+          }),
           finalize(() => this.loading.set(false))
         )
       )
@@ -80,11 +107,13 @@ export class ProductList {
     { initialValue: null }
   );
 
+  protected readonly hasFilters = computed(() => !!this.category() || this.searchTerm() !== '');
+
   constructor() {
     this.seedStateFromUrl();
 
-    // Any change to the search term (once debounced) is a new filter, not a new page of the
-    // current filter - jumping back to page 1 avoids landing on a page that no longer exists.
+    // Any change to the search term is a new filter, not a new page of the current filter -
+    // jumping back to page 1 avoids landing on a page that no longer exists.
     effect(() => {
       this.searchTerm();
       this.pageIndex.set(1);
@@ -119,9 +148,11 @@ export class ProductList {
       this.category.set(category);
     }
 
+    // Only an explicit ?search= overrides the shared term - arriving here from the header search
+    // (which sets the term first) must not be clobbered by an empty URL.
     const search = initial.get('search');
     if (search) {
-      this.searchControl.setValue(search, { emitEvent: false });
+      this.catalogSearch.set(search);
     }
 
     const sortBy = initial.get('sortBy');
@@ -140,7 +171,7 @@ export class ProductList {
     this.pageIndex.set(1);
   }
 
-  onSortChange(value: SortOption): void {
+  onSortChange(value: string): void {
     const [sortBy, sortDirection] = value.split('-') as ['name' | 'price', 'asc' | 'desc'];
     this.sortBy.set(sortBy);
     this.sortDirection.set(sortDirection);
@@ -149,5 +180,30 @@ export class ProductList {
 
   onPageChange(page: number): void {
     this.pageIndex.set(page);
+  }
+
+  clearFilters(): void {
+    this.category.set(undefined);
+    this.catalogSearch.clear();
+    this.pageIndex.set(1);
+  }
+
+  retry(): void {
+    this.reloadTick.update((tick) => tick + 1);
+  }
+
+  addToBasket(product: Product): void {
+    // The catalog is public but the basket is not - send an anonymous visitor to log in rather
+    // than let the POST fail and get swept into the refresh/logout flow.
+    if (!this.authService.isAuthenticated()) {
+      this.router.navigate(['/login'], { queryParams: { returnUrl: this.router.url } });
+      return;
+    }
+
+    this.addingId.set(product.id);
+    this.basketService.addItem(product, 1).subscribe({
+      next: () => this.addingId.set(null),
+      error: () => this.addingId.set(null),
+    });
   }
 }

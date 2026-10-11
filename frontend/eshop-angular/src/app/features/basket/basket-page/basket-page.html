@@ -1,31 +1,74 @@
-<h2>Your Basket</h2>
+<section class="page">
+  <div class="title-row">
+    <h1>Your basket</h1>
+    @if (itemCount() > 0) {
+      <span class="count-pill">{{ itemCount() }} {{ itemCount() === 1 ? 'item' : 'items' }}</span>
+    }
+  </div>
 
-@if (loading()) {
-  <mat-progress-bar mode="indeterminate" />
-} @else if (basketService.cart(); as cart) {
-  @if (cart.items.length > 0) {
-    <div class="basket-items">
-      @for (item of cart.items; track item.productId) {
-        <app-basket-item
-          [item]="item"
-          (quantityChange)="onQuantityChange(item.productId, $event)"
-          (remove)="onRemove(item.productId)"
-        />
-      }
-    </div>
+  @if (loading()) {
+    <mat-progress-bar mode="indeterminate" />
+  } @else if (basketService.cart(); as cart) {
+    @if (cart.items.length > 0) {
+      <div class="layout">
+        <div class="list-card">
+          <div class="list-head" aria-hidden="true">
+            <span>Product</span>
+            <span>Unit price</span>
+            <span>Quantity</span>
+            <span class="right">Total</span>
+            <span></span>
+          </div>
 
-    <div class="basket-summary">
-      <span>Total</span>
-      <span class="total-value">{{ cart.totalPrice | inr }}</span>
-    </div>
+          @for (item of cart.items; track item.productId) {
+            <app-basket-item
+              [item]="item"
+              [category]="categoryById().get(item.productId) ?? ''"
+              (quantityChange)="onQuantityChange(item.productId, $event)"
+              (remove)="onRemove(item.productId)"
+            />
+          }
 
-    <div class="basket-actions">
-      <button mat-button type="button" (click)="onClear()">Clear basket</button>
-      <a mat-button routerLink="/products">Continue shopping</a>
-      <a mat-flat-button routerLink="/checkout">Proceed to Checkout</a>
-    </div>
-  } @else {
-    <p class="empty-state">Your basket is empty.</p>
-    <a mat-flat-button routerLink="/products">Browse products</a>
+          <div class="list-foot">
+            <a routerLink="/products" class="continue">&larr; Continue shopping</a>
+            <button type="button" class="clear" (click)="onClear()">Clear basket</button>
+          </div>
+        </div>
+
+        <aside class="summary" aria-label="Order summary">
+          <h2>Order summary</h2>
+
+          <div class="line">
+            <span>Subtotal ({{ itemCount() }} {{ itemCount() === 1 ? 'item' : 'items' }})</span>
+            <span>{{ subtotal() | inr }}</span>
+          </div>
+          @if (discount() > 0) {
+            <div class="line saving">
+              <span>Discount</span>
+              <span>&minus;{{ discount() | inr }}</span>
+            </div>
+          }
+
+          <div class="total">
+            <span>Total</span>
+            <span class="total-value">{{ cart.totalPrice | inr }}</span>
+          </div>
+
+          <a routerLink="/checkout" class="es-btn es-btn--lg">Proceed to checkout</a>
+          <p class="note">Payment is demo-only. Nothing is charged.</p>
+        </aside>
+      </div>
+    } @else {
+      <div class="empty">
+        <div class="empty-art">
+          <app-product-image category="Home Kitchen" tone="grape" />
+        </div>
+        <div class="empty-text">
+          <h2>Your basket is empty</h2>
+          <p>Browse fresh picks and add what you love. It'll wait here for you.</p>
+          <a routerLink="/products" class="es-btn">Browse products</a>
+        </div>
+      </div>
+    }
   }
-}
+</section>

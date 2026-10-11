@@ -4,114 +4,159 @@
        status/error message a submission produces right after that happens. Only treat this as
        the true empty-basket state when nothing is in progress and nothing already failed. -->
   @if (cart.items.length === 0 && !submitting() && !statusMessage() && !errorMessage()) {
-    <p class="empty-state">Your basket is empty - add something before checking out.</p>
-    <a mat-flat-button routerLink="/products">Browse products</a>
+    <section class="page">
+      <h1>Checkout</h1>
+      <div class="empty">
+        <h2>Your basket is empty</h2>
+        <p>Add something before checking out.</p>
+        <a routerLink="/products" class="es-btn">Browse products</a>
+      </div>
+    </section>
   } @else {
-    <h2>Checkout</h2>
+    <section class="page">
+      <div class="head">
+        <h1>Checkout</h1>
 
-    @if (cart.items.length > 0) {
-      <section class="order-summary">
-        <h3>Order Summary</h3>
-        @for (item of cart.items; track item.productId) {
-          <div class="summary-line">
-            <span>{{ item.productName }} &times; {{ item.quantity }}</span>
-            <span>{{ item.effectivePrice * item.quantity | inr }}</span>
-          </div>
-        }
-        <div class="summary-line total">
-          <span>Total</span>
-          <span>{{ cart.totalPrice | inr }}</span>
-        </div>
-      </section>
-    }
+        <ol class="steps" aria-label="Checkout progress">
+          <li class="step done">
+            <span class="dot" aria-hidden="true">&#10003;</span>
+            <span class="step-label">Basket</span>
+          </li>
+          <li class="connector done" aria-hidden="true"></li>
+          <li class="step current" aria-current="step">
+            <span class="dot" aria-hidden="true">2</span>
+            <span class="step-label">Details</span>
+          </li>
+          <li class="connector" aria-hidden="true"></li>
+          <li class="step upcoming">
+            <span class="dot" aria-hidden="true">3</span>
+            <span class="step-label">Order placed</span>
+          </li>
+        </ol>
+      </div>
 
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <fieldset>
-        <legend>Shipping &amp; Billing Address</legend>
+      <div class="layout">
+        <form id="checkout-form" class="sections" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+          <section class="card" aria-labelledby="address-title">
+            <h2 id="address-title"><span class="num" aria-hidden="true">1</span> Shipping &amp; billing address</h2>
 
-        <div class="field-row">
-          <mat-form-field appearance="outline">
-            <mat-label>First name</mat-label>
-            <input matInput formControlName="firstName" />
-            <mat-error appFieldError [control]="form.controls.firstName" label="First name" />
-          </mat-form-field>
-          <mat-form-field appearance="outline">
-            <mat-label>Last name</mat-label>
-            <input matInput formControlName="lastName" />
-            <mat-error appFieldError [control]="form.controls.lastName" label="Last name" />
-          </mat-form-field>
-        </div>
+            <div class="row row-2">
+              <app-field label="First name" [control]="form.controls.firstName">
+                <input esInput formControlName="firstName" autocomplete="given-name" />
+              </app-field>
+              <app-field label="Last name" [control]="form.controls.lastName">
+                <input esInput formControlName="lastName" autocomplete="family-name" />
+              </app-field>
+            </div>
 
-        <mat-form-field appearance="outline">
-          <mat-label>Email</mat-label>
-          <input matInput type="email" formControlName="emailAddress" />
-          <mat-error appFieldError [control]="form.controls.emailAddress" label="Email" />
-        </mat-form-field>
+            <app-field label="Email" [control]="form.controls.emailAddress">
+              <input esInput type="email" formControlName="emailAddress" autocomplete="email" />
+            </app-field>
 
-        <mat-form-field appearance="outline">
-          <mat-label>Address</mat-label>
-          <input matInput formControlName="addressLine" />
-          <mat-error appFieldError [control]="form.controls.addressLine" label="Address" />
-        </mat-form-field>
+            <app-field label="Address" [control]="form.controls.addressLine">
+              <input esInput formControlName="addressLine" autocomplete="street-address" />
+            </app-field>
 
-        <div class="field-row">
-          <mat-form-field appearance="outline">
-            <mat-label>Country</mat-label>
-            <input matInput formControlName="country" />
-            <mat-error appFieldError [control]="form.controls.country" label="Country" />
-          </mat-form-field>
-          <mat-form-field appearance="outline">
-            <mat-label>State</mat-label>
-            <input matInput formControlName="state" />
-            <mat-error appFieldError [control]="form.controls.state" label="State" />
-          </mat-form-field>
-          <mat-form-field appearance="outline">
-            <mat-label>PIN code</mat-label>
-            <input matInput formControlName="zipCode" inputmode="numeric" maxlength="6" autocomplete="postal-code" />
-            <mat-error appFieldError [control]="form.controls.zipCode" label="PIN code" />
-          </mat-form-field>
-        </div>
-      </fieldset>
+            <div class="row row-3">
+              <app-field label="Country" [control]="form.controls.country">
+                <input esInput formControlName="country" autocomplete="country-name" />
+              </app-field>
+              <app-field label="State" [control]="form.controls.state">
+                <input esInput formControlName="state" autocomplete="address-level1" />
+              </app-field>
+              <app-field label="PIN code" [control]="form.controls.zipCode">
+                <input
+                  esInput
+                  formControlName="zipCode"
+                  inputmode="numeric"
+                  maxlength="6"
+                  autocomplete="postal-code"
+                />
+              </app-field>
+            </div>
+          </section>
 
-      <fieldset>
-        <legend>Payment</legend>
-        <p class="demo-notice">Demo only - no real payment is processed. Any values work.</p>
+          <section class="card" aria-labelledby="payment-title">
+            <h2 id="payment-title"><span class="num" aria-hidden="true">2</span> Payment</h2>
 
-        <mat-form-field appearance="outline">
-          <mat-label>Name on card</mat-label>
-          <input matInput formControlName="cardName" />
-          <mat-error appFieldError [control]="form.controls.cardName" label="Name on card" />
-        </mat-form-field>
+            <p class="notice">
+              <strong>Demo only.</strong>
+              No real payment is processed. Any values in a valid format will work.
+            </p>
 
-        <div class="field-row">
-          <mat-form-field appearance="outline">
-            <mat-label>Card number</mat-label>
-            <input matInput formControlName="cardNumber" placeholder="4111111111111111" />
-            <mat-error appFieldError [control]="form.controls.cardNumber" label="Card number" [messages]="{ pattern: 'Enter 13-19 digits, no spaces.' }" />
-          </mat-form-field>
-          <mat-form-field appearance="outline">
-            <mat-label>Expiration (MM/YY)</mat-label>
-            <input matInput formControlName="expiration" placeholder="12/28" />
-            <mat-error appFieldError [control]="form.controls.expiration" label="Expiration" [messages]="{ pattern: 'Use MM/YY format.' }" />
-          </mat-form-field>
-          <mat-form-field appearance="outline">
-            <mat-label>CVV</mat-label>
-            <input matInput formControlName="cvv" />
-            <mat-error appFieldError [control]="form.controls.cvv" label="CVV" [messages]="{ pattern: 'CVV must be 3 digits.' }" />
-          </mat-form-field>
-        </div>
-      </fieldset>
+            <app-field label="Name on card" [control]="form.controls.cardName">
+              <input esInput formControlName="cardName" autocomplete="cc-name" />
+            </app-field>
 
-      @if (statusMessage()) {
-        <p class="status-message">{{ statusMessage() }}</p>
-      }
-      @if (errorMessage(); as message) {
-        <app-error-banner [message]="message" />
-      }
+            <div class="row row-3">
+              <app-field
+                label="Card number"
+                [control]="form.controls.cardNumber"
+                [messages]="{ pattern: 'Enter 13-19 digits, no spaces.' }"
+              >
+                <input
+                  esInput
+                  formControlName="cardNumber"
+                  placeholder="4111111111111111"
+                  inputmode="numeric"
+                  autocomplete="cc-number"
+                />
+              </app-field>
+              <app-field
+                label="Expiration (MM/YY)"
+                errorLabel="Expiration"
+                [control]="form.controls.expiration"
+                [messages]="{ pattern: 'Use MM/YY format.' }"
+              >
+                <input esInput formControlName="expiration" placeholder="12/28" autocomplete="cc-exp" />
+              </app-field>
+              <app-field
+                label="CVV"
+                [control]="form.controls.cvv"
+                [messages]="{ pattern: 'CVV must be 3 digits.' }"
+              >
+                <input esInput formControlName="cvv" inputmode="numeric" maxlength="3" autocomplete="cc-csc" />
+              </app-field>
+            </div>
+          </section>
+        </form>
 
-      <button mat-flat-button type="submit" [disabled]="submitting()">
-        {{ statusMessage() ?? 'Place Order' }}
-      </button>
-    </form>
+        <aside class="summary" aria-label="Order summary">
+          <h2>Order summary</h2>
+
+          @if (cart.items.length > 0) {
+            <ul class="lines">
+              @for (item of cart.items; track item.productId) {
+                <li>
+                  <span class="thumb"><app-product-image [category]="categoryById().get(item.productId) ?? ''" /></span>
+                  <span class="line-text">
+                    <span class="line-name">{{ item.productName }}</span>
+                    <span class="line-qty">Qty {{ item.quantity }}</span>
+                  </span>
+                  <span class="line-price">{{ item.effectivePrice * item.quantity | inr }}</span>
+                </li>
+              }
+            </ul>
+
+            <div class="total">
+              <span>Total</span>
+              <span class="total-value">{{ cart.totalPrice | inr }}</span>
+            </div>
+          }
+
+          @if (statusMessage(); as status) {
+            <p class="status" role="status"><span class="spinner" aria-hidden="true"></span>{{ status }}</p>
+          }
+          @if (errorMessage(); as message) {
+            <app-error-banner [message]="message" />
+          }
+
+          <!-- Outside the <form> for layout; tied to it with the form attribute. -->
+          <button type="submit" form="checkout-form" class="es-btn place-order" [disabled]="submitting()">
+            {{ statusMessage() ?? 'Place order' }}
+          </button>
+        </aside>
+      </div>
+    </section>
   }
 }

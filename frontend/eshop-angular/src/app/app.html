@@ -1,25 +1,88 @@
 <header class="app-header">
-  <h1><a routerLink="/products">EShop</a></h1>
+  <a routerLink="/products" class="brand" aria-label="EShop home" (click)="clearSearch()">
+    <span class="brand-mark" aria-hidden="true">E</span>
+    <span class="brand-name">EShop</span>
+  </a>
 
-  <div class="auth-status">
-    @if (authService.currentUser(); as user) {
-      <a routerLink="/basket" class="basket-link" aria-label="Basket">
-        <mat-icon>shopping_cart</mat-icon>
-        @if (basketService.itemCount() > 0) {
-          <span class="basket-badge">{{ basketService.itemCount() }}</span>
-        }
-      </a>
-      <a routerLink="/orders">My Orders</a>
-      @if (authService.roles().includes('Admin')) {
-        <a routerLink="/admin/products">Admin</a>
+  <nav class="main-nav" aria-label="Main">
+    <a routerLink="/products" class="nav-link" [class.active]="shopActive()">Shop</a>
+    @if (authService.currentUser()) {
+      <a routerLink="/orders" routerLinkActive="active" class="nav-link">My orders</a>
+      @if (isAdmin()) {
+        <a routerLink="/admin/products" routerLinkActive="active" class="nav-link">Admin</a>
       }
-      <a routerLink="/account">Hi, {{ user.userName }}</a>
-      <button mat-button (click)="logout()">Log out</button>
-    } @else {
-      <a routerLink="/login">Login</a>
-      <a routerLink="/register">Register</a>
     }
-  </div>
+  </nav>
+
+  <!-- Below 900px the nav links move into this menu. -->
+  <button type="button" class="icon-btn nav-toggle" [matMenuTriggerFor]="navMenu" aria-label="Open navigation menu">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <mat-menu #navMenu="matMenu" class="es-menu">
+    <a mat-menu-item routerLink="/products">Shop</a>
+    @if (authService.currentUser()) {
+      <a mat-menu-item routerLink="/orders">My orders</a>
+      @if (isAdmin()) {
+        <a mat-menu-item routerLink="/admin/products">Admin</a>
+      }
+    }
+  </mat-menu>
+
+  <label class="search">
+    <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+      <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2" />
+      <path d="M15.5 15.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+    </svg>
+    <input
+      type="search"
+      placeholder="Search products"
+      aria-label="Search products"
+      autocomplete="off"
+      [formControl]="searchControl"
+      (keydown.escape)="clearSearch()"
+    />
+  </label>
+
+  @if (authService.currentUser(); as user) {
+    <a
+      routerLink="/basket"
+      class="icon-btn basket-btn"
+      [attr.aria-label]="'Basket, ' + basketService.itemCount() + ' items'"
+    >
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+        <path
+          d="M5 9h14l-1 11H6L5 9Z M9 9V7a3 3 0 0 1 6 0v2"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linejoin="round"
+          stroke-linecap="round"
+        />
+      </svg>
+      @if (basketService.itemCount() > 0) {
+        <span class="badge">{{ basketService.itemCount() }}</span>
+      }
+    </a>
+
+    <button type="button" class="account" [matMenuTriggerFor]="accountMenu" aria-label="Account menu">
+      <span class="avatar">{{ userInitial() }}</span>
+      <span class="account-name">{{ user.userName }}</span>
+    </button>
+    <mat-menu #accountMenu="matMenu" xPosition="before" class="es-menu">
+      <div class="menu-header">
+        <strong>{{ user.userName }}</strong>
+        <span>{{ user.email }}</span>
+      </div>
+      <a mat-menu-item routerLink="/orders">My orders</a>
+      <a mat-menu-item routerLink="/account">Account</a>
+      <button mat-menu-item type="button" (click)="logout()">Log out</button>
+    </mat-menu>
+  } @else {
+    <div class="signed-out">
+      <a routerLink="/login" class="login-link">Log in</a>
+      <a routerLink="/register" class="es-btn">Create account</a>
+    </div>
+  }
 </header>
 
 <main>

@@ -1,45 +1,72 @@
-<a mat-button routerLink="/products">
-  <mat-icon>arrow_back</mat-icon>
-  Back to products
-</a>
+<section class="page">
+  <a routerLink="/products" class="back">&larr; Back to products</a>
 
-@if (product() === undefined) {
-  <app-loading-spinner label="Loading product..." />
-} @else if (product() === null) {
-  <p>Product not found.</p>
-} @else {
-  <article class="product-detail">
-    <div class="product-image-placeholder">
-      <mat-icon>shopping_bag</mat-icon>
+  @if (product() === undefined) {
+    <app-loading-spinner label="Loading product..." />
+  } @else if (product() === null) {
+    <div class="not-found">
+      <h1>Product not found</h1>
+      <p>It may have been removed, or the link is wrong.</p>
+      <a routerLink="/products" class="es-btn">Browse products</a>
     </div>
+  } @else {
+    <article class="detail">
+      <div class="media">
+        <app-product-image
+          [category]="category()"
+          [imageFile]="product()!.imageFile"
+          [alt]="product()!.name"
+          [showCaption]="true"
+        />
+      </div>
 
-    <div class="product-info">
-      <h2>{{ product()!.name }}</h2>
-      <p class="categories">{{ (product()!.categories ?? []).join(', ') }}</p>
-      <p class="price">{{ product()!.price | inr }}</p>
-      <p class="description">{{ product()!.description }}</p>
+      <div class="info">
+        <p class="pill">{{ category() }}</p>
+        <h1>{{ product()!.name }}</h1>
+        <p class="price">{{ product()!.price | inr }}</p>
+        <p class="description">{{ product()!.description }}</p>
 
-      <div class="add-to-basket">
-        <div class="quantity-control">
-          <button
-            mat-icon-button
-            type="button"
-            [disabled]="quantity() <= 1"
-            (click)="decreaseQuantity()"
-            aria-label="Decrease quantity"
-          >
-            <mat-icon>remove</mat-icon>
-          </button>
-          <span class="quantity-value">{{ quantity() }}</span>
-          <button mat-icon-button type="button" (click)="increaseQuantity()" aria-label="Increase quantity">
-            <mat-icon>add</mat-icon>
+        <hr />
+
+        <div class="buy">
+          <app-quantity-stepper
+            size="lg"
+            label="Quantity"
+            [value]="quantity()"
+            (valueChange)="setQuantity($event)"
+          />
+          <button type="button" class="es-btn es-btn--lg add" [disabled]="adding()" (click)="addToBasket(product()!)">
+            {{ adding() ? 'Adding…' : 'Add to basket · ' + (lineTotal() | inr) }}
           </button>
         </div>
 
-        <button mat-flat-button type="button" [disabled]="adding()" (click)="addToBasket(product()!)">
-          {{ adding() ? 'Adding...' : 'Add to Basket' }}
-        </button>
+        @if (toast(); as name) {
+          <div class="toast" role="status">
+            <span class="check" aria-hidden="true">&#10003;</span>
+            <span class="toast-text">Added {{ name }} to your basket</span>
+            <a routerLink="/basket" class="toast-link">View basket</a>
+          </div>
+        }
       </div>
-    </div>
-  </article>
-}
+    </article>
+
+    @if (related().length > 0) {
+      <section class="related" aria-labelledby="related-title">
+        <h2 id="related-title">More in {{ category() }}</h2>
+        <div class="related-grid">
+          @for (item of related(); track item.id) {
+            <a class="related-card" [routerLink]="['/products', item.id]">
+              <span class="thumb">
+                <app-product-image [category]="category()" />
+              </span>
+              <span class="related-text">
+                <span class="related-name">{{ item.name }}</span>
+                <span class="related-price">{{ item.price | inr }}</span>
+              </span>
+            </a>
+          }
+        </div>
+      </section>
+    }
+  }
+</section>

@@ -1,23 +1,49 @@
-<h2>My Orders</h2>
-
-@if (loading()) {
-  <mat-progress-bar mode="indeterminate" />
-} @else if (orders().length > 0) {
-  <div class="order-list">
-    @for (order of orders(); track order.id) {
-      <a class="order-card" [routerLink]="['/orders', order.id]">
-        <div class="order-card-header">
-          <span class="order-name">Order {{ order.orderName }}</span>
-          <span class="order-status">{{ statusLabel(order) }}</span>
-        </div>
-        <div class="order-card-body">
-          <span>{{ order.orderItems.length }} item(s)</span>
-          <span class="order-total">{{ orderTotal(order) | inr }}</span>
-        </div>
-      </a>
+<section class="page">
+  <div class="head">
+    <div>
+      <h1>My orders</h1>
+      <p class="subtitle">Track what you've ordered and review the details.</p>
+    </div>
+    @if (!loading() && orders().length > 0) {
+      <p class="shown">{{ orders().length }} {{ orders().length === 1 ? 'order' : 'orders' }}</p>
     }
   </div>
-} @else {
-  <p class="empty-state">You haven't placed any orders yet.</p>
-  <a mat-flat-button routerLink="/products">Browse products</a>
-}
+
+  @if (loading()) {
+    <mat-progress-bar mode="indeterminate" />
+  } @else if (orders().length > 0) {
+    <ul class="list-card">
+      @for (order of orders(); track order.id) {
+        <li>
+          <a class="row" [routerLink]="['/orders', order.id]" [attr.aria-label]="'Order ' + order.orderName + ', view details'">
+            <span class="thumbs" aria-hidden="true">
+              @for (item of thumbs(order); track item.productId) {
+                <span class="thumb"><app-product-image [category]="categoryById().get(item.productId) ?? ''" /></span>
+              }
+              @if (hiddenThumbs(order) > 0) {
+                <span class="thumb more">+{{ hiddenThumbs(order) }}</span>
+              }
+            </span>
+
+            <span class="info">
+              <span class="name">Order {{ order.orderName }}</span>
+              <span class="products">{{ productNames(order) }}</span>
+              <span class="count">{{ itemCount(order) }} {{ itemCount(order) === 1 ? 'item' : 'items' }}</span>
+            </span>
+
+            <app-status-badge class="status" [status]="order.status" />
+            <span class="total">{{ orderTotal(order) | inr }}</span>
+            <span class="chevron" aria-hidden="true">&#8250;</span>
+          </a>
+        </li>
+      }
+    </ul>
+  } @else {
+    <div class="empty">
+      <div class="empty-icon" aria-hidden="true">&#9776;</div>
+      <h2>No orders yet</h2>
+      <p>When you place an order it will show up here.</p>
+      <a routerLink="/products" class="es-btn">Browse products</a>
+    </div>
+  }
+</section>
