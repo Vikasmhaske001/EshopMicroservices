@@ -61,8 +61,11 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
                addressBuilder.Property(a => a.State)
                    .HasMaxLength(50);
 
+               // 5 chars (US-only ZIP) used to be the limit here, which silently crashed order
+               // creation for any real international postal code (e.g. 6-digit Indian PINs) - see
+               // AddressDtoValidator for the matching upfront check.
                addressBuilder.Property(a => a.ZipCode)
-                   .HasMaxLength(5)
+                   .HasMaxLength(20)
                    .IsRequired();
            });
 
@@ -91,7 +94,7 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
                   .HasMaxLength(50);
 
               addressBuilder.Property(a => a.ZipCode)
-                  .HasMaxLength(5)
+                  .HasMaxLength(20)
                   .IsRequired();
           });
 
