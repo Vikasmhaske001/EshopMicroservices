@@ -25,7 +25,7 @@
             <tr [class.editing]="editingId() === product.id">
               <td>
                 <span class="product-cell">
-                  <span class="thumb"><app-product-image [category]="product.categories[0]" /></span>
+                  <span class="thumb"><app-product-image [category]="product.categories[0]" [imageFile]="product.imageFile" /></span>
                   <span class="product-name">{{ product.name }}</span>
                 </span>
               </td>

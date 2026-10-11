@@ -55,11 +55,33 @@ describe('ProductImage', () => {
     expect(el(fixture).querySelector('.phone')).toBeTruthy();
   });
 
-  it('shows the caption only when asked and a file name exists', () => {
-    expect(el(create({ category: 'Camera', imageFile: 'product-1.png' })).querySelector('.caption')).toBeNull();
+  it('builds the photo URL from the stored file name', () => {
+    const img = el(create({ category: 'Camera', imageFile: 'lumix.jpg' })).querySelector('img');
+    expect(img?.getAttribute('src')).toBe('http://localhost:6004/catalog-service/images/products/lumix.jpg');
+  });
 
-    const withCaption = create({ category: 'Camera', imageFile: 'product-1.png', showCaption: true });
-    expect(el(withCaption).querySelector('.caption')?.textContent).toContain('product-1.png');
+  it('encodes unusual file names', () => {
+    const img = el(create({ category: 'Camera', imageFile: 'my photo.jpg' })).querySelector('img');
+    expect(img?.getAttribute('src')).toContain('my%20photo.jpg');
+  });
+
+  it('prefers an explicit src over the file name', () => {
+    const img = el(create({ category: 'Camera', imageFile: 'lumix.jpg', src: '/other.png' })).querySelector('img');
+    expect(img?.getAttribute('src')).toBe('/other.png');
+  });
+
+  it('falls back to the illustration when the file name image fails to load', () => {
+    const fixture = create({ category: 'Camera', imageFile: 'missing.jpg' });
+    el(fixture).querySelector('img')!.dispatchEvent(new Event('error'));
+    fixture.detectChanges();
+    expect(el(fixture).querySelector('img')).toBeNull();
+    expect(el(fixture).querySelector('.camera')).toBeTruthy();
+  });
+
+  it('draws the illustration when the file name is blank', () => {
+    const fixture = create({ category: 'Camera', imageFile: '   ' });
+    expect(el(fixture).querySelector('img')).toBeNull();
+    expect(el(fixture).querySelector('.camera')).toBeTruthy();
   });
 
   it('switches to the grape tone on request', () => {

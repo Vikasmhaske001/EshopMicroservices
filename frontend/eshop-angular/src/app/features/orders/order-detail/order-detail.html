@@ -22,7 +22,10 @@
           <ul class="lines">
             @for (item of order()!.orderItems; track item.productId) {
               <li>
-                <span class="thumb"><app-product-image [category]="categoryById().get(item.productId) ?? ''" /></span>
+                <span class="thumb"><app-product-image
+                    [category]="categoryById().get(item.productId) ?? ''"
+                    [imageFile]="imageFileById().get(item.productId) ?? ''"
+                  /></span>
                 <span class="line-text">
                   <span class="line-name">{{ item.productName }}</span>
                   <span class="line-qty">Qty {{ item.quantity }} &times; {{ item.price | inr }}</span>

@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, computed, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
+import { IMAGE_BASE_URL } from '../../../core/api/api-config';
 
 export type ProductArtKind = 'phone' | 'camera' | 'appliance' | 'kitchen' | 'generic';
 
@@ -16,9 +17,9 @@ export function artKindForCategory(category: string | null | undefined): Product
   return KIND_BY_CATEGORY[(category ?? '').trim().toLowerCase()] ?? 'generic';
 }
 
-/** Product picture. The backend only stores an `imageFile` name and has no endpoint that serves
- *  it, so by default this draws the category illustration tile. Pass `src` once a real image URL
- *  exists: it renders an <img> and falls back to the tile if the image fails to load. */
+/** Product picture. Given the stored `imageFile` name it shows the photo served by Catalog.Api; if
+ *  there is no file name, or the image fails to load, it draws the category illustration tile
+ *  instead, so a product never renders blank. An explicit `src` overrides the computed URL. */
 @Component({
   selector: 'app-product-image',
   templateUrl: './product-image.html',
@@ -29,26 +30,30 @@ export function artKindForCategory(category: string | null | undefined): Product
 export class ProductImage {
   /** Category of the product (first one); picks the illustration. */
   readonly category = input<string | null | undefined>('');
-  /** Stored file name, e.g. "product-5.png" - only used for the optional caption. */
-  readonly imageFile = input<string>('');
-  /** Real image URL, when one is available. */
+  /** Stored file name, e.g. "htc-u11-plus.jpg". */
+  readonly imageFile = input<string | null | undefined>('');
+  /** Full image URL; takes precedence over `imageFile`. */
   readonly src = input<string | null>(null);
   /** Accessible description of the product; empty marks the picture as decorative. */
   readonly alt = input<string>('');
   /** Tile background: mango (default) or the soft grape used on the empty-basket panel. */
   readonly tone = input<'mango' | 'grape'>('mango');
-  /** Show the small "file name - no image endpoint yet" caption (product details only). */
-  readonly showCaption = input(false);
 
+  private readonly imageBaseUrl = inject(IMAGE_BASE_URL);
   private readonly failedSrc = signal<string | null>(null);
 
   protected readonly kind = computed(() => artKindForCategory(this.category()));
-  protected readonly showImage = computed(() => !!this.src() && this.failedSrc() !== this.src());
-  protected readonly caption = computed(() =>
-    this.showCaption() && this.imageFile() ? `${this.imageFile()} · no image endpoint yet` : ''
-  );
+  protected readonly resolvedSrc = computed(() => {
+    const explicit = this.src();
+    if (explicit) {
+      return explicit;
+    }
+    const file = this.imageFile()?.trim();
+    return file ? `${this.imageBaseUrl}/${encodeURIComponent(file)}` : null;
+  });
+  protected readonly showImage = computed(() => !!this.resolvedSrc() && this.failedSrc() !== this.resolvedSrc());
 
   protected onImageError(): void {
-    this.failedSrc.set(this.src());
+    this.failedSrc.set(this.resolvedSrc());
   }
 }

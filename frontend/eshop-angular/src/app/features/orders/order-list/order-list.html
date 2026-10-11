@@ -18,7 +18,10 @@
           <a class="row" [routerLink]="['/orders', order.id]" [attr.aria-label]="'Order ' + order.orderName + ', view details'">
             <span class="thumbs" aria-hidden="true">
               @for (item of thumbs(order); track item.productId) {
-                <span class="thumb"><app-product-image [category]="categoryById().get(item.productId) ?? ''" /></span>
+                <span class="thumb"><app-product-image
+                    [category]="categoryById().get(item.productId) ?? ''"
+                    [imageFile]="imageFileById().get(item.productId) ?? ''"
+                  /></span>
               }
               @if (hiddenThumbs(order) > 0) {
                 <span class="thumb more">+{{ hiddenThumbs(order) }}</span>

@@ -21,7 +21,9 @@ const MAX_THUMBS = 2;
 export class OrderList {
   private readonly authService = inject(AuthService);
   private readonly ordersService = inject(OrdersService);
-  protected readonly categoryById = inject(CatalogLookup).categoryById;
+  private readonly lookup = inject(CatalogLookup);
+  protected readonly categoryById = this.lookup.categoryById;
+  protected readonly imageFileById = this.lookup.imageFileById;
 
   protected readonly loading = signal(true);
   protected readonly orders = signal<Order[]>([]);

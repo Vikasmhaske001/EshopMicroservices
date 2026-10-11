@@ -32,6 +32,22 @@
   }
 }
 
+.media-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.credit {
+  color: var(--es-muted);
+  font-size: 12.5px;
+  line-height: 1.55;
+
+  a {
+    color: var(--es-grape);
+  }
+}
+
 .media {
   overflow: hidden;
   border: 1px solid var(--es-line);

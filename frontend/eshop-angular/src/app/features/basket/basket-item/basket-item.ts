@@ -16,6 +16,7 @@ import { InrPipe } from '../../../shared/pipes/inr.pipe';
 export class BasketItem {
   item = input.required<ShoppingCartItem>();
   category = input('');
+  imageFile = input('');
   quantityChange = output<number>();
   remove = output<void>();
 }

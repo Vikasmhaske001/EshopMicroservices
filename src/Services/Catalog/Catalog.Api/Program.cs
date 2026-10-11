@@ -1,4 +1,4 @@
-using BuildingBlocks.Auth;
+﻿using BuildingBlocks.Auth;
 using BuildingBlocks.Logging;
 using BuildingBlocks.Swagger;
 using Catalog.API.Data;
@@ -47,6 +47,15 @@ var app = builder.Build();
 app.UseCorrelationId();
 
 app.UseSwaggerWithUi();
+
+// Product pictures live in wwwroot/images/products and are served at /images/products/<file>
+// (through the gateway: /catalog-service/images/products/<file>). File names change only when the
+// file is replaced, so a day of browser caching is safe and makes the product grid fast.
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = context =>
+        context.Context.Response.Headers.CacheControl = "public,max-age=86400"
+});
 
 app.UseAuthentication();
 app.UseAuthorization();

@@ -1,5 +1,14 @@
 @if (showImage()) {
-  <img class="photo" [src]="src()" [alt]="alt()" loading="lazy" (error)="onImageError()" />
+  <img
+    class="photo"
+    [src]="resolvedSrc()"
+    [alt]="alt()"
+    width="1000"
+    height="1000"
+    loading="lazy"
+    decoding="async"
+    (error)="onImageError()"
+  />
 } @else {
   <div class="art" [attr.role]="alt() ? 'img' : null" [attr.aria-label]="alt() || null" [attr.aria-hidden]="alt() ? null : true">
     @switch (kind()) {
@@ -35,8 +44,4 @@
       }
     }
   </div>
-}
-
-@if (caption(); as text) {
-  <span class="caption">{{ text }}</span>
 }

@@ -24,6 +24,7 @@
             <app-basket-item
               [item]="item"
               [category]="categoryById().get(item.productId) ?? ''"
+              [imageFile]="imageFileById().get(item.productId) ?? ''"
               (quantityChange)="onQuantityChange(item.productId, $event)"
               (remove)="onRemove(item.productId)"
             />

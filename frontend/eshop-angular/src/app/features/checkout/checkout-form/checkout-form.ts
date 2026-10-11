@@ -44,7 +44,9 @@ export class CheckoutForm {
   private readonly ordersService = inject(OrdersService);
   private readonly checkoutService = inject(CheckoutService);
   private readonly notifications = inject(NotificationService);
-  protected readonly categoryById = inject(CatalogLookup).categoryById;
+  private readonly lookup = inject(CatalogLookup);
+  protected readonly categoryById = this.lookup.categoryById;
+  protected readonly imageFileById = this.lookup.imageFileById;
 
   protected readonly form = this.fb.nonNullable.group({
     // Limits mirror Ordering.Application's AddressDtoValidator/PaymentDtoValidator, so the user is

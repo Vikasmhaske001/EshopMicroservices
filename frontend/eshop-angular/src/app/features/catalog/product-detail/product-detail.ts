@@ -10,6 +10,7 @@ import { Product } from '../../../shared/models/product.model';
 import { InrPipe } from '../../../shared/pipes/inr.pipe';
 import { BasketService } from '../../basket/basket.service';
 import { CatalogService } from '../catalog.service';
+import { ImageCredits } from '../image-credits.service';
 
 const TOAST_DURATION_MS = 4000;
 const RELATED_LIMIT = 4;
@@ -26,6 +27,7 @@ export class ProductDetail {
   private readonly catalogService = inject(CatalogService);
   private readonly authService = inject(AuthService);
   private readonly basketService = inject(BasketService);
+  private readonly imageCredits = inject(ImageCredits);
 
   // undefined = still loading, null = not found / request failed, Product = loaded
   protected readonly product = toSignal(
@@ -37,6 +39,12 @@ export class ProductDetail {
   );
 
   protected readonly category = computed(() => this.product()?.categories[0] ?? '');
+
+  /** Photo credit for the product's picture (Creative Commons licences require it). */
+  protected readonly credit = computed(() => {
+    const file = this.product()?.imageFile;
+    return file ? (this.imageCredits.credits()[file] ?? null) : null;
+  });
 
   /** "More in {category}": same category, minus the product being viewed. Empty hides the section. */
   protected readonly related = toSignal(

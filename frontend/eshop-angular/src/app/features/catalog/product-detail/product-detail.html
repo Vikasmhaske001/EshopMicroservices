@@ -11,13 +11,23 @@
     </div>
   } @else {
     <article class="detail">
-      <div class="media">
-        <app-product-image
-          [category]="category()"
-          [imageFile]="product()!.imageFile"
-          [alt]="product()!.name"
-          [showCaption]="true"
-        />
+      <div class="media-col">
+        <div class="media">
+          <app-product-image
+            [category]="category()"
+            [imageFile]="product()!.imageFile"
+            [alt]="product()!.name"
+          />
+        </div>
+
+        @if (credit(); as c) {
+          <p class="credit">
+            Photo: <a [href]="c.source" target="_blank" rel="noopener noreferrer">{{ c.title }}</a>
+            by {{ c.author }},
+            <a [href]="c.licenseUrl" target="_blank" rel="noopener noreferrer">{{ c.license }}</a>.
+            {{ c.note }}
+          </p>
+        }
       </div>
 
       <div class="info">
@@ -57,7 +67,7 @@
           @for (item of related(); track item.id) {
             <a class="related-card" [routerLink]="['/products', item.id]">
               <span class="thumb">
-                <app-product-image [category]="category()" />
+                <app-product-image [category]="item.categories[0] || category()" [imageFile]="item.imageFile" />
               </span>
               <span class="related-text">
                 <span class="related-name">{{ item.name }}</span>

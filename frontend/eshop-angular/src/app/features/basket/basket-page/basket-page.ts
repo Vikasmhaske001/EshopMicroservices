@@ -15,7 +15,9 @@ import { BasketItem } from '../basket-item/basket-item';
 })
 export class BasketPage {
   protected readonly basketService = inject(BasketService);
-  protected readonly categoryById = inject(CatalogLookup).categoryById;
+  private readonly lookup = inject(CatalogLookup);
+  protected readonly categoryById = this.lookup.categoryById;
+  protected readonly imageFileById = this.lookup.imageFileById;
   protected readonly loading = signal(true);
 
   protected readonly itemCount = this.basketService.itemCount;

@@ -21,7 +21,9 @@ export class OrderDetail {
   private readonly route = inject(ActivatedRoute);
   private readonly authService = inject(AuthService);
   private readonly ordersService = inject(OrdersService);
-  protected readonly categoryById = inject(CatalogLookup).categoryById;
+  private readonly lookup = inject(CatalogLookup);
+  protected readonly categoryById = this.lookup.categoryById;
+  protected readonly imageFileById = this.lookup.imageFileById;
 
   // undefined = still loading, null = not found / request failed, Order = loaded
   protected readonly order = toSignal(
