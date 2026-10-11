@@ -21,6 +21,7 @@
                 .WithName("CreateProduct")
                 .Produces<CreateProductResponse>()
                 .ProducesProblem(StatusCodes.Status400BadRequest)
+                .RequireAuthorization(BuildingBlocks.Auth.AuthorizationPolicies.AdminOnly)
                 .WithSummary("Create a new product")
                 .WithDescription("Creates a new product with the provided details and returns the created product's ID.");
 

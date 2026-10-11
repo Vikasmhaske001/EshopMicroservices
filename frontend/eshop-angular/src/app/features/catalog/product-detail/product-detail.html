@@ -1,0 +1,45 @@
+<a mat-button routerLink="/products">
+  <mat-icon>arrow_back</mat-icon>
+  Back to products
+</a>
+
+@if (product() === undefined) {
+  <app-loading-spinner label="Loading product..." />
+} @else if (product() === null) {
+  <p>Product not found.</p>
+} @else {
+  <article class="product-detail">
+    <div class="product-image-placeholder">
+      <mat-icon>shopping_bag</mat-icon>
+    </div>
+
+    <div class="product-info">
+      <h2>{{ product()!.name }}</h2>
+      <p class="categories">{{ product()!.categories.join(', ') }}</p>
+      <p class="price">{{ product()!.price | currency }}</p>
+      <p class="description">{{ product()!.description }}</p>
+
+      <div class="add-to-basket">
+        <div class="quantity-control">
+          <button
+            mat-icon-button
+            type="button"
+            [disabled]="quantity() <= 1"
+            (click)="decreaseQuantity()"
+            aria-label="Decrease quantity"
+          >
+            <mat-icon>remove</mat-icon>
+          </button>
+          <span class="quantity-value">{{ quantity() }}</span>
+          <button mat-icon-button type="button" (click)="increaseQuantity()" aria-label="Increase quantity">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+
+        <button mat-flat-button type="button" [disabled]="adding()" (click)="addToBasket(product()!)">
+          {{ adding() ? 'Adding...' : 'Add to Basket' }}
+        </button>
+      </div>
+    </div>
+  </article>
+}

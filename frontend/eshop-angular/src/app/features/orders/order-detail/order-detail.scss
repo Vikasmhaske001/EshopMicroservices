@@ -1,0 +1,26 @@
+.order-detail {
+  max-width: 480px;
+}
+
+.status {
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.order-items {
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 4px;
+  padding: 1rem;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.25rem 0;
+
+  &.total {
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--mat-sys-outline-variant);
+    font: var(--mat-sys-title-medium);
+  }
+}

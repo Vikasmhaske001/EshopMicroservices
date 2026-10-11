@@ -1,0 +1,23 @@
+<h2>My Orders</h2>
+
+@if (loading()) {
+  <mat-progress-bar mode="indeterminate" />
+} @else if (orders().length > 0) {
+  <div class="order-list">
+    @for (order of orders(); track order.id) {
+      <a class="order-card" [routerLink]="['/orders', order.id]">
+        <div class="order-card-header">
+          <span class="order-name">Order {{ order.orderName }}</span>
+          <span class="order-status">{{ statusLabel(order) }}</span>
+        </div>
+        <div class="order-card-body">
+          <span>{{ order.orderItems.length }} item(s)</span>
+          <span class="order-total">{{ orderTotal(order) | currency }}</span>
+        </div>
+      </a>
+    }
+  </div>
+} @else {
+  <p class="empty-state">You haven't placed any orders yet.</p>
+  <a mat-flat-button routerLink="/products">Browse products</a>
+}

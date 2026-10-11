@@ -25,6 +25,7 @@
             .Produces<DeleteProductResponse>(StatusCodes.Status200OK)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .ProducesProblem(StatusCodes.Status404NotFound)
+            .RequireAuthorization(BuildingBlocks.Auth.AuthorizationPolicies.AdminOnly)
             .WithSummary("Delete Product")
             .WithDescription("Delete Product");
 

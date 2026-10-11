@@ -1,0 +1,14 @@
+.not-found {
+  max-width: 360px;
+  margin: 3rem auto;
+  text-align: center;
+
+  h2 {
+    font-size: 3rem;
+    margin-bottom: 0;
+  }
+
+  p {
+    color: var(--mat-sys-on-surface-variant);
+  }
+}

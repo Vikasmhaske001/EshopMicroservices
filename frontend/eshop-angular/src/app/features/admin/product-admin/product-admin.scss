@@ -1,0 +1,44 @@
+.table-scroll {
+  // Admin tables don't reflow into cards on narrow screens (this is a utility screen, not a
+  // full back-office) - a horizontal scroll keeps every column readable instead of squashing them.
+  overflow-x: auto;
+  margin-bottom: 2rem;
+}
+
+.admin-table {
+  width: 100%;
+  min-width: 500px;
+  max-width: 720px;
+  border-collapse: collapse;
+
+  th,
+  td {
+    text-align: left;
+    padding: 0.5rem;
+    border-bottom: 1px solid var(--mat-sys-outline-variant);
+  }
+}
+
+.actions {
+  white-space: nowrap;
+}
+
+.empty-state {
+  color: var(--mat-sys-on-surface-variant);
+  margin-bottom: 1.5rem;
+}
+
+form {
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.5rem;
+}

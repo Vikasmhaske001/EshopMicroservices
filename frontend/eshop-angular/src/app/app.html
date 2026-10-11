@@ -1,0 +1,27 @@
+<header class="app-header">
+  <h1><a routerLink="/products">EShop</a></h1>
+
+  <div class="auth-status">
+    @if (authService.currentUser(); as user) {
+      <a routerLink="/basket" class="basket-link" aria-label="Basket">
+        <mat-icon>shopping_cart</mat-icon>
+        @if (basketService.itemCount() > 0) {
+          <span class="basket-badge">{{ basketService.itemCount() }}</span>
+        }
+      </a>
+      <a routerLink="/orders">My Orders</a>
+      @if (authService.roles().includes('Admin')) {
+        <a routerLink="/admin/products">Admin</a>
+      }
+      <a routerLink="/account">Hi, {{ user.userName }}</a>
+      <button mat-button (click)="logout()">Log out</button>
+    } @else {
+      <a routerLink="/login">Login</a>
+      <a routerLink="/register">Register</a>
+    }
+  </div>
+</header>
+
+<main>
+  <router-outlet />
+</main>

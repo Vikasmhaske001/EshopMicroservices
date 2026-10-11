@@ -1,0 +1,50 @@
+<h2>Manage Orders</h2>
+
+@if (loading()) {
+  <mat-progress-bar mode="indeterminate" />
+} @else if (orders().length > 0) {
+  <div class="table-scroll">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Order</th>
+          <th>Customer</th>
+          <th>Items</th>
+          <th>Total</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (order of orders(); track order.id) {
+          <tr>
+            <td>{{ order.orderName }}</td>
+            <td>{{ order.shippingAddress.firstName }} {{ order.shippingAddress.lastName }}</td>
+            <td>{{ order.orderItems.length }}</td>
+            <td>{{ orderTotal(order) | currency }}</td>
+            <td>
+              <mat-form-field appearance="outline" class="status-select">
+                <mat-select
+                  [value]="order.status"
+                  [disabled]="updatingId() === order.id"
+                  (selectionChange)="changeStatus(order, $event.value)"
+                >
+                  @for (option of statusOptions; track option.value) {
+                    <mat-option [value]="option.value">{{ option.label }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <app-pagination-control
+    [pageIndex]="pageIndex() + 1"
+    [totalPages]="totalPages()"
+    (pageChange)="onPageChange($event)"
+  />
+} @else {
+  <p class="empty-state">No orders yet.</p>
+}

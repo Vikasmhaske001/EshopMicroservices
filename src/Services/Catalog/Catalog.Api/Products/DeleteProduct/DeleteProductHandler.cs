@@ -6,9 +6,15 @@
 
     public record DeleteProductResult(bool IsSuccess);
 
+    public class DeleteProductCommandValidator : AbstractValidator<DeleteProductCommand>
+    {
+        public DeleteProductCommandValidator()
+        {
+            RuleFor(x => x.Id).NotEmpty().WithMessage("Product id is required");
+        }
+    }
     internal class DeleteProductCommandHandler
-        (IDocumentSession session,
-         ILogger<DeleteProductCommandHandler> logger)
+        (IDocumentSession session)
         : ICommandHandler<DeleteProductCommand, DeleteProductResult>
     {
 
@@ -16,9 +22,9 @@
                 DeleteProductCommand command,
                 CancellationToken cancellationToken)
         {
-            logger.LogInformation(
-                "DeleteProductCommandHandler.Handle called with {@Command}",
-                command);
+            //logger.LogInformation(
+            //    "DeleteProductCommandHandler.Handle called with {@Command}",
+            //    command);
 
             session.Delete<Product>(command.Id);
 

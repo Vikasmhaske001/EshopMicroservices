@@ -1,0 +1,13 @@
+.pagination-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 0;
+}
+
+.pagination-status {
+  font: var(--mat-sys-body-medium);
+  min-width: 8rem;
+  text-align: center;
+}

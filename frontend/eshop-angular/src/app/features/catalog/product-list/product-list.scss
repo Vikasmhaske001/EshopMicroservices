@@ -1,0 +1,27 @@
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.search-field {
+  flex: 2 1 240px;
+}
+
+.category-field,
+.sort-field {
+  flex: 1 1 200px;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--mat-sys-on-surface-variant);
+  padding: 2rem;
+}

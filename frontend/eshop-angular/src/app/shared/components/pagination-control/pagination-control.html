@@ -1,0 +1,23 @@
+<div class="pagination-control">
+  <button
+    mat-icon-button
+    type="button"
+    [disabled]="pageIndex() <= 1"
+    (click)="previous()"
+    aria-label="Previous page"
+  >
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+
+  <span class="pagination-status">Page {{ pageIndex() }} of {{ totalPages() || 1 }}</span>
+
+  <button
+    mat-icon-button
+    type="button"
+    [disabled]="pageIndex() >= totalPages()"
+    (click)="next()"
+    aria-label="Next page"
+  >
+    <mat-icon>chevron_right</mat-icon>
+  </button>
+</div>
