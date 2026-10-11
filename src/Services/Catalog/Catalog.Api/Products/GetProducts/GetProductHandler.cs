@@ -28,8 +28,6 @@ namespace Catalog.Api.Products.GetProducts
                 .InclusiveBetween(1, PaginationDefaults.MaxPageSize)
                 .WithMessage($"PageSize must be between 1 and {PaginationDefaults.MaxPageSize}.");
 
-            // Whitelisted rather than accepting any client-supplied property name, which would
-            // otherwise need to be reflected onto the query - a source of both bugs and injection risk.
             RuleFor(x => x.SortBy)
                 .Must(s => string.IsNullOrEmpty(s) || AllowedSortFields.Contains(s.ToLowerInvariant()))
                 .WithMessage($"sortBy must be one of: {string.Join(", ", AllowedSortFields)}.");
@@ -58,9 +56,6 @@ namespace Catalog.Api.Products.GetProducts
             {
                 filtered = filtered.Where(p => p.Name.Contains(query.Search, StringComparison.OrdinalIgnoreCase));
             }
-
-            // Deterministic ordering is required for stable pagination - without it, Postgres is
-            // free to return rows in a different order across pages/requests.
             var sortBy = query.SortBy?.ToLowerInvariant();
             var descending = string.Equals(query.SortDirection, "desc", StringComparison.OrdinalIgnoreCase);
 
@@ -72,8 +67,6 @@ namespace Catalog.Api.Products.GetProducts
                 _ => filtered.OrderBy(p => p.Name)
             };
 
-            // Database-side pagination: Marten translates this to a COUNT + LIMIT/OFFSET query
-            // rather than loading every matching row and paging in memory.
             IPagedList<Product> pagedProducts =
                 await filtered.ToPagedListAsync(query.PageNumber, query.PageSize, cancellationToken);
 

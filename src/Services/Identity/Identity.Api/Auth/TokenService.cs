@@ -8,10 +8,6 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Identity.Api.Auth;
 
-/// <summary>
-/// Issues short-name JWT claims (sub/name/email/role) matching what
-/// BuildingBlocks.Auth.JwtAuthenticationExtensions configures every resource service to expect.
-/// </summary>
 public class TokenService(JwtSettings jwtSettings) : ITokenService
 {
     public (string Token, DateTime ExpiresAt) CreateAccessToken(ApplicationUser user, IList<string> roles)

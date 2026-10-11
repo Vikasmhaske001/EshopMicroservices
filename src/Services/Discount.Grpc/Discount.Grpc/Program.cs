@@ -7,7 +7,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddSerilogDefaults("Discount.Grpc");
 
-// Add services to the container.
 builder.Services.AddGrpc();
 
 builder.Services.AddDbContext<DiscountContext>(opts =>
@@ -16,7 +15,6 @@ builder.Services.AddDbContext<DiscountContext>(opts =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 await app.UseMigrationAsync();
 app.MapGrpcService<DiscountService>();
 

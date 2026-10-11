@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Geist:wght@400;500;600&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#ebe8e2;-webkit-font-smoothing:antialiased}
+a{color:#4b2a99;text-decoration:none}a:hover{color:#1d1230;text-decoration:underline}
+input,select,button{font:inherit}button{cursor:pointer}
+</style>
+</helmet>
+<section id="turn1" style="padding:72px;display:flex;flex-direction:column;gap:64px;font-family:'Plus Jakarta Sans',sans-serif;color:#1d1230">
+
+<header style="display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:56px;width:2400px">
+<div style="display:flex;flex-direction:column;gap:14px">
+<div style="font:500 14px 'JetBrains Mono',monospace;letter-spacing:.08em;color:#57506a">ESHOPMICROSERVICES · UI REDESIGN · PALETTE 3B MANGO &amp; GRAPE · DESKTOP 1440</div>
+<h1 style="margin:0;font-size:60px;line-height:1.05;font-weight:800;letter-spacing:-.03em">Four concepts, six screens each</h1>
+<p style="margin:0;font-size:19px;line-height:1.55;color:#4a4258;text-wrap:pretty;max-width:880px">All artboards share one live state. Filtering, sorting or searching in any concept updates all four, and so does "View" (which loads the details screen), adding to the basket, changing quantities, checkout and sign-in. The <b>dataState</b> tweak shows the catalogue's loading, empty and error states. Sign in with the password <b>wrong</b> to see the error. Columns: <a href="#1a">1a</a> Premium Minimal · <a href="#1b">1b</a> Gen Z Editorial · <a href="#1c">1c</a> Modern Marketplace · <a href="#1d">1d</a> Refined Signature (recommended).</p>
+<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 32px;margin-top:10px;font-size:15px;line-height:1.5;color:#3d3550">
+<div><b>Stack.</b> Angular 21 standalone components and signals, with Angular Material 21 (M3 azure theme), lazy routes, an auth guard, and Playwright e2e tests.</div>
+<div><b>Why images are missing.</b> Catalog.Api stores only an <code>imageFile</code> name (product-1…6.png), and no static-file endpoint serves it. The card shows a placeholder on purpose. The fix belongs in the backend.</div>
+<div><b>Fallback.</b> Illustrated tiles are mapped from the product category, and each tile shows its imageFile name. No image URLs are invented.</div>
+<div><b>Data issue.</b> The seed data puts Huawei and Xiaomi under "White Appliances" and the LG phone under "Home Kitchen". product-6.png is also shared by two products. The tiles follow the category as given.</div>
+<div><b>Supported, so shown.</b> Category, search, name/price sort, 9-per-page pagination, a by-category endpoint ("More in…"), basket qty/remove/clear, async order polling, and returnUrl login.</div>
+<div><b>Not supported, so not shown.</b> Shipping cost, ratings, stock, wishlist, compare, price filter. The discount row appears only when discountAmount &gt; 0.</div>
+</div>
+</div>
+<div style="background:#fff;border:1px solid #ebe2d0;border-radius:16px;padding:28px 32px;display:flex;flex-direction:column;gap:14px;align-self:start">
+<div style="display:flex;justify-content:space-between;align-items:baseline"><h2 style="margin:0;font-size:24px;font-weight:800">Scorecard</h2><span style="font:500 13px 'JetBrains Mono',monospace;color:#57506a">/10 · complexity: higher = simpler</span></div>
+<div style="display:grid;grid-template-columns:minmax(0,1fr) repeat(4,64px);font-size:15px">
+<div style="padding:8px 0;font-weight:700;border-bottom:1px solid #efe6d4">Criterion</div><div style="padding:8px 0;font-weight:700;text-align:center;border-bottom:1px solid #efe6d4">1a</div><div style="padding:8px 0;font-weight:700;text-align:center;border-bottom:1px solid #efe6d4">1b</div><div style="padding:8px 0;font-weight:700;text-align:center;border-bottom:1px solid #efe6d4">1c</div><div style="padding:8px 0;font-weight:800;text-align:center;border-bottom:1px solid #efe6d4;background:#fff4dc">1d</div>
+<div style="padding:7px 0">Visual appeal</div><div style="padding:7px 0;text-align:center">8</div><div style="padding:7px 0;text-align:center">9</div><div style="padding:7px 0;text-align:center">6</div><div style="padding:7px 0;text-align:center;background:#fff4dc;font-weight:700">9</div>
+<div style="padding:7px 0">Gen Z / Millennial relevance</div><div style="padding:7px 0;text-align:center">6</div><div style="padding:7px 0;text-align:center">9</div><div style="padding:7px 0;text-align:center">6</div><div style="padding:7px 0;text-align:center;background:#fff4dc;font-weight:700">8</div>
+<div style="padding:7px 0">Product discovery</div><div style="padding:7px 0;text-align:center">6</div><div style="padding:7px 0;text-align:center">7</div><div style="padding:7px 0;text-align:center">9</div><div style="padding:7px 0;text-align:center;background:#fff4dc;font-weight:700">8</div>
+<div style="padding:7px 0">Readability &amp; accessibility</div><div style="padding:7px 0;text-align:center">9</div><div style="padding:7px 0;text-align:center">7</div><div style="padding:7px 0;text-align:center">8</div><div style="padding:7px 0;text-align:center;background:#fff4dc;font-weight:700">9</div>
+<div style="padding:7px 0">Mobile usability (projected)</div><div style="padding:7px 0;text-align:center">7</div><div style="padding:7px 0;text-align:center">7</div><div style="padding:7px 0;text-align:center">8</div><div style="padding:7px 0;text-align:center;background:#fff4dc;font-weight:700">9</div>
+<div style="padding:7px 0">Shopping &amp; checkout</div><div style="padding:7px 0;text-align:center">8</div><div style="padding:7px 0;text-align:center">7</div><div style="padding:7px 0;text-align:center">9</div><div style="padding:7px 0;text-align:center;background:#fff4dc;font-weight:700">9</div>
+<div style="padding:7px 0">Brand consistency</div><div style="padding:7px 0;text-align:center">6</div><div style="padding:7px 0;text-align:center">7</div><div style="padding:7px 0;text-align:center">6</div><div style="padding:7px 0;text-align:center;background:#fff4dc;font-weight:700">9</div>
+<div style="padding:7px 0">Performance</div><div style="padding:7px 0;text-align:center">9</div><div style="padding:7px 0;text-align:center">7</div><div style="padding:7px 0;text-align:center">9</div><div style="padding:7px 0;text-align:center;background:#fff4dc;font-weight:700">9</div>
+<div style="padding:7px 0">Maintainability on Material</div><div style="padding:7px 0;text-align:center">8</div><div style="padding:7px 0;text-align:center">6</div><div style="padding:7px 0;text-align:center">8</div><div style="padding:7px 0;text-align:center;background:#fff4dc;font-weight:700">9</div>
+<div style="padding:7px 0">Implementation complexity</div><div style="padding:7px 0;text-align:center">8</div><div style="padding:7px 0;text-align:center">5</div><div style="padding:7px 0;text-align:center">7</div><div style="padding:7px 0;text-align:center;background:#fff4dc;font-weight:700">8</div>
+<div style="padding:10px 0;font-weight:800;border-top:1px solid #1d1230">Total / 100</div><div style="padding:10px 0;text-align:center;font-weight:800;border-top:1px solid #1d1230">75</div><div style="padding:10px 0;text-align:center;font-weight:800;border-top:1px solid #1d1230">71</div><div style="padding:10px 0;text-align:center;font-weight:800;border-top:1px solid #1d1230">76</div><div style="padding:10px 0;text-align:center;font-weight:800;border-top:1px solid #1d1230;background:#fff4dc">87</div>
+</div>
+<p style="margin:0;font-size:14.5px;line-height:1.55;color:#4a4258;text-wrap:pretty"><b>1d</b> brings in mango yellow but keeps grape, so the old purple EShop is still recognisable, and the palette maps cleanly onto Material tokens. <b>1b</b> has the most energy, but its featured tiles fight 9-per-page pagination. <b>1c</b> finds products fastest, but its brand feels generic. <b>1a</b> is the calmest, but mango barely shows.</p>
+</div>
+</header>
+
+<div style="display:flex;gap:96px;align-items:flex-start">
+
+<!-- ================= 1a ================= -->
+<div id="1a" style="width:1440px;flex:none;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;align-items:center;gap:14px"><span style="background:#1d1230;color:#ffb703;font:600 16px 'JetBrains Mono',monospace;padding:6px 12px;border-radius:6px">1a</span><span style="font-size:26px;font-weight:800">Premium Minimal Commerce</span><span style="font-size:16px;color:#57506a">Warm paper · Newsreader + Geist · hairlines · mango as a thin highlight</span></div>
+
+<div style="display:flex;flex-direction:column;gap:10px"><div style="font:500 13px 'JetBrains Mono',monospace;color:#57506a">01 · DISCOVER</div>
+<div data-screen-label="1a Discover" style="background:#faf7f0;font-family:Geist,sans-serif;color:#1d1230;min-height:980px">
+<dc-import name="EShopHeader" concept="a" count="{{ count }}" signed-in="{{ signedIn }}" search="{{ search }}" on-search="{{ onSearch }}" hint-size="100%,78px"></dc-import>
+<div style="padding:72px 56px 0;display:grid;grid-template-columns:1fr auto;align-items:end;gap:24px">
+<div style="display:flex;flex-direction:column;gap:12px"><div style="font-size:12px;letter-spacing:.2em;color:#4b2a99">THE EDIT</div><h2 style="margin:0;font:400 80px/1 Newsreader,serif;letter-spacing:-.02em">Discover</h2><p style="margin:0;font-size:16px;color:#5e576b">Fresh picks, considered prices.</p></div>
+<label style="display:flex;align-items:center;gap:12px;font-size:14px;color:#5e576b">Sort<select value="{{ sort }}" onChange="{{ onSort }}" style="border:0;border-bottom:1px solid #1d1230;background:transparent;padding:6px 4px;font-size:14px;color:#1d1230"><option value="name-asc">Name, A–Z</option><option value="name-desc">Name, Z–A</option><option value="price-asc">Price, low to high</option><option value="price-desc">Price, high to low</option></select></label>
+</div>
+<div style="margin:36px 56px 0;display:flex;gap:32px;border-bottom:1px solid #e9e1d0;font-size:15px">
+<sc-for list="{{ cats }}" as="c" hint-placeholder-count="5"><sc-if value="{{ c.active }}"><button onClick="{{ c.onClick }}" style="border:0;background:none;padding:0 0 14px;color:#1d1230;box-shadow:inset 0 -2px 0 #ffb703">{{ c.label }} <sup style="color:#5e576b">{{ c.count }}</sup></button></sc-if><sc-if value="{{ c.inactive }}"><button onClick="{{ c.onClick }}" style="border:0;background:none;padding:0 0 14px;color:#5e576b" style-hover="color:#1d1230">{{ c.label }} <sup>{{ c.count }}</sup></button></sc-if></sc-for>
+<span style="margin-left:auto;padding-bottom:14px;color:#5e576b;font-size:14px">{{ resultLabel }}</span>
+</div>
+<sc-if value="{{ hasResults }}" hint-placeholder-val="{{ true }}"><div style="padding:48px 56px 80px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:56px 28px">
+<sc-for list="{{ products }}" as="p" hint-placeholder-count="7"><article style="display:flex;flex-direction:column;gap:16px">
+<button onClick="{{ p.view }}" aria-label="View {{ p.name }}" style="border:0;padding:0;background:none;aspect-ratio:4/5;display:block" style-hover="opacity:.9"><dc-import name="ProductArt" kind="{{ p.kind }}" bg="#f0eadc" ink="#1d1230" accent="#ffb703" hint-size="100%,100%" style="width:100%;height:100%"></dc-import></button>
+<div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:11px;letter-spacing:.18em;color:#5e576b">{{ p.catUpper }}</div><div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px"><span style="font:400 23px Newsreader,serif">{{ p.name }}</span><span style="font-size:15px">{{ p.priceF }}</span></div></div>
+<div style="display:flex;gap:20px;font-size:14px"><button onClick="{{ p.view }}" style="border:0;background:none;padding:0;color:#1d1230;text-decoration:underline;text-underline-offset:4px">View</button><button onClick="{{ p.add }}" style="border:0;background:none;padding:0;color:#4b2a99;text-decoration:underline;text-decoration-color:#ffb703;text-decoration-thickness:2px;text-underline-offset:4px">{{ p.addLabel }}</button></div>
+</article></sc-for></div></sc-if>
+<sc-if value="{{ isLoading }}"><div style="padding:48px 56px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px"><sc-for list="{{ skeletons }}" as="s" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;gap:14px"><div style="aspect-ratio:4/5;background:#f0eadc"></div><div style="height:12px;width:40%;background:#f0eadc"></div><div style="height:20px;width:75%;background:#f0eadc"></div></div></sc-for></div></sc-if>
+<sc-if value="{{ isEmpty }}"><div style="padding:120px 56px;text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center"><div style="font:400 40px Newsreader,serif">Nothing matches that, yet.</div><p style="margin:0;color:#5e576b">Try another category or clear your search.</p><button onClick="{{ clearFilters }}" style="margin-top:8px;border:0;background:none;color:#1d1230;text-decoration:underline;text-underline-offset:4px;font-size:15px">Clear filters</button></div></sc-if>
+<sc-if value="{{ isError }}"><div style="margin:48px 56px;padding:28px 0;border-top:1px solid #1d1230;border-bottom:1px solid #e9e1d0;display:flex;justify-content:space-between;align-items:center"><div><div style="font:400 28px Newsreader,serif">We couldn't load the catalogue.</div><p style="margin:6px 0 0;color:#5e576b">The catalog service didn't respond. Your basket is safe.</p></div><button onClick="{{ retry }}" style="height:48px;padding:0 28px;border:1px solid #1d1230;background:none;font-size:14px">Try again</button></div></sc-if>
+</div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px"><div style="font:500 13px 'JetBrains Mono',monospace;color:#57506a">02 · PRODUCT DETAILS</div>
+<div data-screen-label="1a Product details" style="background:#faf7f0;font-family:Geist,sans-serif;color:#1d1230;min-height:900px">
+<dc-import name="EShopHeader" concept="a" count="{{ count }}" signed-in="{{ signedIn }}" search="{{ search }}" on-search="{{ onSearch }}" hint-size="100%,78px"></dc-import>
+<div style="padding:40px 56px 0;font-size:13px;color:#5e576b;letter-spacing:.04em">Shop &nbsp;/&nbsp; {{ d.cat }} &nbsp;/&nbsp; <span style="color:#1d1230">{{ d.name }}</span></div>
+<div style="padding:32px 56px 80px;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:72px;align-items:start">
+<div style="aspect-ratio:1/1"><dc-import name="ProductArt" kind="{{ d.kind }}" bg="#f0eadc" ink="#1d1230" accent="#ffb703" caption="{{ d.caption }}" hint-size="100%,100%" style="width:100%;height:100%"></dc-import></div>
+<div style="display:flex;flex-direction:column;gap:28px;padding-top:24px">
+<div style="display:flex;flex-direction:column;gap:14px"><div style="font-size:12px;letter-spacing:.2em;color:#4b2a99">{{ d.catUpper }}</div><h2 style="margin:0;font:400 60px/1.02 Newsreader,serif;letter-spacing:-.02em">{{ d.name }}</h2><div style="font-size:22px">{{ d.priceF }}</div></div>
+<p style="margin:0;padding-top:24px;border-top:1px solid #e9e1d0;font-size:17px;line-height:1.7;color:#3d3550;text-wrap:pretty">{{ d.desc }}</p>
+<div style="display:flex;flex-direction:column;gap:10px"><span style="font-size:12px;letter-spacing:.16em;color:#5e576b">QUANTITY</span><div style="display:flex;border:1px solid #1d1230;width:max-content"><button onClick="{{ dec }}" aria-label="Decrease quantity" style="width:48px;height:48px;border:0;background:none;font-size:18px">−</button><span style="width:48px;display:grid;place-items:center;font-size:16px">{{ qty }}</span><button onClick="{{ inc }}" aria-label="Increase quantity" style="width:48px;height:48px;border:0;background:none;font-size:18px">+</button></div></div>
+<button onClick="{{ addSel }}" style="height:60px;border:0;background:#1d1230;color:#fff;font-size:15px;letter-spacing:.04em" style-hover="background:#4b2a99">Add to basket — {{ addSelTotal }}</button>
+<sc-if value="{{ hasToast }}"><div role="status" style="display:flex;justify-content:space-between;padding:14px 0;border-top:2px solid #ffb703;border-bottom:1px solid #e9e1d0;font-size:14px"><span>{{ toast }}</span><a href="#" style="color:#1d1230;text-decoration:underline">View basket</a></div></sc-if>
+</div></div></div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px"><div style="font:500 13px 'JetBrains Mono',monospace;color:#57506a">03 · BASKET</div>
+<div data-screen-label="1a Basket" style="background:#faf7f0;font-family:Geist,sans-serif;color:#1d1230;min-height:760px">
+<dc-import name="EShopHeader" concept="a" count="{{ count }}" signed-in="{{ signedIn }}" search="{{ search }}" on-search="{{ onSearch }}" hint-size="100%,78px"></dc-import>
+<div style="padding:64px 56px 80px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;align-items:baseline;gap:20px"><h2 style="margin:0;font:400 56px Newsreader,serif">Basket</h2><span style="color:#5e576b">{{ countLabel }}</span></div>
+<sc-if value="{{ basketHas }}" hint-placeholder-val="{{ true }}"><div style="display:flex;flex-direction:column">
+<div style="display:grid;grid-template-columns:minmax(0,1fr) 160px 180px 160px 90px;padding-bottom:12px;border-bottom:1px solid #1d1230;font-size:12px;letter-spacing:.16em;color:#5e576b"><span>PRODUCT</span><span>PRICE</span><span>QUANTITY</span><span style="text-align:right">TOTAL</span><span></span></div>
+<sc-for list="{{ basketItems }}" as="i" hint-placeholder-count="1"><div style="display:grid;grid-template-columns:minmax(0,1fr) 160px 180px 160px 90px;align-items:center;padding:20px 0;border-bottom:1px solid #e9e1d0">
+<div style="display:flex;align-items:center;gap:20px"><div style="width:84px;height:104px;flex:none"><dc-import name="ProductArt" kind="{{ i.kind }}" bg="#f0eadc" ink="#1d1230" accent="#ffb703" hint-size="100%,100%" style="width:100%;height:100%"></dc-import></div><div><div style="font:400 22px Newsreader,serif">{{ i.name }}</div><div style="font-size:12px;letter-spacing:.14em;color:#5e576b;margin-top:4px">{{ i.catUpper }}</div></div></div>
+<span style="font-size:15px">{{ i.unitF }}</span>
+<div style="display:flex;border:1px solid #cfc5b2;width:max-content"><button onClick="{{ i.dec }}" aria-label="Decrease" style="width:40px;height:40px;border:0;background:none">−</button><span style="width:36px;display:grid;place-items:center">{{ i.qty }}</span><button onClick="{{ i.inc }}" aria-label="Increase" style="width:40px;height:40px;border:0;background:none">+</button></div>
+<span style="text-align:right;font-size:16px">{{ i.lineF }}</span>
+<button onClick="{{ i.remove }}" style="justify-self:end;border:0;background:none;color:#5e576b;font-size:13px;text-decoration:underline">Remove</button>
+</div></sc-for>
+<div style="display:flex;justify-content:space-between;align-items:flex-start;padding-top:32px">
+<div style="display:flex;gap:28px;font-size:14px"><button onClick="{{ clearBasket }}" style="border:0;background:none;padding:0;color:#5e576b;text-decoration:underline">Clear basket</button><a href="#" style="color:#1d1230;text-decoration:underline">Continue shopping</a></div>
+<div style="width:400px;display:flex;flex-direction:column;gap:14px"><div style="display:flex;justify-content:space-between;font-size:15px;color:#5e576b"><span>Subtotal</span><span>{{ subtotalF }}</span></div><div style="display:flex;justify-content:space-between;align-items:baseline;padding-top:14px;border-top:1px solid #e9e1d0"><span style="font:400 24px Newsreader,serif">Total</span><span style="font:400 30px Newsreader,serif">{{ subtotalF }}</span></div><button style="height:58px;border:0;background:#1d1230;color:#fff;font-size:15px;letter-spacing:.04em" style-hover="background:#4b2a99">Proceed to checkout</button></div>
+</div></div></sc-if>
+<sc-if value="{{ basketEmpty }}"><div style="padding:80px 0;border-top:1px solid #e9e1d0;display:flex;flex-direction:column;gap:14px"><div style="font:400 36px Newsreader,serif">Your basket is empty.</div><p style="margin:0;color:#5e576b">Everything you add stays here while you browse.</p><button onClick="{{ refill }}" style="width:max-content;margin-top:10px;height:52px;padding:0 32px;border:0;background:#1d1230;color:#fff">Browse products</button></div></sc-if>
+</div></div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px"><div style="font:500 13px 'JetBrains Mono',monospace;color:#57506a">04 · CHECKOUT</div>
+<div data-screen-label="1a Checkout" style="background:#faf7f0;font-family:Geist,sans-serif;color:#1d1230;min-height:1000px">
+<dc-import name="EShopHeader" concept="a" count="{{ count }}" signed-in="{{ signedIn }}" search="{{ search }}" on-search="{{ onSearch }}" hint-size="100%,78px"></dc-import>
+<sc-if value="{{ coForm }}" hint-placeholder-val="{{ true }}"><div style="padding:64px 56px 80px;display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:96px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:48px">
+<h2 style="margin:0;font:400 56px Newsreader,serif">Checkout</h2>
+<div style="display:flex;flex-direction:column;gap:24px"><div style="display:flex;gap:16px;align-items:baseline;padding-bottom:12px;border-bottom:1px solid #1d1230"><span style="font:400 15px 'JetBrains Mono',monospace;color:#4b2a99">01</span><span style="font:400 26px Newsreader,serif">Shipping &amp; billing address</span></div>
+<sc-for list="{{ shipRows }}" as="r" hint-placeholder-count="4"><div style="display:flex;gap:28px"><sc-for list="{{ r.cols }}" as="fl" hint-placeholder-count="2"><label style="flex:1;display:flex;flex-direction:column;gap:6px;font-size:12px;letter-spacing:.12em;color:#5e576b">{{ fl.labelUpper }}<input value="{{ fl.value }}" onChange="{{ fl.onChange }}" placeholder="{{ fl.ph }}" style="height:44px;border:0;border-bottom:1px solid #cfc5b2;background:transparent;font-size:16px;color:#1d1230;outline:none;box-shadow:{{ fl.ringLine }}" style-focus="border-bottom-color:#1d1230"><sc-if value="{{ fl.hasErr }}"><span style="font-size:13px;letter-spacing:0;color:#b42318">{{ fl.err }}</span></sc-if></label></sc-for></div></sc-for>
+</div>
+<div style="display:flex;flex-direction:column;gap:24px"><div style="display:flex;gap:16px;align-items:baseline;padding-bottom:12px;border-bottom:1px solid #1d1230"><span style="font:400 15px 'JetBrains Mono',monospace;color:#4b2a99">02</span><span style="font:400 26px Newsreader,serif">Payment</span><span style="margin-left:auto;font-size:13px;color:#5e576b">Demo only. No real payment is processed.</span></div>
+<sc-for list="{{ payRows }}" as="r" hint-placeholder-count="2"><div style="display:flex;gap:28px"><sc-for list="{{ r.cols }}" as="fl" hint-placeholder-count="2"><label style="flex:1;display:flex;flex-direction:column;gap:6px;font-size:12px;letter-spacing:.12em;color:#5e576b">{{ fl.labelUpper }}<input value="{{ fl.value }}" onChange="{{ fl.onChange }}" placeholder="{{ fl.ph }}" style="height:44px;border:0;border-bottom:1px solid #cfc5b2;background:transparent;font-size:16px;color:#1d1230;outline:none;box-shadow:{{ fl.ringLine }}" style-focus="border-bottom-color:#1d1230"><sc-if value="{{ fl.hasErr }}"><span style="font-size:13px;letter-spacing:0;color:#b42318">{{ fl.err }}</span></sc-if></label></sc-for></div></sc-for>
+</div></div>
+<aside style="position:sticky;top:24px;margin-top:104px;padding:32px;background:#fff;border:1px solid #e9e1d0;display:flex;flex-direction:column;gap:16px">
+<div style="font-size:12px;letter-spacing:.2em;color:#5e576b">ORDER SUMMARY</div>
+<sc-for list="{{ basketItems }}" as="i" hint-placeholder-count="1"><div style="display:flex;justify-content:space-between;font-size:15px"><span>{{ i.name }} × {{ i.qty }}</span><span>{{ i.lineF }}</span></div></sc-for>
+<div style="display:flex;justify-content:space-between;align-items:baseline;padding-top:16px;border-top:1px solid #e9e1d0"><span style="font:400 22px Newsreader,serif">Total</span><span style="font:400 28px Newsreader,serif">{{ subtotalF }}</span></div>
+<sc-if value="{{ hasCoErr }}"><div role="alert" style="font-size:14px;color:#b42318;border-top:1px solid #b42318;padding-top:10px">{{ coErr }}</div></sc-if>
+<button onClick="{{ placeOrder }}" disabled="{{ coBusy }}" style="height:58px;border:0;background:#1d1230;color:#fff;font-size:15px;letter-spacing:.04em" style-hover="background:#4b2a99">{{ placeLabel }}</button>
+</aside></div></sc-if>
+<sc-if value="{{ coPlaced }}"><div style="padding:120px 56px;display:flex;flex-direction:column;gap:16px;max-width:720px"><div style="font-size:12px;letter-spacing:.2em;color:#4b2a99">ORDER {{ orderId }}</div><div style="font:400 64px/1.05 Newsreader,serif">Thank you. Your order is in.</div><p style="margin:0;font-size:17px;color:#5e576b">Redirecting you to the order details… The basket was cleared on the server.</p><button onClick="{{ resetCheckout }}" style="width:max-content;margin-top:12px;border:0;background:none;padding:0;text-decoration:underline;font-size:15px">Reset demo</button></div></sc-if>
+<sc-if value="{{ coEmpty }}"><div style="padding:120px 56px;display:flex;flex-direction:column;gap:14px"><div style="font:400 40px Newsreader,serif">Your basket is empty. Add something before checking out.</div><button onClick="{{ refill }}" style="width:max-content;height:52px;padding:0 32px;border:0;background:#1d1230;color:#fff">Browse products</button></div></sc-if>
+</div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px"><div style="font:500 13px 'JetBrains Mono',monospace;color:#57506a">05 · SIGN IN (SIGNED-OUT HEADER)</div>
+<div data-screen-label="1a Sign in" style="background:#faf7f0;font-family:Geist,sans-serif;color:#1d1230;min-height:820px">
+<dc-import name="EShopHeader" concept="a" count="{{ count }}" signed-in="{{ false }}" search="{{ search }}" on-search="{{ onSearch }}" hint-size="100%,78px"></dc-import>
+<div style="padding:120px 56px;display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:120px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:18px"><div style="font-size:12px;letter-spacing:.2em;color:#4b2a99">MEMBERS</div><div style="font:400 88px/1 Newsreader,serif;letter-spacing:-.02em">Welcome<br>back.</div><p style="margin:0;font-size:17px;color:#5e576b;max-width:420px">Sign in to see your basket, check out and track your orders.</p></div>
+<sc-if value="{{ siForm }}" hint-placeholder-val="{{ true }}"><form onSubmit="{{ signIn }}" style="display:flex;flex-direction:column;gap:28px">
+<label style="display:flex;flex-direction:column;gap:6px;font-size:12px;letter-spacing:.12em;color:#5e576b">USERNAME<input value="{{ user }}" onChange="{{ onUser }}" autocomplete="username" style="height:44px;border:0;border-bottom:1px solid #cfc5b2;background:transparent;font-size:16px;color:#1d1230;outline:none" style-focus="border-bottom-color:#1d1230"><sc-if value="{{ userErr }}"><span style="font-size:13px;letter-spacing:0;color:#b42318">Username is required.</span></sc-if></label>
+<label style="display:flex;flex-direction:column;gap:6px;font-size:12px;letter-spacing:.12em;color:#5e576b">PASSWORD<div style="display:flex;border-bottom:1px solid #cfc5b2"><input type="{{ pwType }}" value="{{ pw }}" onChange="{{ onPw }}" autocomplete="current-password" style="flex:1;height:44px;border:0;background:transparent;font-size:16px;color:#1d1230;outline:none"><button type="button" onClick="{{ togglePw }}" style="border:0;background:none;font-size:13px;letter-spacing:0;color:#1d1230;text-decoration:underline">{{ pwToggle }}</button></div><sc-if value="{{ pwErr }}"><span style="font-size:13px;letter-spacing:0;color:#b42318">Password is required.</span></sc-if></label>
+<sc-if value="{{ hasSiErr }}"><div role="alert" style="font-size:14px;color:#b42318;border-top:1px solid #b42318;padding-top:10px">{{ siErr }}</div></sc-if>
+<button type="submit" disabled="{{ siBusy }}" style="height:58px;border:0;background:#1d1230;color:#fff;font-size:15px;letter-spacing:.04em" style-hover="background:#4b2a99">{{ siLabel }}</button>
+<div style="font-size:14px;color:#5e576b">New here? <a href="#" style="color:#1d1230;text-decoration:underline">Create an account</a></div>
+</form></sc-if>
+<sc-if value="{{ siDone }}"><div style="display:flex;flex-direction:column;gap:12px;border-top:2px solid #ffb703;padding-top:20px"><div style="font:400 30px Newsreader,serif">Signed in as {{ userShown }}.</div><p style="margin:0;color:#5e576b">Taking you back to products…</p><button onClick="{{ resetSignIn }}" style="width:max-content;border:0;background:none;padding:0;text-decoration:underline">Reset demo</button></div></sc-if>
+</div></div></div>
+</div>
+
+<!-- ================= 1b ================= -->
+<div id="1b" style="width:1440px;flex:none;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;align-items:center;gap:14px"><span style="background:#1d1230;color:#ffb703;font:600 16px 'JetBrains Mono',monospace;padding:6px 12px;border-radius:6px">1b</span><span style="font-size:26px;font-weight:800">Gen Z Editorial Commerce</span><span style="font-size:16px;color:#57506a">Bricolage Grotesque · colour blocks · featured tile · pill controls</span></div>
+
+<div style="display:flex;flex-direction:column;gap:10px"><div style="font:500 13px 'JetBrains Mono',monospace;color:#57506a">01 · DISCOVER</div>
+<div data-screen-label="1b Discover" style="background:#fff8ec;font-family:'Bricolage Grotesque',sans-serif;color:#1d1230;min-height:980px">
+<dc-import name="EShopHeader" concept="b" count="{{ count }}" signed-in="{{ signedIn }}" search="{{ search }}" on-search="{{ onSearch }}" hint-size="100%,76px"></dc-import>
+<div style="padding:32px 48px 0;display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20px">
+<div style="background:#ffb703;border-radius:28px;padding:40px 44px;display:flex;flex-direction:column;justify-content:space-between;min-height:300px"><div style="font-size:15px;font-weight:700;letter-spacing:.06em">NEW THIS WEEK</div><div><h2 style="margin:0;font-size:150px;line-height:.85;font-weight:800;letter-spacing:-.06em">Discover</h2><p style="margin:16px 0 0;font-size:22px;font-weight:500">Fresh picks, great prices.</p></div></div>
+<div style="background:#4b2a99;border-radius:28px;color:#fff;display:grid;grid-template-columns:1fr 180px;overflow:hidden">
+<div style="padding:36px;display:flex;flex-direction:column;justify-content:space-between"><div style="font-size:15px;font-weight:700;letter-spacing:.06em;color:#ffb703">TOP PICK</div><div><div style="font-size:38px;font-weight:800;line-height:1;letter-spacing:-.03em">{{ hero.name }}</div><div style="margin-top:10px;font-size:20px">{{ hero.priceF }}</div><button onClick="{{ hero.view }}" style="margin-top:20px;height:46px;padding:0 22px;border:0;border-radius:99px;background:#ffb703;color:#1d1230;font-weight:700;font-size:15px" style-hover="background:#fff">Shop it</button></div></div>
+<dc-import name="ProductArt" kind="{{ hero.kind }}" bg="#5d3bb0" ink="#1d1230" accent="#ffb703" hint-size="100%,100%" style="width:100%;height:100%"></dc-import>
+</div></div>
+<div style="padding:32px 48px 0;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+<sc-for list="{{ cats }}" as="c" hint-placeholder-count="5"><sc-if value="{{ c.active }}"><button onClick="{{ c.onClick }}" style="height:46px;padding:0 22px;border-radius:99px;border:2px solid #1d1230;background:#1d1230;color:#ffb703;font-weight:700;font-size:16px">{{ c.label }}</button></sc-if><sc-if value="{{ c.inactive }}"><button onClick="{{ c.onClick }}" style="height:46px;padding:0 22px;border-radius:99px;border:2px solid #1d1230;background:transparent;color:#1d1230;font-weight:600;font-size:16px" style-hover="background:#ffe7b0">{{ c.label }}</button></sc-if></sc-for>
+<select value="{{ sort }}" onChange="{{ onSort }}" aria-label="Sort" style="margin-left:auto;height:46px;padding:0 18px;border-radius:99px;border:2px solid #1d1230;background:#fff;font-weight:600;font-size:15px;color:#1d1230"><option value="name-asc">Sort: A–Z</option><option value="name-desc">Sort: Z–A</option><option value="price-asc">Sort: price ↑</option><option value="price-desc">Sort: price ↓</option></select>
+</div>
+<sc-if value="{{ hasResults }}" hint-placeholder-val="{{ true }}"><div style="padding:28px 48px 72px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px">
+<sc-for list="{{ products }}" as="p" hint-placeholder-count="7"><article style="grid-column:{{ p.spanB }};grid-row:{{ p.spanB }};background:#fff;border:2px solid #1d1230;border-radius:24px;overflow:hidden;display:flex;flex-direction:column;transition:transform .2s" style-hover="transform:translateY(-4px) rotate(-.4deg)">
+<button onClick="{{ p.view }}" aria-label="View {{ p.name }}" style="flex:1;min-height:200px;border:0;padding:0;background:none;display:block;border-bottom:2px solid #1d1230"><dc-import name="ProductArt" kind="{{ p.kind }}" bg="{{ p.tileB }}" ink="#1d1230" accent="#4b2a99" hint-size="100%,100%" style="width:100%;height:100%"></dc-import></button>
+<div style="padding:16px 18px;display:flex;flex-direction:column;gap:10px"><span style="width:max-content;padding:4px 10px;border-radius:99px;background:#ece4ff;color:#4b2a99;font-size:12px;font-weight:700">{{ p.cat }}</span><div style="font-size:22px;font-weight:700;letter-spacing:-.02em">{{ p.name }}</div><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:22px;font-weight:800">{{ p.priceF }}</span><button onClick="{{ p.add }}" aria-label="{{ p.addLabel }}" style="height:42px;padding:0 16px;border-radius:99px;border:0;background:#ffb703;color:#1d1230;font-weight:700;font-size:14px" style-hover="background:#1d1230;color:#ffb703">{{ p.addShort }}</button></div></div>
+</article></sc-for></div></sc-if>
+<sc-if value="{{ isLoading }}"><div style="padding:28px 48px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px"><sc-for list="{{ skeletons }}" as="s" hint-placeholder-count="4"><div style="height:340px;border-radius:24px;background:#ffe7b0"></div></sc-for></div></sc-if>
+<sc-if value="{{ isEmpty }}"><div style="margin:28px 48px;padding:72px;border-radius:28px;border:2px dashed #1d1230;text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center"><div style="font-size:56px;font-weight:800;letter-spacing:-.04em">No matches 😶‍🌫️</div><p style="margin:0;font-size:18px">Try a different vibe or clear the search.</p><button onClick="{{ clearFilters }}" style="height:50px;padding:0 26px;border-radius:99px;border:0;background:#1d1230;color:#ffb703;font-weight:700">Clear filters</button></div></sc-if>
+<sc-if value="{{ isError }}"><div style="margin:28px 48px;padding:36px 40px;border-radius:28px;background:#1d1230;color:#fff;display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:36px;font-weight:800">The catalog went quiet.</div><p style="margin:6px 0 0;opacity:.85">We couldn't reach the catalog service. Your bag is safe.</p></div><button onClick="{{ retry }}" style="height:50px;padding:0 26px;border-radius:99px;border:0;background:#ffb703;color:#1d1230;font-weight:700">Try again</button></div></sc-if>
+</div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px"><div style="font:500 13px 'JetBrains Mono',monospace;color:#57506a">02 · PRODUCT DETAILS</div>
+<div data-screen-label="1b Product details" style="background:#fff8ec;font-family:'Bricolage Grotesque',sans-serif;color:#1d1230;min-height:900px">
+<dc-import name="EShopHeader" concept="b" count="{{ count }}" signed-in="{{ signedIn }}" search="{{ search }}" on-search="{{ onSearch }}" hint-size="100%,76px"></dc-import>
+<div style="padding:32px 48px 72px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px">
+<div style="aspect-ratio:1;border-radius:28px;overflow:hidden;border:2px solid #1d1230"><dc-import name="ProductArt" kind="{{ d.kind }}" bg="#ffb703" ink="#1d1230" accent="#4b2a99" caption="{{ d.caption }}" hint-size="100%,100%" style="width:100%;height:100%"></dc-import></div>
+<div style="border-radius:28px;background:#fff;border:2px solid #1d1230;padding:48px;display:flex;flex-direction:column;gap:24px">
+<a href="#" style="color:#1d1230;font-weight:600">← Back to products</a>
+<span style="width:max-content;padding:6px 14px;border-radius:99px;background:#ece4ff;color:#4b2a99;font-weight:700">{{ d.cat }}</span>
+<h2 style="margin:0;font-size:88px;line-height:.9;font-weight:800;letter-spacing:-.05em">{{ d.name }}</h2>
+<div style="width:max-content;padding:8px 18px;border-radius:14px;background:#ffb703;font-size:34px;font-weight:800">{{ d.priceF }}</div>
+<p style="margin:0;font-size:19px;line-height:1.55;font-family:'Plus Jakarta Sans',sans-serif;color:#3d3550">{{ d.desc }}</p>
+<div style="margin-top:auto;display:flex;gap:12px;align-items:center">
+<div style="display:flex;align-items:center;height:60px;border-radius:99px;border:2px solid #1d1230"><button onClick="{{ dec }}" aria-label="Decrease quantity" style="width:56px;height:56px;border:0;background:none;font-size:22px">−</button><span style="width:36px;text-align:center;font-size:20px;font-weight:700">{{ qty }}</span><button onClick="{{ inc }}" aria-label="Increase quantity" style="width:56px;height:56px;border:0;background:none;font-size:22px">+</button></div>
+<button onClick="{{ addSel }}" style="flex:1;height:60px;border-radius:99px;border:0;background:#1d1230;color:#ffb703;font-size:18px;font-weight:700" style-hover="background:#4b2a99;color:#fff">Add to bag · {{ addSelTotal }}</button></div>
+<sc-if value="{{ hasToast }}"><div role="status" style="display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-radius:16px;background:#4b2a99;color:#fff;font-weight:600"><span>{{ toast }}</span><a href="#" style="color:#ffb703">View bag →</a></div></sc-if>
+</div></div></div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px"><div style="font:500 13px 'JetBrains Mono',monospace;color:#57506a">03 · BASKET</div>
+<div data-screen-label="1b Basket" style="background:#fff8ec;font-family:'Bricolage Grotesque',sans-serif;color:#1d1230;min-height:760px">
+<dc-import name="EShopHeader" concept="b" count="{{ count }}" signed-in="{{ signedIn }}" search="{{ search }}" on-search="{{ onSearch }}" hint-size="100%,76px"></dc-import>
+<div style="padding:40px 48px 72px;display:flex;flex-direction:column;gap:28px">
+<h2 style="margin:0;font-size:110px;line-height:.9;font-weight:800;letter-spacing:-.05em">Your bag <span style="color:#4b2a99">({{ count }})</span></h2>
+<sc-if value="{{ basketHas }}" hint-placeholder-val="{{ true }}"><div style="display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:20px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:14px"><sc-for list="{{ basketItems }}" as="i" hint-placeholder-count="1"><div style="display:grid;grid-template-columns:140px minmax(0,1fr) auto;gap:24px;align-items:center;padding:14px;padding-right:28px;background:#fff;border:2px solid #1d1230;border-radius:24px">
+<div style="height:140px;border-radius:16px;overflow:hidden"><dc-import name="ProductArt" kind="{{ i.kind }}" bg="#ffe7b0" ink="#1d1230" accent="#4b2a99" hint-size="100%,100%" style="width:100%;height:100%"></dc-import></div>
+<div style="display:flex;flex-direction:column;gap:8px"><span style="width:max-content;padding:4px 10px;border-radius:99px;background:#ece4ff;color:#4b2a99;font-size:12px;font-weight:700">{{ i.cat }}</span><span style="font-size:28px;font-weight:800;letter-spacing:-.02em">{{ i.name }}</span><span style="font-size:15px;color:#57506a">{{ i.unitF }} each</span></div>
+<div style="display:flex;flex-direction:column;align-items:flex-end;gap:12px"><span style="font-size:28px;font-weight:800">{{ i.lineF }}</span><div style="display:flex;align-items:center;gap:8px"><div style="display:flex;align-items:center;border-radius:99px;border:2px solid #1d1230"><button onClick="{{ i.dec }}" aria-label="Decrease" style="width:44px;height:44px;border:0;background:none;font-size:18px">−</button><span style="width:28px;text-align:center;font-weight:700">{{ i.qty }}</span><button onClick="{{ i.inc }}" aria-label="Increase" style="width:44px;height:44px;border:0;background:none;font-size:18px">+</button></div><button onClick="{{ i.remove }}" aria-label="Remove {{ i.name }}" style="width:48px;height:48px;border-radius:50%;border:2px solid #1d1230;background:#fff;font-size:18px" style-hover="background:#ffe7b0">×</button></div></div>
+</div></sc-for>
+<div style="display:flex;gap:10px"><a href="#" style="height:46px;padding:0 20px;border-radius:99px;border:2px solid #1d1230;display:grid;place-items:center;color:#1d1230;font-weight:600;text-decoration:none">Keep shopping</a><button onClick="{{ clearBasket }}" style="height:46px;padding:0 20px;border-radius:99px;border:0;background:none;color:#1d1230;font-weight:600;text-decoration:underline">Clear bag</button></div></div>
+<aside style="background:#1d1230;color:#fff;border-radius:28px;padding:32px;display:flex;flex-direction:column;gap:16px"><div style="font-size:15px;font-weight:700;letter-spacing:.06em;color:#ffb703">SUMMARY</div><div style="display:flex;justify-content:space-between;font-size:17px;opacity:.85"><span>Subtotal</span><span>{{ subtotalF }}</span></div><div style="display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid #3d3150;padding-top:16px"><span style="font-size:24px;font-weight:700">Total</span><span style="font-size:44px;font-weight:800;letter-spacing:-.03em">{{ subtotalF }}</span></div><button style="height:62px;border-radius:99px;border:0;background:#ffb703;color:#1d1230;font-size:18px;font-weight:800" style-hover="background:#fff">Checkout →</button></aside>
+</div></sc-if>
+<sc-if value="{{ basketEmpty }}"><div style="padding:64px;border-radius:28px;background:#ffb703;display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:52px;font-weight:800;letter-spacing:-.04em">Your bag's empty.</div><p style="margin:8px 0 0;font-size:19px">Go find something you'll actually use.</p></div><button onClick="{{ refill }}" style="height:58px;padding:0 30px;border-radius:99px;border:0;background:#1d1230;color:#ffb703;font-weight:800;font-size:17px">Start shopping</button></div></sc-if>
+</div></div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px"><div style="font:500 13px 'JetBrains Mono',monospace;color:#57506a">04 · CHECKOUT</div>
+<div data-screen-label="1b Checkout" style="background:#fff8ec;font-family:'Bricolage Grotesque',sans-serif;color:#1d1230;min-height:1000px">
+<dc-import name="EShopHeader" concept="b" count="{{ count }}" signed-in="{{ signedIn }}" search="{{ search }}" on-search="{{ onSearch }}" hint-size="100%,76px"></dc-import>
+<sc-if value="{{ coForm }}" hint-placeholder-val="{{ true }}"><div style="padding:40px 48px 72px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;align-items:flex-end;justify-content:space-between"><h2 style="margin:0;font-size:96px;line-height:.9;font-weight:800;letter-spacing:-.05em">Checkout</h2><div style="display:flex;gap:8px;font-weight:700"><span style="padding:10px 18px;border-radius:99px;background:#1d1230;color:#ffb703">1 Ship</span><span style="padding:10px 18px;border-radius:99px;background:#1d1230;color:#ffb703">2 Pay</span><span style="padding:10px 18px;border-radius:99px;border:2px solid #1d1230">3 Done</span></div></div>
+<div style="display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:20px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:20px">
+<div style="background:#fff;border:2px solid #1d1230;border-radius:28px;padding:32px;display:flex;flex-direction:column;gap:18px"><div style="font-size:28px;font-weight:800">Where's it going?</div>
+<sc-for list="{{ shipRows }}" as="r" hint-placeholder-count="4"><div style="display:flex;gap:14px"><sc-for list="{{ r.cols }}" as="fl" hint-placeholder-count="2"><label style="flex:1;display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:700">{{ fl.label }}<input value="{{ fl.value }}" onChange="{{ fl.onChange }}" placeholder="{{ fl.ph }}" style="height:54px;border:2px solid #1d1230;border-radius:14px;padding:0 16px;font-size:16px;font-family:'Plus Jakarta Sans',sans-serif;outline:none;background:#fff8ec;box-shadow:{{ fl.ring }}" style-focus="background:#fff;box-shadow:4px 4px 0 #ffb703"><sc-if value="{{ fl.hasErr }}"><span style="font-size:13px;font-weight:600;color:#b42318">{{ fl.err }}</span></sc-if></label></sc-for></div></sc-for></div>
+<div style="background:#fff;border:2px solid #1d1230;border-radius:28px;padding:32px;display:flex;flex-direction:column;gap:18px"><div style="display:flex;align-items:center;gap:14px"><span style="font-size:28px;font-weight:800">Pay</span><span style="padding:6px 12px;border-radius:99px;background:#ece4ff;color:#4b2a99;font-size:13px;font-weight:700">Demo only, no real payment</span></div>
+<sc-for list="{{ payRows }}" as="r" hint-placeholder-count="2"><div style="display:flex;gap:14px"><sc-for list="{{ r.cols }}" as="fl" hint-placeholder-count="2"><label style="flex:1;display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:700">{{ fl.label }}<input value="{{ fl.value }}" onChange="{{ fl.onChange }}" placeholder="{{ fl.ph }}" style="height:54px;border:2px solid #1d1230;border-radius:14px;padding:0 16px;font-size:16px;font-family:'Plus Jakarta Sans',sans-serif;outline:none;background:#fff8ec;box-shadow:{{ fl.ring }}" style-focus="background:#fff;box-shadow:4px 4px 0 #ffb703"><sc-if value="{{ fl.hasErr }}"><span style="font-size:13px;font-weight:600;color:#b42318">{{ fl.err }}</span></sc-if></label></sc-for></div></sc-for></div>
+</div>
+<aside style="position:sticky;top:24px;background:#1d1230;color:#fff;border-radius:28px;padding:32px;display:flex;flex-direction:column;gap:16px"><div style="font-size:15px;font-weight:700;letter-spacing:.06em;color:#ffb703">YOUR ORDER</div>
+<sc-for list="{{ basketItems }}" as="i" hint-placeholder-count="1"><div style="display:flex;justify-content:space-between;font-size:17px"><span>{{ i.name }} × {{ i.qty }}</span><span>{{ i.lineF }}</span></div></sc-for>
+<div style="display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid #3d3150;padding-top:16px"><span style="font-size:22px;font-weight:700">Total</span><span style="font-size:40px;font-weight:800">{{ subtotalF }}</span></div>
+<sc-if value="{{ hasCoErr }}"><div role="alert" style="padding:12px 14px;border-radius:14px;background:#fde3e1;color:#7a1610;font-weight:600;font-size:14px">{{ coErr }}</div></sc-if>
+<button onClick="{{ placeOrder }}" disabled="{{ coBusy }}" style="height:62px;border-radius:99px;border:0;background:#ffb703;color:#1d1230;font-size:18px;font-weight:800" style-hover="background:#fff">{{ placeLabel }}</button></aside>
+</div></div></sc-if>
+<sc-if value="{{ coPlaced }}"><div style="margin:40px 48px;padding:72px;border-radius:28px;background:#ffb703;display:flex;flex-direction:column;gap:14px"><div style="font-size:16px;font-weight:700;letter-spacing:.06em">ORDER {{ orderId }}</div><div style="font-size:110px;line-height:.9;font-weight:800;letter-spacing:-.05em">It's yours. 🎉</div><p style="margin:0;font-size:20px">Order confirmed. Redirecting to order details…</p><button onClick="{{ resetCheckout }}" style="width:max-content;height:50px;padding:0 24px;border-radius:99px;border:0;background:#1d1230;color:#ffb703;font-weight:700">Reset demo</button></div></sc-if>
+<sc-if value="{{ coEmpty }}"><div style="margin:40px 48px;padding:64px;border-radius:28px;border:2px dashed #1d1230;display:flex;flex-direction:column;gap:14px"><div style="font-size:52px;font-weight:800">Nothing to check out.</div><button onClick="{{ refill }}" style="width:max-content;height:54px;padding:0 26px;border-radius:99px;border:0;background:#1d1230;color:#ffb703;font-weight:700">Browse products</button></div></sc-if>
+</div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px"><div style="font:500 13px 'JetBrains Mono',monospace;color:#57506a">05 · SIGN IN (SIGNED-OUT HEADER)</div>
+<div data-screen-label="1b Sign in" style="background:#fff8ec;font-family:'Bricolage Grotesque',sans-serif;color:#1d1230;min-height:820px">
+<dc-import name="EShopHeader" concept="b" count="{{ count }}" signed-in="{{ false }}" search="{{ search }}" on-search="{{ onSearch }}" hint-size="100%,76px"></dc-import>
+<div style="padding:40px 48px 72px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;min-height:640px">
+<div style="background:#ffb703;border-radius:28px;padding:56px;display:flex;flex-direction:column;justify-content:flex-end;gap:16px"><div style="font-size:120px;line-height:.86;font-weight:800;letter-spacing:-.06em">Hey,<br>you're<br>back.</div><p style="margin:0;font-size:20px">Your bag missed you.</p></div>
+<div style="background:#fff;border:2px solid #1d1230;border-radius:28px;padding:56px;display:flex;flex-direction:column;justify-content:center">
+<sc-if value="{{ siForm }}" hint-placeholder-val="{{ true }}"><form onSubmit="{{ signIn }}" style="display:flex;flex-direction:column;gap:18px">
+<div style="font-size:40px;font-weight:800;letter-spacing:-.03em">Log in</div>
+<label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:700">Username<input value="{{ user }}" onChange="{{ onUser }}" autocomplete="username" style="height:56px;border:2px solid #1d1230;border-radius:14px;padding:0 16px;font-size:16px;outline:none;background:#fff8ec" style-focus="background:#fff;box-shadow:4px 4px 0 #ffb703"><sc-if value="{{ userErr }}"><span style="font-size:13px;color:#b42318">Username is required.</span></sc-if></label>
+<label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:700">Password<div style="display:flex;align-items:center;height:56px;border:2px solid #1d1230;border-radius:14px;padding:0 6px 0 16px;background:#fff8ec"><input type="{{ pwType }}" value="{{ pw }}" onChange="{{ onPw }}" autocomplete="current-password" style="flex:1;border:0;background:transparent;font-size:16px;outline:none"><button type="button" onClick="{{ togglePw }}" style="height:42px;padding:0 14px;border-radius:10px;border:0;background:#ece4ff;color:#4b2a99;font-weight:700">{{ pwToggle }}</button></div><sc-if value="{{ pwErr }}"><span style="font-size:13px;color:#b42318">Password is required.</span></sc-if></label>
+<sc-if value="{{ hasSiErr }}"><div role="alert" style="padding:12px 14px;border-radius:14px;background:#fde3e1;color:#7a1610;font-weight:600">{{ siErr }}</div></sc-if>
+<button type="submit" disabled="{{ siBusy }}" style="height:60px;border-radius:99px;border:0;background:#1d1230;color:#ffb703;font-size:18px;font-weight:800" style-hover="background:#4b2a99;color:#fff">{{ siLabel }}</button>
+<div style="font-size:16px">No account? <a href="#" style="color:#4b2a99;font-weight:700">Join EShop</a></div>
+</form></sc-if>
+<sc-if value="{{ siDone }}"><div style="display:flex;flex-direction:column;gap:12px"><div style="font-size:48px;font-weight:800">Hi {{ userShown }} 👋</div><p style="margin:0;font-size:18px">You're in. Heading back to the shop…</p><button onClick="{{ resetSignIn }}" style="width:max-content;height:48px;padding:0 22px;border-radius:99px;border:2px solid #1d1230;background:none;font-weight:700">Reset demo</button></div></sc-if>
+</div></div></div></div>
+</div>
+
+<!-- ================= 1c ================= -->
+<div id="1c" style="width:1440px;flex:none;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;align-items:center;gap:14px"><span style="background:#1d1230;color:#ffb703;font:600 16px 'JetBrains Mono',monospace;padding:6px 12px;border-radius:6px">1c</span><span style="font-size:26px;font-weight:800">Modern Marketplace</span><span style="font-size:16px;color:#57506a">IBM Plex Sans · search-first · filter rail · dense cards · mango buy buttons</span></div>
+
+<div style="display:flex;flex-direction:column;gap:10px"><div style="font:500 13px 'JetBrains Mono',monospace;color:#57506a">01 · DISCOVER</div>
+<div data-screen-label="1c Discover" style="background:#f6f5f8;font-family:'IBM Plex Sans',sans-serif;color:#1d1230;min-height:980px">
+<dc-import name="EShopHeader" concept="c" count="{{ count }}" signed-in="{{ signedIn }}" search="{{ search }}" on-search="{{ onSearch }}" cats="{{ cats }}" hint-size="100%,116px"></dc-import>
+<div style="padding:24px 32px 64px;display:grid;grid-template-columns:260px minmax(0,1fr);gap:24px;align-items:start">
+<aside style="background:#fff;border:1px solid #e4e1ea;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:18px">
+<div style="font-size:16px;font-weight:700">Filters</div>
+<div style="display:flex;flex-direction:column;gap:4px"><div style="font-size:12px;font-weight:600;letter-spacing:.06em;color:#57506a;margin-bottom:6px">CATEGORY</div>
+<sc-for list="{{ cats }}" as="c" hint-placeholder-count="5"><button onClick="{{ c.onClick }}" role="radio" aria-checked="{{ c.active }}" style="display:flex;align-items:center;gap:10px;height:36px;padding:0 8px;border:0;border-radius:6px;background:transparent;text-align:left;font-size:14px;color:#1d1230" style-hover="background:#f4f1fa"><sc-if value="{{ c.active }}"><span style="width:16px;height:16px;border-radius:50%;border:5px solid #4b2a99;box-sizing:border-box"></span></sc-if><sc-if value="{{ c.inactive }}"><span style="width:16px;height:16px;border-radius:50%;border:1.5px solid #9b94a8;box-sizing:border-box"></span></sc-if><span style="flex:1">{{ c.label }}</span><span style="font-size:12px;color:#57506a">{{ c.count }}</span></button></sc-for></div>
+<sc-if value="{{ hasFilters }}"><button onClick="{{ clearFilters }}" style="height:36px;border:1px solid #cbc6d6;border-radius:6px;background:#fff;font-size:14px;font-weight:600">Clear all</button></sc-if>
+<div style="padding-top:14px;border-top:1px solid #efedf3;font-size:12.5px;line-height:1.5;color:#57506a">The API doesn't support price, rating or stock filters, so they aren't shown.</div>
+</aside>
+<div style="display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid #e4e1ea;border-radius:8px;padding:10px 16px"><div style="font-size:14px"><b>{{ resultCount }}</b> results<sc-if value="{{ hasSearch }}"> for "<b>{{ search }}</b>"</sc-if><sc-if value="{{ hasCat }}"> in <b>{{ catLabel }}</b></sc-if></div><label style="display:flex;align-items:center;gap:8px;font-size:14px">Sort by<select value="{{ sort }}" onChange="{{ onSort }}" style="height:36px;border:1px solid #cbc6d6;border-radius:6px;padding:0 10px;font-size:14px;background:#fff"><option value="name-asc">Name: A to Z</option><option value="name-desc">Name: Z to A</option><option value="price-asc">Price: Low to High</option><option value="price-desc">Price: High to Low</option></select></label></div>
+<sc-if value="{{ hasResults }}" hint-placeholder-val="{{ true }}"><div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px">
+<sc-for list="{{ products }}" as="p" hint-placeholder-count="7"><article style="background:#fff;border:1px solid #e4e1ea;border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:10px" style-hover="box-shadow:0 6px 18px rgba(29,18,48,.1);border-color:#cbc6d6">
+<button onClick="{{ p.view }}" aria-label="View {{ p.name }}" style="aspect-ratio:1;border:0;padding:0;border-radius:6px;overflow:hidden;background:none;display:block"><dc-import name="ProductArt" kind="{{ p.kind }}" bg="#f4f1fa" ink="#1d1230" accent="#ffb703" hint-size="100%,100%" style="width:100%;height:100%"></dc-import></button>
+<div style="font-size:12px;color:#4b2a99;font-weight:600">{{ p.cat }}</div>
+<button onClick="{{ p.view }}" style="border:0;padding:0;background:none;text-align:left;font-size:16px;font-weight:600;color:#1d1230" style-hover="color:#4b2a99;text-decoration:underline">{{ p.name }}</button>
+<div style="font-size:22px;font-weight:700">{{ p.priceF }}</div>
+<button onClick="{{ p.add }}" style="height:40px;border:0;border-radius:20px;background:#ffb703;color:#1d1230;font-weight:600;font-size:14px" style-hover="background:#f5a300">{{ p.addLabel }}</button>
+</article></sc-for></div></sc-if>
+<sc-if value="{{ isLoading }}"><div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px"><sc-for list="{{ skeletons }}" as="s" hint-placeholder-count="4"><div style="background:#fff;border:1px solid #e4e1ea;border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:10px"><div style="aspect-ratio:1;background:#efedf3;border-radius:6px"></div><div style="height:12px;width:50%;background:#efedf3"></div><div style="height:16px;width:80%;background:#efedf3"></div><div style="height:40px;background:#efedf3;border-radius:20px"></div></div></sc-for></div></sc-if>
+<sc-if value="{{ isEmpty }}"><div style="background:#fff;border:1px solid #e4e1ea;border-radius:8px;padding:56px;display:flex;flex-direction:column;gap:10px;align-items:flex-start"><div style="font-size:22px;font-weight:700">No results found</div><p style="margin:0;color:#57506a">Check the spelling, or try a broader category.</p><button onClick="{{ clearFilters }}" style="margin-top:6px;height:40px;padding:0 18px;border:0;border-radius:6px;background:#4b2a99;color:#fff;font-weight:600">Clear all filters</button></div></sc-if>
+<sc-if value="{{ isError }}"><div role="alert" style="background:#fff4f2;border:1px solid #f1b9b2;border-radius:8px;padding:20px 24px;display:flex;justify-content:space-between;align-items:center"><div><div style="font-weight:700;color:#7a1610">Couldn't load products</div><div style="font-size:14px;color:#7a1610">The catalog service didn't respond. Try again in a moment.</div></div><button onClick="{{ retry }}" style="height:40px;padding:0 18px;border:1px solid #7a1610;border-radius:6px;background:#fff;color:#7a1610;font-weight:600">Retry</button></div></sc-if>
+<div style="display:flex;justify-content:center;gap:6px;padding-top:8px;font-size:14px"><span style="width:36px;height:36px;border-radius:6px;background:#4b2a99;color:#fff;display:grid;place-items:center;font-weight:600">1</span><span style="height:36px;display:grid;place-items:center;color:#57506a;padding:0 8px">Page 1 of 1 · 9 per page</span></div>
+</div></div></div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px"><div style="font:500 13px 'JetBrains Mono',monospace;color:#57506a">02 · PRODUCT DETAILS</div>
+<div data-screen-label="1c Product details" style="background:#f6f5f8;font-family:'IBM Plex Sans',sans-serif;color:#1d1230;min-height:900px">
+<dc-import name="EShopHeader" concept="c" count="{{ count }}" signed-in="{{ signedIn }}" search="{{ search }}" on-search="{{ onSearch }}" cats="{{ cats }}" hint-size="100%,116px"></dc-import>
+<div style="padding:16px 32px 0;font-size:13px;color:#57506a">All products › {{ d.cat }} › <span style="color:#1d1230">{{ d.name }}</span></div>
+<div style="padding:16px 32px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) 320px;gap:24px;align-items:start">
+<div style="background:#fff;border:1px solid #e4e1ea;border-radius:8px;padding:16px;aspect-ratio:1"><dc-import name="ProductArt" kind="{{ d.kind }}" bg="#f4f1fa" ink="#1d1230" accent="#ffb703" caption="{{ d.caption }}" hint-size="100%,100%" style="width:100%;height:100%"></dc-import></div>
+<div style="display:flex;flex-direction:column;gap:14px;padding-top:8px"><a href="#" style="font-size:14px;font-weight:600">Visit {{ d.cat }}</a><h2 style="margin:0;font-size:34px;font-weight:700;line-height:1.15">{{ d.name }}</h2><div style="font-size:30px;font-weight:700">{{ d.priceF }}</div><div style="padding-top:14px;border-top:1px solid #e4e1ea;display:flex;flex-direction:column;gap:6px"><div style="font-size:14px;font-weight:700">About this item</div><p style="margin:0;font-size:15px;line-height:1.6;color:#3d3550">{{ d.desc }}</p></div><div style="display:grid;grid-template-columns:120px 1fr;gap:6px;font-size:14px;padding-top:14px;border-top:1px solid #e4e1ea"><span style="color:#57506a">Category</span><span>{{ d.cat }}</span><span style="color:#57506a">Image file</span><span style="font-family:'JetBrains Mono',monospace;font-size:13px">{{ d.img }}</span></div></div>
+<div style="background:#fff;border:1px solid #e4e1ea;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:14px"><div style="font-size:26px;font-weight:700">{{ d.priceF }}</div>
+<label style="display:flex;align-items:center;justify-content:space-between;font-size:14px">Quantity<div style="display:flex;align-items:center;border:1px solid #cbc6d6;border-radius:6px"><button onClick="{{ dec }}" aria-label="Decrease quantity" style="width:40px;height:40px;border:0;background:none;font-size:16px">−</button><span style="width:32px;text-align:center;font-weight:600">{{ qty }}</span><button onClick="{{ inc }}" aria-label="Increase quantity" style="width:40px;height:40px;border:0;background:none;font-size:16px">+</button></div></label>
+<button onClick="{{ addSel }}" style="height:46px;border:0;border-radius:23px;background:#ffb703;color:#1d1230;font-weight:600;font-size:15px" style-hover="background:#f5a300">Add to Basket · {{ addSelTotal }}</button>
+<a href="#" style="height:46px;border-radius:23px;border:1px solid #4b2a99;display:grid;place-items:center;font-weight:600;text-decoration:none">Go to basket ({{ count }})</a>
+<sc-if value="{{ hasToast }}"><div role="status" style="padding:10px 12px;border-radius:6px;background:#eaf6ee;border:1px solid #a9d8b8;color:#14532d;font-size:14px">✓ {{ toast }}</div></sc-if>
+</div></div>
+<sc-if value="{{ hasRelated }}"><div style="padding:8px 32px 64px;display:flex;flex-direction:column;gap:12px"><div style="font-size:18px;font-weight:700">More in {{ d.cat }}</div><div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px"><sc-for list="{{ related }}" as="p" hint-placeholder-count="2"><button onClick="{{ p.view }}" style="background:#fff;border:1px solid #e4e1ea;border-radius:8px;padding:12px;display:flex;gap:12px;align-items:center;text-align:left" style-hover="border-color:#4b2a99"><div style="width:64px;height:64px;flex:none;border-radius:6px;overflow:hidden"><dc-import name="ProductArt" kind="{{ p.kind }}" bg="#f4f1fa" ink="#1d1230" accent="#ffb703" hint-size="100%,100%" style="width:100%;height:100%"></dc-import></div><div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:14px;font-weight:600">{{ p.name }}</span><span style="font-size:15px;font-weight:700">{{ p.priceF }}</span></div></button></sc-for></div></div></sc-if>
+</div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px"><div style="font:500 13px 'JetBrains Mono',monospace;color:#57506a">03 · BASKET</div>
+<div data-screen-label="1c Basket" style="background:#f6f5f8;font-family:'IBM Plex Sans',sans-serif;color:#1d1230;min-height:760px">
+<dc-import name="EShopHeader" concept="c" count="{{ count }}" signed-in="{{ signedIn }}" search="{{ search }}" on-search="{{ onSearch }}" cats="{{ cats }}" hint-size="100%,116px"></dc-import>
+<div style="padding:24px 32px 64px;display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start">
+<div style="background:#fff;border:1px solid #e4e1ea;border-radius:8px;padding:24px">
+<div style="display:flex;justify-content:space-between;align-items:baseline;padding-bottom:12px;border-bottom:1px solid #e4e1ea"><h2 style="margin:0;font-size:28px;font-weight:700">Shopping Basket</h2><span style="font-size:14px;color:#57506a">Price</span></div>
+<sc-if value="{{ basketHas }}" hint-placeholder-val="{{ true }}"><div style="display:flex;flex-direction:column"><sc-for list="{{ basketItems }}" as="i" hint-placeholder-count="1"><div style="display:grid;grid-template-columns:120px minmax(0,1fr) auto;gap:20px;padding:20px 0;border-bottom:1px solid #e4e1ea">
+<div style="width:120px;height:120px;border-radius:6px;overflow:hidden"><dc-import name="ProductArt" kind="{{ i.kind }}" bg="#f4f1fa" ink="#1d1230" accent="#ffb703" hint-size="100%,100%" style="width:100%;height:100%"></dc-import></div>
+<div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:18px;font-weight:600">{{ i.name }}</span><span style="font-size:13px;color:#4b2a99">{{ i.cat }}</span><span style="font-size:13px;color:#57506a">{{ i.unitF }} each</span><div style="display:flex;align-items:center;gap:14px;margin-top:6px"><div style="display:flex;align-items:center;border:1px solid #cbc6d6;border-radius:18px;background:#faf9fc"><button onClick="{{ i.dec }}" aria-label="Decrease" style="width:36px;height:36px;border:0;background:none">−</button><span style="width:28px;text-align:center;font-weight:600">{{ i.qty }}</span><button onClick="{{ i.inc }}" aria-label="Increase" style="width:36px;height:36px;border:0;background:none">+</button></div><span style="width:1px;height:16px;background:#e4e1ea"></span><button onClick="{{ i.remove }}" style="border:0;background:none;padding:0;color:#4b2a99;font-size:14px">Delete</button></div></div>
+<span style="font-size:20px;font-weight:700">{{ i.lineF }}</span>
+</div></sc-for>
+<div style="display:flex;justify-content:space-between;padding-top:16px"><div style="display:flex;gap:18px;font-size:14px"><button onClick="{{ clearBasket }}" style="border:0;background:none;padding:0;color:#4b2a99">Clear basket</button><a href="#">Continue shopping</a></div><span style="font-size:18px">Subtotal ({{ count }} items): <b>{{ subtotalF }}</b></span></div></div></sc-if>
+<sc-if value="{{ basketEmpty }}"><div style="padding:40px 0;display:flex;flex-direction:column;gap:10px;align-items:flex-start"><div style="font-size:20px;font-weight:700">Your EShop basket is empty</div><p style="margin:0;color:#57506a">Search or browse a category to add items.</p><button onClick="{{ refill }}" style="height:40px;padding:0 18px;border:0;border-radius:20px;background:#ffb703;font-weight:600">Browse products</button></div></sc-if>
+</div>
+<aside style="background:#fff;border:1px solid #e4e1ea;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:14px"><div style="font-size:18px">Subtotal ({{ count }} items): <b>{{ subtotalF }}</b></div><div style="font-size:13px;color:#57506a">The total is confirmed by the ordering service at checkout.</div><button style="height:44px;border:0;border-radius:22px;background:#ffb703;font-weight:600;font-size:15px" style-hover="background:#f5a300">Proceed to Checkout</button></aside>
+</div></div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px"><div style="font:500 13px 'JetBrains Mono',monospace;color:#57506a">04 · CHECKOUT</div>
+<div data-screen-label="1c Checkout" style="background:#f6f5f8;font-family:'IBM Plex Sans',sans-serif;color:#1d1230;min-height:1000px">
+<div style="display:flex;align-items:center;justify-content:space-between;padding:16px 32px;background:#fff;border-bottom:1px solid #e4e1ea"><div style="display:flex;align-items:center;gap:10px"><div style="width:34px;height:34px;border-radius:8px;background:#4b2a99;color:#ffb703;display:grid;place-items:center;font-weight:700">E</div><span style="font-size:20px;font-weight:700">EShop</span><span style="margin-left:14px;font-size:20px;color:#57506a">Checkout ({{ count }} items)</span></div><span style="font-size:13px;color:#57506a">🔒 Secure demo checkout</span></div>
+<sc-if value="{{ coForm }}" hint-placeholder-val="{{ true }}"><div style="padding:24px 32px 64px;display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;gap:0;background:#fff;border:1px solid #e4e1ea;border-radius:8px;overflow:hidden;font-size:14px;font-weight:600"><span style="flex:1;padding:12px 16px;background:#f4f1fa;color:#4b2a99">✓ Basket</span><span style="flex:1;padding:12px 16px;background:#4b2a99;color:#fff">2 Shipping &amp; payment</span><span style="flex:1;padding:12px 16px;color:#57506a">3 Confirmation</span></div>
+<div style="background:#fff;border:1px solid #e4e1ea;border-radius:8px;padding:24px;display:flex;flex-direction:column;gap:14px"><div style="font-size:18px;font-weight:700">1. Shipping &amp; billing address</div>
+<sc-for list="{{ shipRows }}" as="r" hint-placeholder-count="4"><div style="display:flex;gap:12px"><sc-for list="{{ r.cols }}" as="fl" hint-placeholder-count="2"><label style="flex:1;display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:600">{{ fl.label }}<input value="{{ fl.value }}" onChange="{{ fl.onChange }}" placeholder="{{ fl.ph }}" style="height:40px;border:1px solid #9b94a8;border-radius:6px;padding:0 12px;font-size:15px;outline:none;box-shadow:{{ fl.ring }}" style-focus="border-color:#4b2a99;box-shadow:0 0 0 3px #e5dcfb"><sc-if value="{{ fl.hasErr }}"><span style="font-size:12.5px;font-weight:500;color:#b42318">⚠ {{ fl.err }}</span></sc-if></label></sc-for></div></sc-for></div>
+<div style="background:#fff;border:1px solid #e4e1ea;border-radius:8px;padding:24px;display:flex;flex-direction:column;gap:14px"><div style="font-size:18px;font-weight:700">2. Payment method</div><div style="padding:10px 12px;border-radius:6px;background:#fff8e6;border:1px solid #ffd77a;font-size:13.5px">Demo only. No real payment is processed, and any valid-format values work.</div>
+<sc-for list="{{ payRows }}" as="r" hint-placeholder-count="2"><div style="display:flex;gap:12px"><sc-for list="{{ r.cols }}" as="fl" hint-placeholder-count="2"><label style="flex:1;display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:600">{{ fl.label }}<input value="{{ fl.value }}" onChange="{{ fl.onChange }}" placeholder="{{ fl.ph }}" style="height:40px;border:1px solid #9b94a8;border-radius:6px;padding:0 12px;font-size:15px;outline:none;box-shadow:{{ fl.ring }}" style-focus="border-color:#4b2a99;box-shadow:0 0 0 3px #e5dcfb"><sc-if value="{{ fl.hasErr }}"><span style="font-size:12.5px;font-weight:500;color:#b42318">⚠ {{ fl.err }}</span></sc-if></label></sc-for></div></sc-for></div>
+</div>
+<aside style="position:sticky;top:24px;background:#fff;border:1px solid #e4e1ea;border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:12px">
+<button onClick="{{ placeOrder }}" disabled="{{ coBusy }}" style="height:44px;border:0;border-radius:22px;background:#ffb703;font-weight:600;font-size:15px" style-hover="background:#f5a300">{{ placeLabel }}</button>
+<sc-if value="{{ hasCoErr }}"><div role="alert" style="padding:10px 12px;border-radius:6px;background:#fff4f2;border:1px solid #f1b9b2;color:#7a1610;font-size:13.5px">{{ coErr }}</div></sc-if>
+<div style="font-size:16px;font-weight:700;padding-top:6px;border-top:1px solid #e4e1ea">Order summary</div>
+<sc-for list="{{ basketItems }}" as="i" hint-placeholder-count="1"><div style="display:flex;gap:10px;align-items:center;font-size:14px"><div style="width:44px;height:44px;flex:none;border-radius:4px;overflow:hidden"><dc-import name="ProductArt" kind="{{ i.kind }}" bg="#f4f1fa" ink="#1d1230" accent="#ffb703" hint-size="100%,100%" style="width:100%;height:100%"></dc-import></div><span style="flex:1">{{ i.name }} × {{ i.qty }}</span><span>{{ i.lineF }}</span></div></sc-for>
+<div style="display:flex;justify-content:space-between;padding-top:10px;border-top:1px solid #e4e1ea;font-size:20px;font-weight:700;color:#4b2a99"><span>Order total</span><span>{{ subtotalF }}</span></div>
+</aside></div></sc-if>
+<sc-if value="{{ coPlaced }}"><div style="margin:24px 32px;background:#fff;border:1px solid #a9d8b8;border-radius:8px;padding:32px;display:flex;flex-direction:column;gap:8px"><div style="font-size:22px;font-weight:700;color:#14532d">✓ Order placed, thank you!</div><div style="font-size:15px">Order <b>{{ orderId }}</b> has been confirmed by the ordering service. Redirecting to order details…</div><button onClick="{{ resetCheckout }}" style="width:max-content;margin-top:8px;height:38px;padding:0 16px;border:1px solid #cbc6d6;border-radius:6px;background:#fff">Reset demo</button></div></sc-if>
+<sc-if value="{{ coEmpty }}"><div style="margin:24px 32px;background:#fff;border:1px solid #e4e1ea;border-radius:8px;padding:32px;display:flex;flex-direction:column;gap:10px"><div style="font-size:20px;font-weight:700">Your basket is empty. Add something before checking out.</div><button onClick="{{ refill }}" style="width:max-content;height:40px;padding:0 18px;border:0;border-radius:20px;background:#ffb703;font-weight:600">Browse products</button></div></sc-if>
+</div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px"><div style="font:500 13px 'JetBrains Mono',monospace;color:#57506a">05 · SIGN IN (SIGNED-OUT HEADER)</div>
+<div data-screen-label="1c Sign in" style="background:#f6f5f8;font-family:'IBM Plex Sans',sans-serif;color:#1d1230;min-height:820px">
+<dc-import name="EShopHeader" concept="c" count="{{ count }}" signed-in="{{ false }}" search="{{ search }}" on-search="{{ onSearch }}" cats="{{ cats }}" hint-size="100%,116px"></dc-import>
+<div style="padding:56px 32px;display:flex;flex-direction:column;align-items:center;gap:18px">
+<div style="width:400px;background:#fff;border:1px solid #e4e1ea;border-radius:8px;padding:28px">
+<sc-if value="{{ siForm }}" hint-placeholder-val="{{ true }}"><form onSubmit="{{ signIn }}" style="display:flex;flex-direction:column;gap:14px">
+<div style="font-size:26px;font-weight:700">Sign in</div>
+<label style="display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:600">Username<input value="{{ user }}" onChange="{{ onUser }}" autocomplete="username" style="height:40px;border:1px solid #9b94a8;border-radius:6px;padding:0 12px;font-size:15px;outline:none" style-focus="border-color:#4b2a99;box-shadow:0 0 0 3px #e5dcfb"><sc-if value="{{ userErr }}"><span style="font-size:12.5px;font-weight:500;color:#b42318">⚠ Enter your username</span></sc-if></label>
+<label style="display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:600"><span style="display:flex;justify-content:space-between">Password<button type="button" onClick="{{ togglePw }}" style="border:0;background:none;padding:0;color:#4b2a99;font-size:13px">{{ pwToggle }}</button></span><input type="{{ pwType }}" value="{{ pw }}" onChange="{{ onPw }}" autocomplete="current-password" style="height:40px;border:1px solid #9b94a8;border-radius:6px;padding:0 12px;font-size:15px;outline:none" style-focus="border-color:#4b2a99;box-shadow:0 0 0 3px #e5dcfb"><sc-if value="{{ pwErr }}"><span style="font-size:12.5px;font-weight:500;color:#b42318">⚠ Enter your password</span></sc-if></label>
+<sc-if value="{{ hasSiErr }}"><div role="alert" style="padding:10px 12px;border-radius:6px;background:#fff4f2;border:1px solid #f1b9b2;color:#7a1610;font-size:13.5px">{{ siErr }}</div></sc-if>
+<button type="submit" disabled="{{ siBusy }}" style="height:40px;border:0;border-radius:20px;background:#ffb703;font-weight:600" style-hover="background:#f5a300">{{ siLabel }}</button>
+</form></sc-if>
+<sc-if value="{{ siDone }}"><div style="display:flex;flex-direction:column;gap:8px"><div style="font-size:20px;font-weight:700;color:#14532d">✓ Signed in as {{ userShown }}</div><div style="font-size:14px;color:#57506a">Returning to the page you were on…</div><button onClick="{{ resetSignIn }}" style="width:max-content;height:36px;padding:0 14px;border:1px solid #cbc6d6;border-radius:6px;background:#fff">Reset demo</button></div></sc-if>
+</div>
+<div style="width:400px;display:flex;align-items:center;gap:10px;font-size:12px;color:#57506a"><span style="flex:1;height:1px;background:#e4e1ea"></span>New to EShop?<span style="flex:1;height:1px;background:#e4e1ea"></span></div>
+<a href="#" style="width:400px;height:38px;border:1px solid #cbc6d6;border-radius:8px;background:#fff;display:grid;place-items:center;color:#1d1230;font-size:14px;text-decoration:none">Create your EShop account</a>
+</div></div></div>
+</div>
+
+<!-- ================= 1d ================= -->
+<div id="1d" style="width:1440px;flex:none;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;align-items:center;gap:14px"><span style="background:#ffb703;color:#1d1230;font:600 16px 'JetBrains Mono',monospace;padding:6px 12px;border-radius:6px">1d</span><span style="font-size:26px;font-weight:800">Refined EShop Signature</span><span style="padding:4px 10px;border-radius:99px;background:#4b2a99;color:#fff;font-size:13px;font-weight:700">Recommended</span><span style="font-size:16px;color:#57506a">Plus Jakarta Sans · warm white · grape for identity · mango for action</span></div>
+
+<div style="display:flex;flex-direction:column;gap:10px"><div style="font:500 13px 'JetBrains Mono',monospace;color:#57506a">01 · DISCOVER</div>
+<div data-screen-label="1d Discover" style="background:#fffdf8;font-family:'Plus Jakarta Sans',sans-serif;color:#1d1230;min-height:980px">
+<dc-import name="EShopHeader" concept="d" count="{{ count }}" signed-in="{{ signedIn }}" search="{{ search }}" on-search="{{ onSearch }}" hint-size="100%,76px"></dc-import>
+<div style="max-width:1296px;margin:0 auto;padding:48px 48px 72px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px"><div style="display:flex;flex-direction:column;gap:8px"><h2 style="margin:0;font-size:52px;font-weight:800;letter-spacing:-.035em">Discover</h2><p style="margin:0;font-size:17px;color:#57506a">Fresh picks, great prices. Phones, cameras and home essentials.</p></div><span style="font-size:14px;color:#57506a">{{ resultLabel }}</span></div>
+<div style="display:flex;align-items:center;gap:10px;padding-bottom:20px;border-bottom:1px solid #f0e8d8">
+<sc-for list="{{ cats }}" as="c" hint-placeholder-count="5"><sc-if value="{{ c.active }}"><button onClick="{{ c.onClick }}" aria-pressed="true" style="height:40px;padding:0 16px;border-radius:12px;border:1.5px solid #4b2a99;background:#f1ecff;color:#4b2a99;font-weight:700;font-size:14px;display:flex;align-items:center;gap:8px">{{ c.label }}<span style="font-size:12px;opacity:.8">{{ c.count }}</span></button></sc-if><sc-if value="{{ c.inactive }}"><button onClick="{{ c.onClick }}" aria-pressed="false" style="height:40px;padding:0 16px;border-radius:12px;border:1px solid #e6dcc8;background:#fff;color:#3d3550;font-weight:600;font-size:14px;display:flex;align-items:center;gap:8px" style-hover="border-color:#4b2a99;color:#4b2a99">{{ c.label }}<span style="font-size:12px;color:#8a8296">{{ c.count }}</span></button></sc-if></sc-for>
+<label style="margin-left:auto;display:flex;align-items:center;gap:10px;font-size:14px;color:#57506a">Sort by<select value="{{ sort }}" onChange="{{ onSort }}" style="height:40px;padding:0 12px;border-radius:12px;border:1px solid #e6dcc8;background:#fff;font-size:14px;font-weight:600;color:#1d1230"><option value="name-asc">Name (A–Z)</option><option value="name-desc">Name (Z–A)</option><option value="price-asc">Price: low to high</option><option value="price-desc">Price: high to low</option></select></label>
+</div>
+<sc-if value="{{ hasResults }}" hint-placeholder-val="{{ true }}"><div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px">
+<sc-for list="{{ products }}" as="p" hint-placeholder-count="7"><article style="background:#fff;border:1px solid #efe6d4;border-radius:18px;overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .2s,transform .2s" style-hover="box-shadow:0 18px 36px -20px rgba(29,18,48,.35);transform:translateY(-3px)">
+<button onClick="{{ p.view }}" aria-label="View {{ p.name }}" style="aspect-ratio:1;border:0;padding:0;background:none;display:block"><dc-import name="ProductArt" kind="{{ p.kind }}" bg="#fff4dc" ink="#1d1230" accent="#4b2a99" hint-size="100%,100%" style="width:100%;height:100%"></dc-import></button>
+<div style="padding:16px 18px 18px;display:flex;flex-direction:column;gap:6px"><span style="font-size:11.5px;font-weight:700;letter-spacing:.08em;color:#4b2a99">{{ p.catUpper }}</span><button onClick="{{ p.view }}" style="border:0;padding:0;background:none;text-align:left;font-size:17px;font-weight:700;color:#1d1230" style-hover="color:#4b2a99">{{ p.name }}</button>
+<div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px"><span style="font-size:21px;font-weight:800;letter-spacing:-.01em">{{ p.priceF }}</span>
+<sc-if value="{{ p.notInBasket }}" hint-placeholder-val="{{ true }}"><button onClick="{{ p.add }}" aria-label="Add {{ p.name }} to basket" style="height:40px;padding:0 16px;border-radius:12px;border:0;background:#ffb703;color:#1d1230;font-weight:700;font-size:14px" style-hover="background:#f5a300">Add</button></sc-if>
+<sc-if value="{{ p.inBasket }}"><button onClick="{{ p.add }}" aria-label="Add another {{ p.name }}" style="height:40px;padding:0 14px;border-radius:12px;border:1px solid #d9ccf7;background:#f1ecff;color:#4b2a99;font-weight:700;font-size:13.5px">✓ In basket · {{ p.qtyIn }}</button></sc-if></div></div>
+</article></sc-for></div></sc-if>
+<sc-if value="{{ isLoading }}"><div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px"><sc-for list="{{ skeletons }}" as="s" hint-placeholder-count="4"><div style="background:#fff;border:1px solid #efe6d4;border-radius:18px;overflow:hidden"><div style="aspect-ratio:1;background:#fbf3e2"></div><div style="padding:16px 18px;display:flex;flex-direction:column;gap:10px"><div style="height:10px;width:40%;border-radius:4px;background:#f3ead8"></div><div style="height:16px;width:70%;border-radius:4px;background:#f3ead8"></div><div style="height:22px;width:45%;border-radius:4px;background:#f3ead8"></div></div></div></sc-for></div></sc-if>
+<sc-if value="{{ isEmpty }}"><div style="padding:72px;border-radius:18px;background:#fff;border:1px dashed #e6dcc8;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center"><div style="width:56px;height:56px;border-radius:16px;background:#f1ecff;display:grid;place-items:center;font-size:22px;color:#4b2a99;font-weight:800">?</div><div style="font-size:24px;font-weight:800">No products match your filters</div><p style="margin:0;color:#57506a">Try a different category, or clear your search.</p><button onClick="{{ clearFilters }}" style="margin-top:6px;height:46px;padding:0 22px;border-radius:12px;border:0;background:#ffb703;color:#1d1230;font-weight:700">Clear filters</button></div></sc-if>
+<sc-if value="{{ isError }}"><div role="alert" style="padding:24px 28px;border-radius:18px;background:#fff6f5;border:1px solid #f4c7c1;display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:18px;font-weight:800;color:#7a1610">We couldn't load products</div><p style="margin:4px 0 0;color:#7a1610">The catalog service didn't respond. Your basket is unaffected.</p></div><button onClick="{{ retry }}" style="height:44px;padding:0 20px;border-radius:12px;border:1px solid #7a1610;background:#fff;color:#7a1610;font-weight:700">Try again</button></div></sc-if>
+</div></div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px"><div style="font:500 13px 'JetBrains Mono',monospace;color:#57506a">02 · PRODUCT DETAILS</div>
+<div data-screen-label="1d Product details" style="background:#fffdf8;font-family:'Plus Jakarta Sans',sans-serif;color:#1d1230;min-height:900px">
+<dc-import name="EShopHeader" concept="d" count="{{ count }}" signed-in="{{ signedIn }}" search="{{ search }}" on-search="{{ onSearch }}" hint-size="100%,76px"></dc-import>
+<div style="max-width:1296px;margin:0 auto;padding:32px 48px 72px;display:flex;flex-direction:column;gap:24px">
+<a href="#" style="font-size:14px;font-weight:700;color:#4b2a99">← Back to products</a>
+<div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:start">
+<div style="aspect-ratio:1;border-radius:24px;overflow:hidden;border:1px solid #efe6d4"><dc-import name="ProductArt" kind="{{ d.kind }}" bg="#fff4dc" ink="#1d1230" accent="#4b2a99" caption="{{ d.caption }}" hint-size="100%,100%" style="width:100%;height:100%"></dc-import></div>
+<div style="display:flex;flex-direction:column;gap:22px;padding-top:12px">
+<span style="width:max-content;padding:6px 12px;border-radius:99px;background:#f1ecff;color:#4b2a99;font-size:12.5px;font-weight:700;letter-spacing:.06em">{{ d.catUpper }}</span>
+<h2 style="margin:0;font-size:52px;line-height:1.02;font-weight:800;letter-spacing:-.035em">{{ d.name }}</h2>
+<div style="font-size:36px;font-weight:800;letter-spacing:-.02em">{{ d.priceF }}</div>
+<p style="margin:0;font-size:17px;line-height:1.65;color:#3d3550;text-wrap:pretty;max-width:520px">{{ d.desc }}</p>
+<div style="height:1px;background:#f0e8d8"></div>
+<div style="display:flex;align-items:center;gap:14px">
+<div role="group" aria-label="Quantity" style="display:flex;align-items:center;height:56px;border:1px solid #e6dcc8;border-radius:14px;background:#fff"><button onClick="{{ dec }}" aria-label="Decrease quantity" style="width:52px;height:54px;border:0;background:none;font-size:20px;border-radius:14px 0 0 14px" style-hover="background:#faf6ee">−</button><span style="width:40px;text-align:center;font-size:17px;font-weight:700">{{ qty }}</span><button onClick="{{ inc }}" aria-label="Increase quantity" style="width:52px;height:54px;border:0;background:none;font-size:20px;border-radius:0 14px 14px 0" style-hover="background:#faf6ee">+</button></div>
+<button onClick="{{ addSel }}" style="flex:1;max-width:340px;height:56px;border-radius:14px;border:0;background:#ffb703;color:#1d1230;font-size:16px;font-weight:800" style-hover="background:#f5a300">Add to basket · {{ addSelTotal }}</button></div>
+<sc-if value="{{ hasToast }}"><div role="status" style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:14px;background:#f1ecff;color:#2e1a66;font-size:14.5px;font-weight:600;max-width:520px"><span style="width:24px;height:24px;border-radius:50%;background:#4b2a99;color:#fff;display:grid;place-items:center;font-size:13px">✓</span><span style="flex:1">{{ toast }}</span><a href="#" style="font-weight:800">View basket</a></div></sc-if>
+</div></div>
+<sc-if value="{{ hasRelated }}"><div style="display:flex;flex-direction:column;gap:14px;padding-top:24px"><div style="font-size:20px;font-weight:800">More in {{ d.cat }}</div><div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px"><sc-for list="{{ related }}" as="p" hint-placeholder-count="2"><button onClick="{{ p.view }}" style="display:flex;gap:14px;align-items:center;padding:12px;border:1px solid #efe6d4;border-radius:16px;background:#fff;text-align:left" style-hover="border-color:#4b2a99"><div style="width:72px;height:72px;flex:none;border-radius:12px;overflow:hidden"><dc-import name="ProductArt" kind="{{ p.kind }}" bg="#fff4dc" ink="#1d1230" accent="#4b2a99" hint-size="100%,100%" style="width:100%;height:100%"></dc-import></div><div style="display:flex;flex-direction:column;gap:4px"><span style="font-weight:700">{{ p.name }}</span><span style="font-weight:800">{{ p.priceF }}</span></div></button></sc-for></div></div></sc-if>
+</div></div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px"><div style="font:500 13px 'JetBrains Mono',monospace;color:#57506a">03 · BASKET</div>
+<div data-screen-label="1d Basket" style="background:#fffdf8;font-family:'Plus Jakarta Sans',sans-serif;color:#1d1230;min-height:760px">
+<dc-import name="EShopHeader" concept="d" count="{{ count }}" signed-in="{{ signedIn }}" search="{{ search }}" on-search="{{ onSearch }}" hint-size="100%,76px"></dc-import>
+<div style="max-width:1296px;margin:0 auto;padding:48px 48px 72px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;align-items:baseline;gap:14px"><h2 style="margin:0;font-size:44px;font-weight:800;letter-spacing:-.035em">Your basket</h2><span style="padding:4px 12px;border-radius:99px;background:#f1ecff;color:#4b2a99;font-weight:700;font-size:14px">{{ countLabel }}</span></div>
+<sc-if value="{{ basketHas }}" hint-placeholder-val="{{ true }}"><div style="display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:32px;align-items:start">
+<div style="background:#fff;border:1px solid #efe6d4;border-radius:20px;overflow:hidden">
+<div style="display:grid;grid-template-columns:minmax(0,1fr) 120px 150px 130px 56px;gap:16px;padding:14px 24px;background:#fffaf0;border-bottom:1px solid #efe6d4;font-size:12px;font-weight:700;letter-spacing:.08em;color:#57506a"><span>PRODUCT</span><span>UNIT PRICE</span><span>QUANTITY</span><span style="text-align:right">TOTAL</span><span></span></div>
+<sc-for list="{{ basketItems }}" as="i" hint-placeholder-count="1"><div style="display:grid;grid-template-columns:minmax(0,1fr) 120px 150px 130px 56px;gap:16px;align-items:center;padding:18px 24px;border-bottom:1px solid #f4ede0">
+<div style="display:flex;align-items:center;gap:16px"><div style="width:80px;height:80px;flex:none;border-radius:14px;overflow:hidden"><dc-import name="ProductArt" kind="{{ i.kind }}" bg="#fff4dc" ink="#1d1230" accent="#4b2a99" hint-size="100%,100%" style="width:100%;height:100%"></dc-import></div><div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:16px;font-weight:700">{{ i.name }}</span><span style="font-size:11.5px;font-weight:700;letter-spacing:.08em;color:#4b2a99">{{ i.catUpper }}</span></div></div>
+<span style="font-size:15px;color:#3d3550">{{ i.unitF }}</span>
+<div role="group" aria-label="Quantity for {{ i.name }}" style="display:flex;align-items:center;width:max-content;height:44px;border:1px solid #e6dcc8;border-radius:12px"><button onClick="{{ i.dec }}" aria-label="Decrease" style="width:42px;height:42px;border:0;background:none;font-size:17px">−</button><span style="width:30px;text-align:center;font-weight:700">{{ i.qty }}</span><button onClick="{{ i.inc }}" aria-label="Increase" style="width:42px;height:42px;border:0;background:none;font-size:17px">+</button></div>
+<span style="text-align:right;font-size:17px;font-weight:800">{{ i.lineF }}</span>
+<button onClick="{{ i.remove }}" aria-label="Remove {{ i.name }}" style="width:44px;height:44px;border-radius:12px;border:1px solid transparent;background:none;color:#57506a;font-size:18px" style-hover="background:#fff6f5;border-color:#f4c7c1;color:#b42318">×</button>
+</div></sc-for>
+<div style="display:flex;justify-content:space-between;padding:16px 24px"><a href="#" style="font-weight:700;font-size:14px">← Continue shopping</a><button onClick="{{ clearBasket }}" style="border:0;background:none;padding:0;color:#57506a;font-weight:600;font-size:14px" style-hover="color:#b42318">Clear basket</button></div>
+</div>
+<aside style="position:sticky;top:24px;background:#fff;border:1px solid #efe6d4;border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:14px;box-shadow:0 18px 36px -28px rgba(29,18,48,.35)"><div style="font-size:18px;font-weight:800">Order summary</div><div style="display:flex;justify-content:space-between;font-size:15px;color:#3d3550"><span>Subtotal ({{ count }} items)</span><span>{{ subtotalF }}</span></div><div style="display:flex;justify-content:space-between;align-items:baseline;padding-top:14px;border-top:1px dashed #e6dcc8"><span style="font-size:17px;font-weight:700">Total</span><span style="font-size:30px;font-weight:800;letter-spacing:-.02em">{{ subtotalF }}</span></div><button style="height:56px;border-radius:14px;border:0;background:#ffb703;color:#1d1230;font-size:16px;font-weight:800" style-hover="background:#f5a300">Proceed to checkout</button><div style="font-size:12.5px;color:#57506a;text-align:center">Payment is demo-only. Nothing is charged.</div></aside>
+</div></sc-if>
+<sc-if value="{{ basketEmpty }}"><div style="padding:72px;border-radius:20px;background:#fff;border:1px solid #efe6d4;display:grid;grid-template-columns:200px 1fr;gap:40px;align-items:center"><div style="aspect-ratio:1;border-radius:24px;overflow:hidden"><dc-import name="ProductArt" kind="kitchen" bg="#f1ecff" ink="#1d1230" accent="#ffb703" hint-size="100%,100%" style="width:100%;height:100%"></dc-import></div><div style="display:flex;flex-direction:column;gap:12px"><div style="font-size:32px;font-weight:800;letter-spacing:-.02em">Your basket is empty</div><p style="margin:0;font-size:16px;color:#57506a">Browse fresh picks and add what you love. It'll wait here for you.</p><button onClick="{{ refill }}" style="width:max-content;margin-top:6px;height:50px;padding:0 24px;border-radius:14px;border:0;background:#ffb703;color:#1d1230;font-weight:800">Browse products</button></div></div></sc-if>
+</div></div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px"><div style="font:500 13px 'JetBrains Mono',monospace;color:#57506a">04 · CHECKOUT</div>
+<div data-screen-label="1d Checkout" style="background:#fffdf8;font-family:'Plus Jakarta Sans',sans-serif;color:#1d1230;min-height:1000px">
+<dc-import name="EShopHeader" concept="d" count="{{ count }}" signed-in="{{ signedIn }}" search="{{ search }}" on-search="{{ onSearch }}" hint-size="100%,76px"></dc-import>
+<div style="max-width:1296px;margin:0 auto;padding:40px 48px 72px;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0;font-size:44px;font-weight:800;letter-spacing:-.035em">Checkout</h2>
+<ol aria-label="Progress" style="margin:0;padding:0;list-style:none;display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700"><li style="display:flex;align-items:center;gap:8px;color:#4b2a99"><span style="width:26px;height:26px;border-radius:50%;background:#4b2a99;color:#fff;display:grid;place-items:center;font-size:12px">✓</span>Basket</li><li style="width:32px;height:2px;background:#4b2a99"></li><li style="display:flex;align-items:center;gap:8px;color:#1d1230"><span style="width:26px;height:26px;border-radius:50%;background:#ffb703;display:grid;place-items:center;font-size:12px">2</span>Details</li><li style="width:32px;height:2px;background:#e6dcc8"></li><li style="display:flex;align-items:center;gap:8px;color:#8a8296"><span style="width:26px;height:26px;border-radius:50%;border:1.5px solid #cfc5b2;box-sizing:border-box;display:grid;place-items:center;font-size:12px">3</span>Order placed</li></ol></div>
+<sc-if value="{{ coForm }}" hint-placeholder-val="{{ true }}"><div style="display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:32px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:20px">
+<div style="background:#fff;border:1px solid #efe6d4;border-radius:20px;padding:28px;display:flex;flex-direction:column;gap:16px"><div style="display:flex;align-items:center;gap:12px"><span style="width:30px;height:30px;border-radius:50%;background:#4b2a99;color:#fff;display:grid;place-items:center;font-size:14px;font-weight:800">1</span><span style="font-size:19px;font-weight:800">Shipping &amp; billing address</span></div>
+<sc-for list="{{ shipRows }}" as="r" hint-placeholder-count="4"><div style="display:flex;gap:16px"><sc-for list="{{ r.cols }}" as="fl" hint-placeholder-count="2"><label style="flex:1;display:flex;flex-direction:column;gap:6px;font-size:13.5px;font-weight:700;color:#3d3550">{{ fl.label }}<input value="{{ fl.value }}" onChange="{{ fl.onChange }}" placeholder="{{ fl.ph }}" style="height:48px;border:1px solid #e0d6c2;border-radius:12px;padding:0 14px;font-size:15px;color:#1d1230;background:#fffdf8;outline:none;box-shadow:{{ fl.ring }}" style-focus="border-color:#4b2a99;background:#fff;box-shadow:0 0 0 4px #ece4ff"><sc-if value="{{ fl.hasErr }}"><span style="font-size:12.5px;font-weight:600;color:#b42318">{{ fl.err }}</span></sc-if></label></sc-for></div></sc-for></div>
+<div style="background:#fff;border:1px solid #efe6d4;border-radius:20px;padding:28px;display:flex;flex-direction:column;gap:16px"><div style="display:flex;align-items:center;gap:12px"><span style="width:30px;height:30px;border-radius:50%;background:#4b2a99;color:#fff;display:grid;place-items:center;font-size:14px;font-weight:800">2</span><span style="font-size:19px;font-weight:800">Payment</span></div>
+<div style="display:flex;gap:10px;align-items:center;padding:12px 14px;border-radius:12px;background:#fff4dc;font-size:14px;color:#3d2a00"><b>Demo only.</b> No real payment is processed. Any values in a valid format will work.</div>
+<sc-for list="{{ payRows }}" as="r" hint-placeholder-count="2"><div style="display:flex;gap:16px"><sc-for list="{{ r.cols }}" as="fl" hint-placeholder-count="2"><label style="flex:1;display:flex;flex-direction:column;gap:6px;font-size:13.5px;font-weight:700;color:#3d3550">{{ fl.label }}<input value="{{ fl.value }}" onChange="{{ fl.onChange }}" placeholder="{{ fl.ph }}" style="height:48px;border:1px solid #e0d6c2;border-radius:12px;padding:0 14px;font-size:15px;color:#1d1230;background:#fffdf8;outline:none;box-shadow:{{ fl.ring }}" style-focus="border-color:#4b2a99;background:#fff;box-shadow:0 0 0 4px #ece4ff"><sc-if value="{{ fl.hasErr }}"><span style="font-size:12.5px;font-weight:600;color:#b42318">{{ fl.err }}</span></sc-if></label></sc-for></div></sc-for></div>
+</div>
+<aside style="position:sticky;top:24px;background:#fff;border:1px solid #efe6d4;border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:14px;box-shadow:0 18px 36px -28px rgba(29,18,48,.35)"><div style="font-size:18px;font-weight:800">Order summary</div>
+<sc-for list="{{ basketItems }}" as="i" hint-placeholder-count="1"><div style="display:flex;gap:12px;align-items:center"><div style="width:52px;height:52px;flex:none;border-radius:10px;overflow:hidden"><dc-import name="ProductArt" kind="{{ i.kind }}" bg="#fff4dc" ink="#1d1230" accent="#4b2a99" hint-size="100%,100%" style="width:100%;height:100%"></dc-import></div><div style="flex:1;display:flex;flex-direction:column"><span style="font-weight:700;font-size:14.5px">{{ i.name }}</span><span style="font-size:13px;color:#57506a">Qty {{ i.qty }}</span></div><span style="font-weight:700">{{ i.lineF }}</span></div></sc-for>
+<div style="display:flex;justify-content:space-between;align-items:baseline;padding-top:14px;border-top:1px dashed #e6dcc8"><span style="font-size:17px;font-weight:700">Total</span><span style="font-size:30px;font-weight:800;letter-spacing:-.02em">{{ subtotalF }}</span></div>
+<sc-if value="{{ hasStatus }}"><div role="status" style="display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;background:#f1ecff;color:#2e1a66;font-size:14px;font-weight:600"><span style="width:14px;height:14px;border-radius:50%;border:2px solid #4b2a99;border-right-color:transparent"></span>{{ status }}</div></sc-if>
+<sc-if value="{{ hasCoErr }}"><div role="alert" style="padding:12px 14px;border-radius:12px;background:#fff6f5;border:1px solid #f4c7c1;color:#7a1610;font-size:14px;font-weight:600">{{ coErr }}</div></sc-if>
+<button onClick="{{ placeOrder }}" disabled="{{ coBusy }}" style="height:58px;border-radius:14px;border:0;background:#ffb703;color:#1d1230;font-size:17px;font-weight:800" style-hover="background:#f5a300">{{ placeLabel }}</button></aside>
+</div></sc-if>
+<sc-if value="{{ coPlaced }}"><div style="padding:56px;border-radius:20px;background:#fff;border:1px solid #efe6d4;display:flex;flex-direction:column;gap:12px;align-items:flex-start"><span style="width:56px;height:56px;border-radius:50%;background:#4b2a99;color:#ffb703;display:grid;place-items:center;font-size:26px;font-weight:800">✓</span><div style="font-size:36px;font-weight:800;letter-spacing:-.02em">Order placed</div><p style="margin:0;font-size:16px;color:#57506a">Order <b style="color:#1d1230">{{ orderId }}</b> has been confirmed. Taking you to your order details…</p><div style="display:flex;gap:10px;margin-top:8px"><a href="#" style="height:48px;padding:0 22px;border-radius:14px;background:#ffb703;color:#1d1230;font-weight:800;display:grid;place-items:center;text-decoration:none">View order</a><button onClick="{{ resetCheckout }}" style="height:48px;padding:0 22px;border-radius:14px;border:1px solid #e6dcc8;background:#fff;font-weight:700">Reset demo</button></div></div></sc-if>
+<sc-if value="{{ coEmpty }}"><div style="padding:56px;border-radius:20px;background:#fff;border:1px dashed #e6dcc8;display:flex;flex-direction:column;gap:12px"><div style="font-size:26px;font-weight:800">Your basket is empty</div><p style="margin:0;color:#57506a">Add something before checking out.</p><button onClick="{{ refill }}" style="width:max-content;height:48px;padding:0 22px;border-radius:14px;border:0;background:#ffb703;font-weight:800">Browse products</button></div></sc-if>
+</div></div></div>
+
+<div style="display:flex;flex-direction:column;gap:10px"><div style="font:500 13px 'JetBrains Mono',monospace;color:#57506a">05 · SIGN IN (SIGNED-OUT HEADER)</div>
+<div data-screen-label="1d Sign in" style="background:#fffdf8;font-family:'Plus Jakarta Sans',sans-serif;color:#1d1230;min-height:820px">
+<dc-import name="EShopHeader" concept="d" count="{{ count }}" signed-in="{{ false }}" search="{{ search }}" on-search="{{ onSearch }}" hint-size="100%,76px"></dc-import>
+<div style="padding:72px 48px;display:flex;justify-content:center">
+<div style="width:1000px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);background:#fff;border:1px solid #efe6d4;border-radius:24px;overflow:hidden;box-shadow:0 30px 60px -40px rgba(29,18,48,.4)">
+<div style="background:#4b2a99;color:#fff;padding:48px;display:flex;flex-direction:column;justify-content:space-between;gap:32px"><div style="width:48px;height:48px;border-radius:14px;background:#ffb703;color:#1d1230;display:grid;place-items:center;font-weight:800;font-size:22px">E</div><div style="display:flex;flex-direction:column;gap:12px"><div style="font-size:40px;line-height:1.05;font-weight:800;letter-spacing:-.03em">Your basket is waiting.</div><p style="margin:0;font-size:16px;line-height:1.6;color:#e5dcfb">Sign in to add items, check out and track every order in one place.</p></div></div>
+<div style="padding:48px;display:flex;flex-direction:column;justify-content:center">
+<sc-if value="{{ siForm }}" hint-placeholder-val="{{ true }}"><form onSubmit="{{ signIn }}" style="display:flex;flex-direction:column;gap:18px">
+<div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:30px;font-weight:800;letter-spacing:-.02em">Sign in</div><div style="font-size:14.5px;color:#57506a">Welcome back to EShop.</div></div>
+<label style="display:flex;flex-direction:column;gap:6px;font-size:13.5px;font-weight:700;color:#3d3550">Username<input value="{{ user }}" onChange="{{ onUser }}" autocomplete="username" style="height:50px;border:1px solid #e0d6c2;border-radius:12px;padding:0 14px;font-size:15px;background:#fffdf8;outline:none" style-focus="border-color:#4b2a99;background:#fff;box-shadow:0 0 0 4px #ece4ff"><sc-if value="{{ userErr }}"><span style="font-size:12.5px;font-weight:600;color:#b42318">Username is required.</span></sc-if></label>
+<label style="display:flex;flex-direction:column;gap:6px;font-size:13.5px;font-weight:700;color:#3d3550">Password<div style="display:flex;align-items:center;height:50px;border:1px solid #e0d6c2;border-radius:12px;padding:0 6px 0 14px;background:#fffdf8"><input type="{{ pwType }}" value="{{ pw }}" onChange="{{ onPw }}" autocomplete="current-password" style="flex:1;border:0;background:transparent;font-size:15px;outline:none"><button type="button" onClick="{{ togglePw }}" aria-label="Toggle password visibility" style="height:38px;padding:0 12px;border-radius:9px;border:0;background:#f1ecff;color:#4b2a99;font-weight:700;font-size:13px">{{ pwToggle }}</button></div><sc-if value="{{ pwErr }}"><span style="font-size:12.5px;font-weight:600;color:#b42318">Password is required.</span></sc-if></label>
+<sc-if value="{{ hasSiErr }}"><div role="alert" style="padding:12px 14px;border-radius:12px;background:#fff6f5;border:1px solid #f4c7c1;color:#7a1610;font-size:14px;font-weight:600">{{ siErr }}</div></sc-if>
+<button type="submit" disabled="{{ siBusy }}" style="height:54px;border-radius:14px;border:0;background:#ffb703;color:#1d1230;font-size:16px;font-weight:800" style-hover="background:#f5a300">{{ siLabel }}</button>
+<div style="font-size:14.5px;color:#57506a;text-align:center">Don't have an account? <a href="#" style="font-weight:800">Register</a></div>
+</form></sc-if>
+<sc-if value="{{ siDone }}"><div style="display:flex;flex-direction:column;gap:12px"><span style="width:48px;height:48px;border-radius:50%;background:#f1ecff;color:#4b2a99;display:grid;place-items:center;font-size:22px;font-weight:800">✓</span><div style="font-size:26px;font-weight:800">Welcome back, {{ userShown }}</div><p style="margin:0;color:#57506a">Taking you back to products…</p><button onClick="{{ resetSignIn }}" style="width:max-content;height:44px;padding:0 18px;border-radius:12px;border:1px solid #e6dcc8;background:#fff;font-weight:700">Reset demo</button></div></sc-if>
+</div></div></div></div></div>
+</div>
+
+</div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;dataState&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;live&quot;,&quot;loading&quot;,&quot;empty&quot;,&quot;error&quot;],&quot;default&quot;:&quot;live&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;startSignedOut&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const PRODUCTS = [
+  { id: '5334', name: 'IPhone X', cat: 'Smart Phone', price: 79999, img: 'product-1.png' },
+  { id: 'c67d', name: 'Samsung 10', cat: 'Smart Phone', price: 69999, img: 'product-2.png' },
+  { id: '4f13', name: 'Huawei Plus', cat: 'White Appliances', price: 54999, img: 'product-3.png' },
+  { id: '6ec1', name: 'Xiaomi Mi 9', cat: 'White Appliances', price: 39999, img: 'product-4.png' },
+  { id: 'b786', name: 'HTC U11+ Plus', cat: 'Smart Phone', price: 31999, img: 'product-5.png' },
+  { id: 'c4bb', name: 'LG G7 ThinQ', cat: 'Home Kitchen', price: 19999, img: 'product-6.png' },
+  { id: '9317', name: 'Panasonic Lumix', cat: 'Camera', price: 19999, img: 'product-6.png' }
+];
+const DESC = "This phone is the company's biggest change to its flagship smartphone in years. It includes a borderless.";
+const KIND = { 'Camera': 'camera', 'Home Kitchen': 'kitchen', 'Smart Phone': 'phone', 'White Appliances': 'appliance' };
+const TILES_B = ['#ffb703', '#ece4ff', '#ffe7b0', '#fff', '#ece4ff', '#ffe7b0', '#fff'];
+const fmt = n => '₹' + n.toLocaleString('en-IN');
+const LABELS = { firstName: 'First name', lastName: 'Last name', emailAddress: 'Email', addressLine: 'Address', country: 'Country', state: 'State', zipCode: 'PIN code', cardName: 'Name on card', cardNumber: 'Card number', expiration: 'Expiration (MM/YY)', cvv: 'CVV' };
+const PH = { cardNumber: '4111111111111111', expiration: '12/28', emailAddress: 'you@example.com' };
+const EMPTY_F = Object.fromEntries(Object.keys(LABELS).map(k => [k, ''])); EMPTY_F.emailAddress = 'vikas@eshop.local';
+function validate(f) {
+  const e = {};
+  for (const k in LABELS) if (!f[k].trim()) e[k] = `${LABELS[k]} is required.`;
+  if (f.emailAddress && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.emailAddress)) e.emailAddress = 'Enter a valid email address.';
+  if (f.cardNumber && !/^\d{13,19}$/.test(f.cardNumber)) e.cardNumber = 'Enter 13-19 digits, no spaces.';
+  if (f.expiration && !/^(0[1-9]|1[0-2])\/\d{2}$/.test(f.expiration)) e.expiration = 'Use MM/YY format.';
+  if (f.cvv && !/^\d{3,4}$/.test(f.cvv)) e.cvv = '3 or 4 digits.';
+  return e;
+}
+
+class Component extends DCLogic {
+  state = { cat: '', search: '', sort: 'name-asc', sel: 'b786', qty: 1, basket: [{ id: 'b786', qty: 1 }], toast: null,
+    f: { ...EMPTY_F }, touched: false, co: 'idle', status: null, coErr: null, orderId: null,
+    user: '', pw: '', showPw: false, si: 'idle', siTouched: false, siErr: null, signedIn: null, retrying: false, recovered: false };
+  timers = [];
+  later(fn, ms) { this.timers.push(setTimeout(fn, ms)); }
+  componentWillUnmount() { this.timers.forEach(clearTimeout); }
+
+  add(id, n) {
+    const signedIn = this.state.signedIn ?? !(this.props.startSignedOut ?? false);
+    const p = PRODUCTS.find(x => x.id === id);
+    if (!signedIn) { this.setState({ toast: 'Sign in to add items. You’ll come straight back here.' }); return; }
+    this.setState(s => {
+      const ex = s.basket.find(i => i.id === id);
+      const basket = ex ? s.basket.map(i => i.id === id ? { ...i, qty: i.qty + n } : i) : [...s.basket, { id, qty: n }];
+      return { basket, toast: `Added ${n > 1 ? n + ' × ' : ''}${p.name} to your basket` };
+    });
+    clearTimeout(this.toastT); this.toastT = setTimeout(() => this.setState({ toast: null }), 4000);
+  }
+  setQty(id, q) { this.setState(s => ({ basket: s.basket.map(i => i.id === id ? { ...i, qty: Math.max(1, q) } : i) })); }
+
+  placeOrder = () => {
+    const s = this.state;
+    if (!s.basket.length) { this.setState({ coErr: 'Your basket is empty - add something before checking out.' }); return; }
+    const errs = validate(s.f);
+    if (Object.keys(errs).length) { this.setState({ touched: true }); return; }
+    this.setState({ co: 'placing', status: 'Placing your order...', coErr: null });
+    this.later(() => this.setState({ status: 'Confirming your order...' }), 900);
+    this.later(() => this.setState({ co: 'placed', status: null, basket: [], orderId: '#' + Math.random().toString(16).slice(2, 10).toUpperCase() }), 2200);
+  };
+  signIn = (e) => {
+    e && e.preventDefault();
+    const s = this.state;
+    if (!s.user.trim() || !s.pw) { this.setState({ siTouched: true }); return; }
+    this.setState({ si: 'busy', siErr: null });
+    this.later(() => {
+      if (this.state.pw === 'wrong') this.setState({ si: 'idle', siErr: 'Incorrect username or password.' });
+      else this.setState({ si: 'done', signedIn: true });
+    }, 800);
+  };
+
+  renderVals() {
+    const s = this.state;
+    let ds = this.props.dataState ?? 'live';
+    if (ds === 'error' && s.recovered) ds = 'live';
+    if (s.retrying) ds = 'loading';
+    const signedIn = s.signedIn ?? !(this.props.startSignedOut ?? false);
+    const q = s.search.trim().toLowerCase();
+    let list = PRODUCTS.filter(p => (!s.cat || p.cat === s.cat) && (!q || p.name.toLowerCase().includes(q)));
+    const [by, dir] = s.sort.split('-');
+    list.sort((a, b) => (by === 'name' ? a.name.localeCompare(b.name) : a.price - b.price || a.name.localeCompare(b.name)) * (dir === 'asc' ? 1 : -1));
+    if (ds === 'empty') list = [];
+    const live = ds === 'live';
+    const qtyOf = id => (s.basket.find(i => i.id === id) || {}).qty || 0;
+    const mapP = (p, idx) => {
+      const n = qtyOf(p.id);
+      return { ...p, kind: KIND[p.cat], catUpper: p.cat.toUpperCase(), priceF: fmt(p.price),
+        view: () => this.setState({ sel: p.id, qty: 1 }), add: () => this.add(p.id, 1),
+        inBasket: n > 0, notInBasket: n === 0, qtyIn: n,
+        addLabel: n ? `In basket (${n}) · add another` : 'Add to basket', addShort: n ? `+1 · ${n} in bag` : '+ Add',
+        spanB: idx === 0 ? 'span 2' : 'auto', tileB: TILES_B[idx % TILES_B.length] };
+    };
+    const products = list.map(mapP);
+    const cats = ['', ...Object.keys(KIND)].map(c => {
+      const active = s.cat === c;
+      return { label: c || 'All', count: c ? PRODUCTS.filter(p => p.cat === c).length : PRODUCTS.length, active, inactive: !active, onClick: () => this.setState({ cat: c }) };
+    });
+    const P = PRODUCTS.find(p => p.id === s.sel);
+    const d = { ...mapP(P, 1), desc: DESC, caption: `${P.img} · no image endpoint yet` };
+    const related = PRODUCTS.filter(p => p.cat === P.cat && p.id !== P.id).map(mapP);
+    const basketItems = s.basket.map(i => {
+      const p = PRODUCTS.find(x => x.id === i.id);
+      return { id: p.id, name: p.name, cat: p.cat, catUpper: p.cat.toUpperCase(), kind: KIND[p.cat], qty: i.qty, unitF: fmt(p.price), lineF: fmt(p.price * i.qty),
+        inc: () => this.setQty(p.id, i.qty + 1), dec: () => this.setQty(p.id, i.qty - 1), remove: () => this.setState(st => ({ basket: st.basket.filter(x => x.id !== p.id) })) };
+    });
+    const count = s.basket.reduce((a, i) => a + i.qty, 0);
+    const subtotal = s.basket.reduce((a, i) => a + PRODUCTS.find(p => p.id === i.id).price * i.qty, 0);
+    const errs = s.touched ? validate(s.f) : {};
+    const fld = k => ({ key: k, label: LABELS[k], labelUpper: LABELS[k].toUpperCase(), value: s.f[k], ph: PH[k] || '',
+      onChange: e => { const v = e.target.value; this.setState(st => ({ f: { ...st.f, [k]: v } })); },
+      err: errs[k], hasErr: !!errs[k], ring: errs[k] ? '0 0 0 2px #d92d20' : 'none', ringLine: errs[k] ? '0 1px 0 #d92d20' : 'none' });
+    const row = (...ks) => ({ cols: ks.map(fld) });
+    const coBusy = s.co === 'placing';
+    return {
+      search: s.search, onSearch: e => this.setState({ search: e.target.value }),
+      sort: s.sort, onSort: e => this.setState({ sort: e.target.value }),
+      cats, products, skeletons: [1, 2, 3, 4, 5, 6, 7, 8],
+      hasResults: live && products.length > 0, isLoading: ds === 'loading', isEmpty: ds === 'empty' || (live && products.length === 0), isError: ds === 'error',
+      resultCount: products.length, resultLabel: `${products.length} of ${PRODUCTS.length} products`,
+      hasSearch: !!q, hasCat: !!s.cat, catLabel: s.cat, hasFilters: !!(q || s.cat),
+      clearFilters: () => this.setState({ cat: '', search: '' }),
+      retry: () => { this.setState({ retrying: true }); this.later(() => this.setState({ retrying: false, recovered: true }), 900); },
+      hero: mapP(PRODUCTS[0], 1),
+      d, related, hasRelated: related.length > 0, qty: s.qty,
+      inc: () => this.setState(st => ({ qty: st.qty + 1 })), dec: () => this.setState(st => ({ qty: Math.max(1, st.qty - 1) })),
+      addSel: () => { this.add(P.id, s.qty); this.setState({ qty: 1 }); }, addSelTotal: fmt(P.price * s.qty),
+      toast: s.toast, hasToast: !!s.toast,
+      basketItems, count, countLabel: `${count} ${count === 1 ? 'item' : 'items'}`, basketHas: basketItems.length > 0, basketEmpty: basketItems.length === 0,
+      subtotalF: fmt(subtotal), clearBasket: () => this.setState({ basket: [] }),
+      refill: () => this.setState({ basket: [{ id: 'b786', qty: 1 }], co: 'idle', coErr: null }),
+      signedIn,
+      shipRows: [row('firstName', 'lastName'), row('emailAddress'), row('addressLine'), row('country', 'state', 'zipCode')],
+      payRows: [row('cardName'), row('cardNumber', 'expiration', 'cvv')],
+      coForm: s.co !== 'placed' && (basketItems.length > 0 || coBusy), coPlaced: s.co === 'placed', coEmpty: s.co !== 'placed' && basketItems.length === 0 && !coBusy,
+      placeOrder: this.placeOrder, coBusy, placeLabel: s.status || 'Place order', status: s.status, hasStatus: !!s.status,
+      coErr: s.coErr, hasCoErr: !!s.coErr, orderId: s.orderId,
+      resetCheckout: () => this.setState({ co: 'idle', f: { ...EMPTY_F }, touched: false, basket: [{ id: 'b786', qty: 1 }], orderId: null }),
+      user: s.user, pw: s.pw, onUser: e => this.setState({ user: e.target.value }), onPw: e => this.setState({ pw: e.target.value }),
+      pwType: s.showPw ? 'text' : 'password', pwToggle: s.showPw ? 'Hide' : 'Show', togglePw: () => this.setState(st => ({ showPw: !st.showPw })),
+      userErr: s.siTouched && !s.user.trim(), pwErr: s.siTouched && !s.pw,
+      signIn: this.signIn, siBusy: s.si === 'busy', siLabel: s.si === 'busy' ? 'Signing in…' : 'Sign in',
+      siErr: s.siErr, hasSiErr: !!s.siErr, siForm: s.si !== 'done', siDone: s.si === 'done', userShown: s.user || 'you',
+      resetSignIn: () => this.setState({ si: 'idle', user: '', pw: '', siTouched: false, siErr: null })
+    };
+  }
+}
+</script>
+</body>
+</html>

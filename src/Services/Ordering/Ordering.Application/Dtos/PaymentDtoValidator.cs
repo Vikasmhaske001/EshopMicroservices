@@ -2,8 +2,6 @@ using FluentValidation;
 
 namespace Ordering.Application.Dtos;
 
-/// <summary>Mirrors OrderConfiguration's column constraints for Payment - same reasoning as
-/// AddressDtoValidator.</summary>
 public class PaymentDtoValidator : AbstractValidator<PaymentDto>
 {
     public PaymentDtoValidator()

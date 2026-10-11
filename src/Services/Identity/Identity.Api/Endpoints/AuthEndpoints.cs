@@ -45,7 +45,6 @@ public class AuthEndpoints : ICarterModule
                 return Results.ValidationProblem(validation.ToDictionary());
             }
 
-            // Self-registration always grants the Customer role - Admin accounts are seeded only.
             var user = new ApplicationUser
             {
                 UserName = request.UserName,
@@ -79,7 +78,6 @@ public class AuthEndpoints : ICarterModule
             var user = await userManager.FindByNameAsync(request.UserName);
             if (user is null || !await userManager.CheckPasswordAsync(user, request.Password))
             {
-                // Same response for "no such user" and "wrong password" - do not reveal which.
                 return Results.Unauthorized();
             }
 
@@ -105,9 +103,6 @@ public class AuthEndpoints : ICarterModule
             var stored = await dbContext.RefreshTokens
                 .FirstOrDefaultAsync(t => t.TokenHash == tokenHash, cancellationToken);
 
-            // Covers "no such token", "expired" and "already used" (rotation below revokes the
-            // old one, so a stolen-and-replayed token also lands here) with the same response -
-            // the caller learns nothing about which case it was.
             if (stored is null || !stored.IsActive)
             {
                 return Results.Unauthorized();
@@ -119,8 +114,6 @@ public class AuthEndpoints : ICarterModule
                 return Results.Unauthorized();
             }
 
-            // Rotation: the presented refresh token is single-use. Revoking it here means a
-            // captured-and-replayed old token fails on its next use instead of working forever.
             stored.RevokedAt = DateTime.UtcNow;
 
             var roles = await userManager.GetRolesAsync(user);
@@ -143,8 +136,6 @@ public class AuthEndpoints : ICarterModule
             var stored = await dbContext.RefreshTokens
                 .FirstOrDefaultAsync(t => t.TokenHash == tokenHash, cancellationToken);
 
-            // Idempotent and silent either way: an unknown/already-revoked token still returns
-            // 204, so this can't be used to probe which refresh tokens exist.
             if (stored is not null && stored.IsActive)
             {
                 stored.RevokedAt = DateTime.UtcNow;

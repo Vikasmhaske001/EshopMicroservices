@@ -11,7 +11,6 @@ public class CatalogInitialData : IInitialData
         if (await session.Query<Product>().AnyAsync())
             return;
 
-        // Marten UPSERT will cater for existing records
         session.Store<Product>(GetPreconfiguredProducts());
         await session.SaveChangesAsync();
     }

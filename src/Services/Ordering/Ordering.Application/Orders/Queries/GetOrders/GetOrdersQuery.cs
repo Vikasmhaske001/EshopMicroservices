@@ -8,8 +8,6 @@ public record GetOrdersQuery(PaginationRequest PaginationRequest)
     : IQuery<GetOrdersResult>;
 
 public record GetOrdersResult(PaginatedResult<OrderDto> Orders);
-
-// Same gap Catalog had: nothing previously stopped a caller requesting an unbounded PageSize.
 public class GetOrdersQueryValidator : AbstractValidator<GetOrdersQuery>
 {
     public GetOrdersQueryValidator()

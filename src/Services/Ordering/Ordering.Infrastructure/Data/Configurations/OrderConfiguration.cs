@@ -16,10 +16,6 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
                         orderId => orderId.Value,
                         dbId => OrderId.Of(dbId));
 
-        // CustomerId identifies the authenticated user who placed the order and is intentionally
-        // NOT a foreign key. Ordering owns no user/customer data (Identity.Api does) - a local
-        // constraint would reject valid orders for any customer Ordering has never locally seen,
-        // exactly the bug the ProductId FK caused before it was removed.
         builder.Property(o => o.CustomerId).HasConversion(
                         customerId => customerId.Value,
                         dbId => CustomerId.Of(dbId));
@@ -61,9 +57,6 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
                addressBuilder.Property(a => a.State)
                    .HasMaxLength(50);
 
-               // 5 chars (US-only ZIP) used to be the limit here, which silently crashed order
-               // creation for any real international postal code (e.g. 6-digit Indian PINs) - see
-               // AddressDtoValidator for the matching upfront check.
                addressBuilder.Property(a => a.ZipCode)
                    .HasMaxLength(20)
                    .IsRequired();
@@ -117,8 +110,6 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
                    paymentBuilder.Property(p => p.PaymentMethod);
                });
 
-        // No database default: the domain always assigns a status (Order.Create sets Pending),
-        // and a DB-level default of Draft contradicted it.
         builder.Property(o => o.Status)
             .HasConversion(
                 s => s.ToString(),

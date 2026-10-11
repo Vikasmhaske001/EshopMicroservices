@@ -9,9 +9,6 @@ public class DeleteOrderHandler(IApplicationDbContext dbContext)
 {
     public async Task<DeleteOrderResult> Handle(DeleteOrderCommand command, CancellationToken cancellationToken)
     {
-        //Delete Order entity from command object
-        //save to database
-        //return result
 
         var orderId = OrderId.Of(command.OrderId);
         var order = await dbContext.Orders
