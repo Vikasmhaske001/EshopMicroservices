@@ -1,4 +1,5 @@
 import { inject } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 
@@ -7,10 +8,12 @@ import { AuthService } from '../auth/auth.service';
 export const adminGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
+  const snackBar = inject(MatSnackBar);
 
   if (authService.roles().includes('Admin')) {
     return true;
   }
 
+  snackBar.open('Access denied: administrator privileges required.', 'Dismiss', { duration: 5000 });
   return router.createUrlTree(['/products']);
 };
