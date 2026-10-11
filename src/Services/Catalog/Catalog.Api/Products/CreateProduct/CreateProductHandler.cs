@@ -22,18 +22,6 @@ namespace Catalog.Api.Products.CreateProduct
     {
         public async Task<CreateProductResult> Handle(CreateProductCommand command, CancellationToken cancellationToken)
         {
-            //business logic to create a product and return the result
-            //save the database
-            //return the CreateProductResult result
-     
-            //var result = await validator.ValidateAsync(command, cancellationToken);
-            //var errors = result.Errors.Select(e => e.ErrorMessage).ToList();
-            //if (errors.Any())
-            //{
-            //    throw new ValidationException(errors.FirstOrDefault());
-            //}
-
-
                 var product =new Product
             {
                 Name=command.Name,
@@ -43,8 +31,6 @@ namespace Catalog.Api.Products.CreateProduct
                 Price=command.Price
 
             };
-
-            //save the product to the database
 
             documentSession.Store(product);
             await documentSession.SaveChangesAsync(cancellationToken);

@@ -14,10 +14,6 @@
             GetProductByCategoryQuery query,
             CancellationToken cancellationToken)
         {
-            //logger.LogInformation(
-            //    "GetProductByCategoryQueryHandler.Handle called with {Category}",
-            //    query.Category);
-
             var products = await session.Query<Product>()
                       .Where(p => p.Categories.Contains(query.Category))
                       .ToListAsync(cancellationToken);

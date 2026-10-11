@@ -1,47 +1,78 @@
-<a mat-button routerLink="/products">Continue shopping</a>
+<section class="page">
+  <a routerLink="/orders" class="back">&larr; My orders</a>
 
-@if (order() === undefined) {
-  <app-loading-spinner label="Loading order..." />
-} @else if (order() === null) {
-  <p>Order not found.</p>
-} @else {
-  <article class="order-detail">
-    <h2>Order {{ order()!.orderName }}</h2>
-    <p class="status">Status: <strong>{{ statusLabel() }}</strong></p>
+  @if (order() === undefined) {
+    <app-loading-spinner label="Loading order..." />
+  } @else if (order() === null) {
+    <div class="empty">
+      <h2>Order not found</h2>
+      <p>It may belong to a different account, or the link is wrong.</p>
+      <a routerLink="/orders" class="es-btn">View my orders</a>
+    </div>
+  } @else {
+    <div class="head">
+      <h1>Order {{ order()!.orderName }}</h1>
+      <app-status-badge [status]="order()!.status" />
+    </div>
 
-    <section>
-      <h3>Items</h3>
-      <div class="order-items">
-        @for (item of order()!.orderItems; track item.productId) {
-          <div class="order-item">
-            <span>{{ item.productName }} &times; {{ item.quantity }}</span>
-            <span>{{ item.price * item.quantity | currency }}</span>
-          </div>
-        }
-        <div class="order-item total">
-          <span>Total</span>
-          <span>{{ total() | currency }}</span>
+    <div class="layout">
+      <div class="main">
+        <section class="card" aria-labelledby="items-title">
+          <h2 id="items-title">Items</h2>
+          <ul class="lines">
+            @for (item of order()!.orderItems; track item.productId) {
+              <li>
+                <span class="thumb"><app-product-image
+                    [category]="categoryById().get(item.productId) ?? ''"
+                    [imageFile]="imageFileById().get(item.productId) ?? ''"
+                  /></span>
+                <span class="line-text">
+                  <span class="line-name">{{ item.productName }}</span>
+                  <span class="line-qty">Qty {{ item.quantity }} &times; {{ item.price | inr }}</span>
+                </span>
+                <span class="line-total">{{ item.price * item.quantity | inr }}</span>
+              </li>
+            }
+          </ul>
+        </section>
+
+        <div class="pair">
+          <section class="card" aria-labelledby="ship-title">
+            <h2 id="ship-title">Shipping address</h2>
+            <address>
+              <strong>{{ order()!.shippingAddress.firstName }} {{ order()!.shippingAddress.lastName }}</strong>
+              <span>{{ order()!.shippingAddress.addressLine }}</span>
+              <span>
+                {{ order()!.shippingAddress.state }}, {{ order()!.shippingAddress.country }}
+                {{ order()!.shippingAddress.zipCode }}
+              </span>
+              <span class="muted">{{ order()!.shippingAddress.emailAddress }}</span>
+            </address>
+          </section>
+
+          <section class="card" aria-labelledby="pay-title">
+            <h2 id="pay-title">Payment</h2>
+            <address>
+              <strong>{{ order()!.payment.cardName }}</strong>
+              <span>{{ maskCardNumber(order()!.payment.cardNumber) }}</span>
+              <span class="muted">Expires {{ order()!.payment.expiration }}</span>
+            </address>
+          </section>
         </div>
       </div>
-    </section>
 
-    <section>
-      <h3>Shipping Address</h3>
-      <p>
-        {{ order()!.shippingAddress.firstName }} {{ order()!.shippingAddress.lastName }}<br />
-        {{ order()!.shippingAddress.addressLine }}<br />
-        {{ order()!.shippingAddress.state }}, {{ order()!.shippingAddress.country }}
-        {{ order()!.shippingAddress.zipCode }}<br />
-        {{ order()!.shippingAddress.emailAddress }}
-      </p>
-    </section>
-
-    <section>
-      <h3>Payment</h3>
-      <p>
-        {{ order()!.payment.cardName }}<br />
-        {{ maskCardNumber(order()!.payment.cardNumber) }} (exp {{ order()!.payment.expiration }})
-      </p>
-    </section>
-  </article>
-}
+      <aside class="summary" aria-label="Order summary">
+        <h2>Order summary</h2>
+        <div class="line">
+          <span>Items</span>
+          <span>{{ itemCount() }}</span>
+        </div>
+        <div class="total">
+          <span>Total</span>
+          <span class="total-value">{{ total() | inr }}</span>
+        </div>
+        <a routerLink="/products" class="es-btn es-btn--lg">Continue shopping</a>
+      </aside>
+    </div>
+  }
+</section>

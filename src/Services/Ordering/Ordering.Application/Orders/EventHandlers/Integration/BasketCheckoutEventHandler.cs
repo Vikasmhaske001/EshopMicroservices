@@ -14,10 +14,6 @@ public class BasketCheckoutEventHandler
 {
     public async Task Consume(ConsumeContext<BasketCheckoutEvent> context)
     {
-        // The correlation id travels as a transport header set by Basket at publish time (not
-        // part of the BasketCheckoutEvent contract itself). Pushing it into LogContext here means
-        // every log line for the rest of this consume call - including the nested CreateOrderCommand
-        // handling via LoggingBehavior - is tagged with the same id the original HTTP request had.
         context.Headers.TryGetHeader(CorrelationIdMiddleware.HeaderName, out var correlationIdHeader);
         using var _ = correlationIdHeader is string correlationId
             ? SerilogLogContext.PushProperty("CorrelationId", correlationId)
@@ -38,8 +34,6 @@ public class BasketCheckoutEventHandler
             "Integration Event handled: {IntegrationEvent} {EventId} with {ItemCount} item(s)",
             message.GetType().Name, message.Id, message.Items.Count);
 
-        // Tracked here but not saved: CreateOrderHandler's SaveChangesAsync persists the order and
-        // this marker in one transaction, so an order can never exist without its marker.
         dbContext.ProcessedIntegrationEvents.Add(new ProcessedIntegrationEvent
         {
             Id = message.Id,
@@ -53,12 +47,10 @@ public class BasketCheckoutEventHandler
 
     private static CreateOrderCommand MapToCreateOrderCommand(BasketCheckoutEvent message)
     {
-        // Create full order with incoming event data
         var addressDto = new AddressDto(message.FirstName, message.LastName, message.EmailAddress, message.AddressLine, message.Country, message.State, message.ZipCode);
         var paymentDto = new PaymentDto(message.CardName, message.CardNumber, message.Expiration, message.CVV, message.PaymentMethod);
         var orderId = Guid.NewGuid();
 
-        // Prices arrive already discounted by Basket; they are used as-is.
         var orderItems = message.Items
             .Select(item => new OrderItemDto(orderId, item.ProductId, item.Quantity, item.Price, item.ProductName))
             .ToList();

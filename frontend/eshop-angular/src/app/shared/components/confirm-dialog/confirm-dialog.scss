@@ -1,0 +1,23 @@
+:host {
+  display: block;
+}
+
+mat-dialog-actions {
+  gap: 10px;
+  padding: 8px 24px 24px;
+}
+
+.cancel {
+  height: 40px;
+  border-color: var(--es-line-3);
+  color: var(--es-text-2);
+
+  &:hover {
+    border-color: var(--es-grape);
+    color: var(--es-grape);
+  }
+}
+
+.confirm {
+  height: 40px;
+}

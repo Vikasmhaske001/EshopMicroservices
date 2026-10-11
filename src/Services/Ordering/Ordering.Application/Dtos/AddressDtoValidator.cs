@@ -2,12 +2,6 @@ using FluentValidation;
 
 namespace Ordering.Application.Dtos;
 
-/// <summary>
-/// Mirrors OrderConfiguration's column constraints exactly. Without this, an address field
-/// longer than its column (e.g. a non-US postal code against the old 5-char ZipCode limit)
-/// reached the database from inside the async BasketCheckoutEvent consumer, where a truncation
-/// error crashes order creation with no clean error surfaced to the caller.
-/// </summary>
 public class AddressDtoValidator : AbstractValidator<AddressDto>
 {
     public AddressDtoValidator()

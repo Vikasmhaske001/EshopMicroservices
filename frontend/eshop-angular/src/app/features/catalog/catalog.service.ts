@@ -14,6 +14,10 @@ export interface GetProductsParams {
   sortDirection?: 'asc' | 'desc';
 }
 
+// The API can return null for a product's category list (Marten stores whatever was saved). Fix it
+// once here so no template or component has to defend against it.
+const withCategories = (product: Product): Product => ({ ...product, categories: product.categories ?? [] });
+
 @Injectable({ providedIn: 'root' })
 export class CatalogService {
   private readonly http = inject(HttpClient);
@@ -29,19 +33,19 @@ export class CatalogService {
 
     return this.http
       .get<{ products: PaginatedResult<Product> }>(this.productsUrl, { params: httpParams })
-      .pipe(map((res) => res.products));
+      .pipe(map((res) => ({ ...res.products, data: res.products.data.map(withCategories) })));
   }
 
   getProductById(id: string): Observable<Product> {
     return this.http
       .get<{ product: Product }>(`${this.productsUrl}/${id}`)
-      .pipe(map((res) => res.product));
+      .pipe(map((res) => withCategories(res.product)));
   }
 
   getProductsByCategory(category: string): Observable<Product[]> {
     return this.http
       .get<{ products: Product[] }>(`${this.productsUrl}/category/${encodeURIComponent(category)}`)
-      .pipe(map((res) => res.products));
+      .pipe(map((res) => res.products.map(withCategories)));
   }
 
   // Admin-only writes (backend enforces AuthorizationPolicies.AdminOnly independently of the

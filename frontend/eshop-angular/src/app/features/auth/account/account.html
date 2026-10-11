@@ -1,14 +1,52 @@
-<div class="account-card">
-  <h2>My Account</h2>
+<section class="page">
+  <h1>My account</h1>
 
   @if (authService.currentUser(); as user) {
-    <p><strong>Username:</strong> {{ user.userName }}</p>
-    <p><strong>Email:</strong> {{ user.email }}</p>
-    <p><strong>Roles:</strong> {{ user.roles.join(', ') }}</p>
+    <div class="layout">
+      <section class="card" aria-labelledby="profile-title">
+        <div class="who">
+          <span class="avatar" aria-hidden="true">{{ initial() }}</span>
+          <div class="who-text">
+            <h2 id="profile-title">{{ user.userName }}</h2>
+            <p>{{ user.email }}</p>
+          </div>
+        </div>
 
-    <div class="account-actions">
-      <a mat-button routerLink="/orders">View My Orders</a>
-      <button mat-flat-button (click)="logout()">Log out</button>
+        <dl>
+          <div>
+            <dt>Username</dt>
+            <dd>{{ user.userName }}</dd>
+          </div>
+          <div>
+            <dt>Email</dt>
+            <dd>{{ user.email }}</dd>
+          </div>
+          <div>
+            <dt>{{ user.roles.length === 1 ? 'Role' : 'Roles' }}</dt>
+            <dd>
+              @for (role of user.roles; track role) {
+                <span class="role">{{ role }}</span>
+              }
+            </dd>
+          </div>
+        </dl>
+
+        <div class="actions">
+          <a routerLink="/orders" class="es-btn">View my orders</a>
+          <button type="button" class="es-btn-outline logout" (click)="logout()">Log out</button>
+        </div>
+      </section>
+
+      @if (isAdmin()) {
+        <section class="card admin" aria-labelledby="admin-title">
+          <h2 id="admin-title">Admin</h2>
+          <p>Manage the catalog and every customer's orders.</p>
+          <div class="admin-links">
+            <a routerLink="/admin/products" class="es-btn es-btn--sm">Manage products</a>
+            <a routerLink="/admin/orders" class="es-btn-outline">Manage orders</a>
+          </div>
+        </section>
+      }
     </div>
   }
-</div>
+</section>

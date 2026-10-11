@@ -18,10 +18,10 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
-  it('should render the app header', () => {
+  it('should render the brand in the header', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('EShop');
+    expect(compiled.querySelector('.brand')?.textContent).toContain('EShop');
   });
 });

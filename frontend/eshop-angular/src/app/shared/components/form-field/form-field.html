@@ -1,0 +1,7 @@
+<label class="label" [attr.for]="inputId">{{ label() }}</label>
+<ng-content />
+@if (error(); as message) {
+  <p class="error" [id]="messageId" role="alert">{{ message }}</p>
+} @else if (hint()) {
+  <p class="hint" [id]="messageId">{{ hint() }}</p>
+}

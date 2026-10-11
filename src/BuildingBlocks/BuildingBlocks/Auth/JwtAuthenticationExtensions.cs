@@ -6,12 +6,6 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace BuildingBlocks.Auth;
 
-/// <summary>
-/// Shared JWT Bearer validation, used by the gateway and by every protected service
-/// independently (defense in depth: the gateway is not the only line of defense - a service
-/// reachable directly, e.g. inside the Docker network or in a future deployment, still
-/// validates the token itself rather than trusting an upstream header).
-/// </summary>
 public static class JwtAuthenticationExtensions
 {
     public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
@@ -24,8 +18,7 @@ public static class JwtAuthenticationExtensions
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
-                // Claim types are used exactly as issued (short names: sub/name/email/role)
-                // instead of being silently remapped to the long ClaimTypes.* URIs.
+ 
                 options.MapInboundClaims = false;
 
                 options.TokenValidationParameters = new TokenValidationParameters

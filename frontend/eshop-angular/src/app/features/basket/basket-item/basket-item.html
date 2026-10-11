@@ -1,38 +1,33 @@
-<div class="basket-item">
-  <div class="item-info">
-    <span class="item-name">{{ item().productName }}</span>
-    <span class="item-unit-price">
-      {{ item().effectivePrice | currency }} each
-      @if (item().discountAmount > 0) {
-        <span class="item-discount">(save {{ item().discountAmount | currency }} each)</span>
+<div class="row">
+  <div class="product">
+    <span class="thumb">
+      <app-product-image [category]="category()" [imageFile]="imageFile()" />
+    </span>
+    <span class="product-text">
+      <span class="name">{{ item().productName }}</span>
+      @if (category()) {
+        <span class="eyebrow">{{ category() }}</span>
       }
     </span>
   </div>
 
-  <div class="item-quantity">
-    <button
-      mat-icon-button
-      type="button"
-      [disabled]="item().quantity <= 1"
-      (click)="quantityChange.emit(item().quantity - 1)"
-      aria-label="Decrease quantity"
-    >
-      <mat-icon>remove</mat-icon>
-    </button>
-    <span class="quantity-value">{{ item().quantity }}</span>
-    <button
-      mat-icon-button
-      type="button"
-      (click)="quantityChange.emit(item().quantity + 1)"
-      aria-label="Increase quantity"
-    >
-      <mat-icon>add</mat-icon>
-    </button>
+  <div class="unit">
+    <span>{{ item().effectivePrice | inr }}</span>
+    @if (item().discountAmount > 0) {
+      <span class="saving">Save {{ item().discountAmount | inr }} each</span>
+    }
   </div>
 
-  <span class="item-line-total">{{ item().effectivePrice * item().quantity | currency }}</span>
+  <app-quantity-stepper
+    class="qty"
+    [value]="item().quantity"
+    [label]="'Quantity of ' + item().productName"
+    (valueChange)="quantityChange.emit($event)"
+  />
 
-  <button mat-icon-button type="button" (click)="remove.emit()" aria-label="Remove item">
-    <mat-icon>delete</mat-icon>
+  <span class="line-total">{{ item().effectivePrice * item().quantity | inr }}</span>
+
+  <button type="button" class="remove" [attr.aria-label]="'Remove ' + item().productName" (click)="remove.emit()">
+    &times;
   </button>
 </div>

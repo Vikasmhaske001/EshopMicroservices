@@ -9,8 +9,6 @@ public class GetOrdersByCustomerHandler(IApplicationDbContext dbContext)
 {
     public async Task<GetOrdersByCustomerResult> Handle(GetOrdersByCustomerQuery query, CancellationToken cancellationToken)
     {
-        // get orders by customer using dbContext
-        // return result
 
         var orders = await dbContext.Orders
                         .Include(o => o.OrderItems)

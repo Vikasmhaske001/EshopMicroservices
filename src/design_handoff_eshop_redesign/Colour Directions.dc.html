@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#ebeae7;-webkit-font-smoothing:antialiased}a{color:#1b1b1b}a:hover{color:#000}button{font:inherit;cursor:pointer}</style>
+</helmet>
+<section id="turn3" style="padding:64px 64px 0;display:flex;flex-direction:column;gap:40px;font-family:'Plus Jakarta Sans',sans-serif;color:#18181a">
+<div style="display:flex;flex-direction:column;gap:8px"><div style="font:500 13px 'JetBrains Mono',monospace;letter-spacing:.08em;color:#5d5d62">ROUND 2 · BRIGHT / YELLOW-LED</div><h1 style="margin:0;font-size:52px;font-weight:800;letter-spacing:-.03em">Brighter options</h1><p style="margin:0;font-size:18px;color:#4a4a50">These are yellow-led palettes. Yellow buttons always carry dark text so they stay readable. Reply with 3a–3f, or one of the earlier 2a–2d.</p></div>
+<div style="display:flex;flex-wrap:wrap;gap:40px">
+<sc-for list="{{ bright }}" as="p" hint-placeholder-count="6">
+<div id="{{ p.id }}" style="width:620px;background:{{ p.bg }};border-radius:18px;overflow:hidden;box-shadow:0 24px 50px -30px rgba(0,0,0,.35);display:flex;flex-direction:column">
+<div style="display:flex;align-items:center;gap:20px;padding:18px 28px;background:{{ p.header }};border-bottom:1px solid {{ p.line }}">
+<div style="width:34px;height:34px;border-radius:9px;background:{{ p.primary }};color:{{ p.onPrimary }};display:grid;place-items:center;font-weight:800">E</div><span style="font-size:20px;font-weight:800;color:{{ p.headerInk }}">EShop</span>
+<div style="margin-left:auto;display:flex;align-items:center;gap:10px"><span style="font-size:14px;font-weight:600;color:{{ p.headerInk }}">Basket</span><span style="min-width:22px;height:22px;border-radius:99px;background:{{ p.accent }};color:{{ p.onAccent }};font-size:12px;font-weight:700;display:grid;place-items:center">2</span></div>
+</div>
+<div style="padding:32px 28px;display:grid;grid-template-columns:240px 1fr;gap:28px">
+<div style="background:{{ p.surface }};border:1px solid {{ p.line }};border-radius:14px;overflow:hidden">
+<div style="aspect-ratio:1;background:{{ p.tile }};display:grid;place-items:center"><div style="width:22%;aspect-ratio:9/18;background:{{ p.ink }};border-radius:14px;padding:4px;box-sizing:border-box;display:flex"><div style="flex:1;border-radius:10px;background:{{ p.primarySoft }}"></div></div></div>
+<div style="padding:14px 16px;display:flex;flex-direction:column;gap:4px"><span style="font-size:11px;font-weight:700;letter-spacing:.1em;color:{{ p.primaryText }}">SMART PHONE</span><span style="font-size:16px;font-weight:700;color:{{ p.ink }}">HTC U11+ Plus</span><span style="font-size:17px;font-weight:800;color:{{ p.ink }}">₹31,999</span></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;align-items:center;gap:10px"><span style="font:600 15px 'JetBrains Mono',monospace;background:{{ p.ink }};color:{{ p.surface }};padding:4px 10px;border-radius:6px">{{ p.id }}</span><span style="font-size:22px;font-weight:800;color:{{ p.ink }}">{{ p.name }}</span></div>
+<p style="margin:0;font-size:15px;line-height:1.5;color:{{ p.muted }}">{{ p.mood }}</p>
+<div style="display:flex;gap:8px;flex-wrap:wrap"><span style="padding:7px 14px;border-radius:99px;background:{{ p.ink }};color:{{ p.surface }};font-size:13px;font-weight:600">All</span><span style="padding:7px 14px;border-radius:99px;border:1px solid {{ p.line }};color:{{ p.ink }};font-size:13px;font-weight:600;background:{{ p.surface }}">Camera</span><span style="padding:7px 14px;border-radius:99px;border:1px solid {{ p.line }};color:{{ p.ink }};font-size:13px;font-weight:600;background:{{ p.surface }}">Smart Phone</span></div>
+<button style="margin-top:auto;height:50px;border:0;border-radius:12px;background:{{ p.primary }};color:{{ p.onPrimary }};font-size:15px;font-weight:700">Add to basket</button>
+<div style="padding:10px 14px;border-radius:10px;background:{{ p.accentSoft }};color:{{ p.ink }};font-size:13px;font-weight:600">Added to your basket</div>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid {{ p.line }}">
+<sc-for list="{{ p.swatches }}" as="s" hint-placeholder-count="6"><div style="padding:12px 14px;display:flex;flex-direction:column;gap:8px;background:{{ p.surface }}"><div style="height:36px;border-radius:8px;background:{{ s.hex }};border:1px solid rgba(0,0,0,.08)"></div><span style="font:500 11px 'JetBrains Mono',monospace;color:{{ p.muted }}">{{ s.label }}<br>{{ s.hex }}</span></div></sc-for>
+</div>
+</div>
+</sc-for>
+</div></section>
+<section id="turn2" style="padding:64px;display:flex;flex-direction:column;gap:40px;font-family:'Plus Jakarta Sans',sans-serif;color:#18181a">
+<div style="display:flex;flex-direction:column;gap:8px"><div style="font:500 13px 'JetBrains Mono',monospace;letter-spacing:.08em;color:#5d5d62">ESHOP · COLOUR DIRECTIONS</div><h1 style="margin:0;font-size:52px;font-weight:800;letter-spacing:-.03em">Pick one palette</h1><p style="margin:0;font-size:18px;color:#4a4a50">Each palette is shown on the same EShop product card and button set. Reply with 2a, 2b, 2c or 2d.</p></div>
+<div style="display:flex;flex-wrap:wrap;gap:40px">
+
+<sc-for list="{{ palettes }}" as="p" hint-placeholder-count="4">
+<div id="{{ p.id }}" style="width:620px;background:{{ p.bg }};border-radius:18px;overflow:hidden;box-shadow:0 24px 50px -30px rgba(0,0,0,.35);display:flex;flex-direction:column">
+<div style="display:flex;align-items:center;gap:20px;padding:18px 28px;background:{{ p.surface }};border-bottom:1px solid {{ p.line }}">
+<div style="width:34px;height:34px;border-radius:9px;background:{{ p.primary }};color:{{ p.onPrimary }};display:grid;place-items:center;font-weight:800">E</div><span style="font-size:20px;font-weight:800;color:{{ p.ink }}">EShop</span>
+<div style="margin-left:auto;display:flex;align-items:center;gap:10px"><span style="font-size:14px;font-weight:600;color:{{ p.muted }}">Basket</span><span style="min-width:22px;height:22px;border-radius:99px;background:{{ p.accent }};color:{{ p.onAccent }};font-size:12px;font-weight:700;display:grid;place-items:center">2</span></div>
+</div>
+<div style="padding:32px 28px;display:grid;grid-template-columns:240px 1fr;gap:28px">
+<div style="background:{{ p.surface }};border:1px solid {{ p.line }};border-radius:14px;overflow:hidden">
+<div style="aspect-ratio:1;background:{{ p.tile }};display:grid;place-items:center"><div style="width:22%;aspect-ratio:9/18;background:{{ p.ink }};border-radius:14px;padding:4px;box-sizing:border-box;display:flex"><div style="flex:1;border-radius:10px;background:{{ p.primarySoft }}"></div></div></div>
+<div style="padding:14px 16px;display:flex;flex-direction:column;gap:4px"><span style="font-size:11px;font-weight:700;letter-spacing:.1em;color:{{ p.primaryText }}">SMART PHONE</span><span style="font-size:16px;font-weight:700;color:{{ p.ink }}">HTC U11+ Plus</span><span style="font-size:17px;font-weight:800;color:{{ p.ink }}">₹31,999</span></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;align-items:center;gap:10px"><span style="font:600 15px 'JetBrains Mono',monospace;background:{{ p.ink }};color:{{ p.bg }};padding:4px 10px;border-radius:6px">{{ p.id }}</span><span style="font-size:22px;font-weight:800;color:{{ p.ink }}">{{ p.name }}</span></div>
+<p style="margin:0;font-size:15px;line-height:1.5;color:{{ p.muted }}">{{ p.mood }}</p>
+<div style="display:flex;gap:8px;flex-wrap:wrap"><span style="padding:7px 14px;border-radius:99px;background:{{ p.ink }};color:{{ p.bg }};font-size:13px;font-weight:600">All</span><span style="padding:7px 14px;border-radius:99px;border:1px solid {{ p.line }};color:{{ p.ink }};font-size:13px;font-weight:600;background:{{ p.surface }}">Camera</span><span style="padding:7px 14px;border-radius:99px;border:1px solid {{ p.line }};color:{{ p.ink }};font-size:13px;font-weight:600;background:{{ p.surface }}">Smart Phone</span></div>
+<button style="margin-top:auto;height:50px;border:0;border-radius:12px;background:{{ p.primary }};color:{{ p.onPrimary }};font-size:15px;font-weight:700">Add to basket</button>
+<div style="padding:10px 14px;border-radius:10px;background:{{ p.accentSoft }};color:{{ p.ink }};font-size:13px;font-weight:600">Added to your basket</div>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid {{ p.line }}">
+<sc-for list="{{ p.swatches }}" as="s" hint-placeholder-count="6"><div style="padding:12px 14px;display:flex;flex-direction:column;gap:8px;background:{{ p.surface }}"><div style="height:36px;border-radius:8px;background:{{ s.hex }};border:1px solid rgba(0,0,0,.08)"></div><span style="font:500 11px 'JetBrains Mono',monospace;color:{{ p.muted }}">{{ s.label }}<br>{{ s.hex }}</span></div></sc-for>
+</div>
+</div>
+</sc-for>
+
+</div></section>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const mk = (id, name, mood, c) => ({ id, name, mood, ...c, swatches: [
+      { label: 'Primary', hex: c.primary }, { label: 'Accent', hex: c.accent }, { label: 'Ink', hex: c.ink },
+      { label: 'Background', hex: c.bg }, { label: 'Surface', hex: c.surface }, { label: 'Tile', hex: c.tile }] });
+    const mb = (id, name, mood, c) => ({ id, name, mood, header: c.surface, headerInk: c.ink, ...c, swatches: [
+      { label: 'Primary', hex: c.primary }, { label: 'Accent', hex: c.accent }, { label: 'Ink', hex: c.ink },
+      { label: 'Background', hex: c.bg }, { label: 'Tile', hex: c.tile }, { label: 'Soft', hex: c.accentSoft }] });
+    const bright = [
+      mb('3a', 'Sunshine & Ink', 'Lemon yellow buttons on near-black. Loud, happy and very readable.',
+        { primary: '#ffd60a', onPrimary: '#14120b', primaryText: '#8a6d00', primarySoft: '#ffe873', accent: '#14120b', onAccent: '#ffd60a', accentSoft: '#fff4b8', ink: '#14120b', muted: '#56523f', bg: '#fffbea', surface: '#ffffff', tile: '#fff1a8', line: '#ece5c4', header: '#14120b', headerInk: '#ffffff' }),
+      mb('3b', 'Mango & Grape', 'Warm mango yellow paired with a deep violet. Playful, and the contrast is high.',
+        { primary: '#ffb703', onPrimary: '#1d1230', primaryText: '#4b2a99', primarySoft: '#ffd166', accent: '#4b2a99', onAccent: '#fff', accentSoft: '#ece4ff', ink: '#1d1230', muted: '#57506a', bg: '#fff8ec', surface: '#ffffff', tile: '#ffe7b0', line: '#efe3cc' }),
+      mb('3c', 'Citrus Pop', 'Yellow with hot orange and an aqua touch. Bright and summery, like a sale.',
+        { primary: '#ff6b1a', onPrimary: '#fff', primaryText: '#c2410c', primarySoft: '#ffd23f', accent: '#ffd23f', onAccent: '#1b130c', accentSoft: '#d6f6f3', ink: '#1b130c', muted: '#5e5246', bg: '#fffaf0', surface: '#ffffff', tile: '#ffe9a6', line: '#f0e2cc' }),
+      mb('3d', 'Lemon & Cobalt', 'Primary-colour energy. Yellow and strong blue feel techy, bold and trustworthy.',
+        { primary: '#1d4ed8', onPrimary: '#fff', primaryText: '#1d4ed8', primarySoft: '#fde047', accent: '#fde047', onAccent: '#0f1530', accentSoft: '#fef7c3', ink: '#0f1530', muted: '#4c5370', bg: '#fefdf5', surface: '#ffffff', tile: '#fdf2a0', line: '#e6e4d6' }),
+      mb('3e', 'Banana & Bubblegum', 'Pastel yellow with candy pink. Soft but fun, with a Gen Z feel.',
+        { primary: '#ffe14d', onPrimary: '#241a1f', primaryText: '#c0266d', primarySoft: '#ffb3d1', accent: '#ff4f9a', onAccent: '#fff', accentSoft: '#ffe3ef', ink: '#241a1f', muted: '#5f5059', bg: '#fffcf2', surface: '#ffffff', tile: '#fff2a8', line: '#f0e6d8' }),
+      mb('3f', 'Acid Yellow & Forest', 'Chartreuse-yellow with a deep green. Sharp and streetwear-ish.',
+        { primary: '#e4ff3a', onPrimary: '#0e1a12', primaryText: '#1a5a35', primarySoft: '#e4ff3a', accent: '#1a5a35', onAccent: '#e4ff3a', accentSoft: '#f4ffc2', ink: '#0e1a12', muted: '#4b5649', bg: '#f8faf0', surface: '#ffffff', tile: '#efffa0', line: '#e0e6d3', header: '#0e1a12', headerInk: '#ffffff' })
+    ];
+    return { bright, palettes: [
+      mk('2a', 'Forest & Clay', 'Calm and premium. A deep green for trust, with warm terracotta for highlights.',
+        { primary: '#1f4d3a', onPrimary: '#fff', primaryText: '#1f4d3a', primarySoft: '#9cc3ad', accent: '#c8553d', onAccent: '#fff', accentSoft: '#f6e3dc', ink: '#1c1b19', muted: '#57544e', bg: '#f6f4ef', surface: '#ffffff', tile: '#e7eee8', line: '#e2ded5' }),
+      mk('2b', 'Cobalt & Tangerine', 'Confident and techy. Cobalt actions with tangerine signals suit electronics.',
+        { primary: '#1747d6', onPrimary: '#fff', primaryText: '#1747d6', primarySoft: '#9db4f5', accent: '#ff8a3d', onAccent: '#1a1206', accentSoft: '#ffe8d6', ink: '#11131a', muted: '#4f5463', bg: '#f5f6f8', surface: '#ffffff', tile: '#e6ecfb', line: '#e0e3ea' }),
+      mk('2c', 'Teal & Lime', 'Fresh and Gen Z. Teal for structure, with an electric lime pop on badges and deals.',
+        { primary: '#0f766e', onPrimary: '#fff', primaryText: '#0f766e', primarySoft: '#8fd3cb', accent: '#c6f05a', onAccent: '#101413', accentSoft: '#eefacc', ink: '#101413', muted: '#4c5552', bg: '#f4f5f2', surface: '#ffffff', tile: '#e2f1ee', line: '#dfe3de' }),
+      mk('2d', 'Mono & Signal Red', 'Editorial and bold. Black and white with one red accent, which keeps the product the hero.',
+        { primary: '#111111', onPrimary: '#fff', primaryText: '#c42b20', primarySoft: '#d9d6cf', accent: '#e23b2e', onAccent: '#fff', accentSoft: '#fbe1de', ink: '#111111', muted: '#55534f', bg: '#ffffff', surface: '#ffffff', tile: '#efede8', line: '#e5e3de' })
+    ] };
+  }
+}
+</script>
+</body>
+</html>

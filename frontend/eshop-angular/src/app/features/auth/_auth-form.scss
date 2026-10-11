@@ -1,0 +1,64 @@
+// Styles for the form half of the sign-in / register card, shared by both pages.
+header {
+  h1 {
+    font: 800 30px/1.15 var(--es-font);
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    margin-top: 4px;
+    color: var(--es-muted);
+    font-size: 14.5px;
+  }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.password-wrap {
+  position: relative;
+  display: block;
+
+  .es-input {
+    padding-right: 76px;
+  }
+}
+
+.toggle {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  height: 38px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 9px;
+  background: var(--es-grape-soft);
+  color: var(--es-grape);
+  font: 700 13px/1 var(--es-font);
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.submit {
+  height: 54px;
+  font-size: 16px;
+}
+
+.switch {
+  color: var(--es-muted);
+  font-size: 14.5px;
+  text-align: center;
+
+  a {
+    color: var(--es-grape);
+    font-weight: 800;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

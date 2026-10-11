@@ -1,0 +1,21 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.label {
+  color: var(--es-text-2);
+  font: 700 13.5px/1.3 var(--es-font);
+}
+
+.error {
+  color: var(--es-error);
+  font: 600 12.5px/1.4 var(--es-font);
+}
+
+.hint {
+  color: var(--es-muted);
+  font: 400 12.5px/1.4 var(--es-font);
+}

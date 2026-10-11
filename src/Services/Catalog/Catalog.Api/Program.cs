@@ -1,4 +1,4 @@
-using BuildingBlocks.Auth;
+﻿using BuildingBlocks.Auth;
 using BuildingBlocks.Logging;
 using BuildingBlocks.Swagger;
 using Catalog.API.Data;
@@ -8,9 +8,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddSerilogDefaults("Catalog.Api");
 
-// Reads are public (see route-level RequireAuthorization on the write endpoints only); auth is
-// still wired up here so this service independently validates JWTs for its Admin-only mutations
-// rather than trusting the gateway blindly (defense in depth).
 builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddAuthorization(options =>
     options.AddPolicy(AuthorizationPolicies.AdminOnly, policy => policy.RequireRole(AppRoles.Admin)));
@@ -47,6 +44,12 @@ var app = builder.Build();
 app.UseCorrelationId();
 
 app.UseSwaggerWithUi();
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = context =>
+        context.Context.Response.Headers.CacheControl = "public,max-age=86400"
+});
 
 app.UseAuthentication();
 app.UseAuthorization();

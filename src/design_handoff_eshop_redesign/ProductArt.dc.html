@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div style="position:relative;width:100%;height:100%;background:{{ bg }};display:flex;align-items:center;justify-content:center;overflow:hidden">
+<sc-if value="{{ isPhone }}" hint-placeholder-val="{{ true }}"><div style="width:22%;aspect-ratio:9/18;background:{{ ink }};border-radius:18%/9%;padding:3%;box-sizing:border-box;display:flex"><div style="flex:1;border-radius:14%/7%;background:{{ accent }};display:flex;justify-content:center"><div style="width:34%;height:5%;margin-top:7%;border-radius:99px;background:{{ ink }}"></div></div></div></sc-if>
+<sc-if value="{{ isCamera }}"><div style="position:relative;width:46%;aspect-ratio:3/2;background:{{ ink }};border-radius:10%/15%;display:flex;align-items:center;justify-content:center"><div style="position:absolute;top:-9%;left:14%;width:22%;height:12%;background:{{ ink }};border-radius:6px 6px 0 0"></div><div style="width:46%;aspect-ratio:1;border-radius:50%;background:{{ accent }};border:6px solid {{ bg }};box-sizing:border-box"></div><div style="position:absolute;top:13%;right:9%;width:8%;aspect-ratio:1;border-radius:50%;background:{{ accent }}"></div></div></sc-if>
+<sc-if value="{{ isAppliance }}"><div style="width:34%;aspect-ratio:4/5;background:{{ ink }};border-radius:8%;display:flex;flex-direction:column;align-items:center;padding:7% 0;box-sizing:border-box;gap:9%"><div style="width:78%;display:flex;gap:6%;justify-content:flex-end"><div style="width:10%;aspect-ratio:1;border-radius:50%;background:{{ accent }}"></div><div style="width:10%;aspect-ratio:1;border-radius:50%;background:{{ accent }}"></div></div><div style="width:66%;aspect-ratio:1;border-radius:50%;background:{{ accent }};border:6px solid {{ bg }};box-sizing:border-box"></div></div></sc-if>
+<sc-if value="{{ isKitchen }}"><div style="width:46%;display:flex;flex-direction:column;align-items:center"><div style="width:12%;aspect-ratio:2/1;background:{{ ink }};border-radius:99px 99px 0 0"></div><div style="width:78%;aspect-ratio:14/1;background:{{ ink }};border-radius:99px"></div><div style="position:relative;width:70%;aspect-ratio:1.5;margin-top:3%;background:{{ ink }};border-radius:6% 6% 24% 24%;display:flex;align-items:center;justify-content:center"><div style="width:58%;height:12%;border-radius:99px;background:{{ accent }}"></div><div style="position:absolute;left:-13%;top:18%;width:14%;height:14%;background:{{ ink }};border-radius:99px 0 0 99px"></div><div style="position:absolute;right:-13%;top:18%;width:14%;height:14%;background:{{ ink }};border-radius:0 99px 99px 0"></div></div></div></sc-if>
+<sc-if value="{{ hasCaption }}"><div style="position:absolute;left:12px;bottom:10px;font:500 10.5px 'JetBrains Mono',monospace;letter-spacing:.04em;color:{{ ink }};opacity:.7">{{ caption }}</div></sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:320,&quot;height&quot;:320},&quot;kind&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;phone&quot;,&quot;camera&quot;,&quot;appliance&quot;,&quot;kitchen&quot;],&quot;default&quot;:&quot;phone&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;bg&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#f3edfa&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;ink&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#2a1f36&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#b48ef0&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;caption&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const k = this.props.kind ?? 'phone';
+    return {
+      bg: this.props.bg ?? '#f3edfa', ink: this.props.ink ?? '#2a1f36', accent: this.props.accent ?? '#b48ef0',
+      isPhone: k === 'phone', isCamera: k === 'camera', isAppliance: k === 'appliance', isKitchen: k === 'kitchen',
+      hasCaption: !!this.props.caption, caption: this.props.caption
+    };
+  }
+}
+</script>
+</body>
+</html>

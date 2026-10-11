@@ -1,0 +1,54 @@
+:host {
+  display: inline-block;
+}
+
+.stepper {
+  display: inline-flex;
+  align-items: stretch;
+  height: 44px;
+  border: 1px solid var(--es-line-3);
+  border-radius: var(--es-radius-ctl);
+  background: var(--es-surface);
+
+  button {
+    width: 42px;
+    border: 0;
+    border-radius: var(--es-radius-ctl);
+    background: transparent;
+    color: var(--es-ink);
+    font: 600 18px/1 var(--es-font);
+    cursor: pointer;
+
+    &:hover:not(:disabled) {
+      background: var(--es-hover-bg);
+    }
+
+    &:disabled {
+      color: var(--es-line-3);
+      cursor: default;
+    }
+  }
+
+  .value {
+    display: grid;
+    place-items: center;
+    min-width: 36px;
+    font: 700 16px/1 var(--es-font);
+  }
+
+  // Large variant: product page.
+  &.lg {
+    height: 56px;
+    border-radius: var(--es-radius-btn);
+
+    button {
+      width: 52px;
+      border-radius: var(--es-radius-btn);
+    }
+
+    .value {
+      width: 40px;
+      font-size: 17px;
+    }
+  }
+}

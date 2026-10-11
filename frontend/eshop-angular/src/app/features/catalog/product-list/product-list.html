@@ -1,48 +1,91 @@
-<section class="filters">
-  <mat-form-field appearance="outline" class="search-field">
-    <mat-label>Search products</mat-label>
-    <input matInput [formControl]="searchControl" placeholder="e.g. iPhone" />
-  </mat-form-field>
+<section class="page">
+  <div class="head">
+    <div>
+      <h1>Discover</h1>
+      <p class="subtitle">Fresh picks, great prices. Phones, cameras and home essentials.</p>
+    </div>
+    @if (result(); as page) {
+      <p class="shown">{{ page.data.length }} of {{ page.count }} products</p>
+    }
+  </div>
 
-  <mat-form-field appearance="outline" class="category-field">
-    <mat-label>Category</mat-label>
-    <mat-select [value]="category() ?? ''" (selectionChange)="onCategoryChange($event.value)">
-      <mat-option value="">All categories</mat-option>
-      @for (c of categories(); track c) {
-        <mat-option [value]="c">{{ c }}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
-
-  <mat-form-field appearance="outline" class="sort-field">
-    <mat-label>Sort by</mat-label>
-    <mat-select [value]="sortOption()" (selectionChange)="onSortChange($event.value)">
-      <mat-option value="name-asc">Name (A-Z)</mat-option>
-      <mat-option value="name-desc">Name (Z-A)</mat-option>
-      <mat-option value="price-asc">Price (Low to High)</mat-option>
-      <mat-option value="price-desc">Price (High to Low)</mat-option>
-    </mat-select>
-  </mat-form-field>
-</section>
-
-@if (loading()) {
-  <mat-progress-bar mode="indeterminate" />
-}
-
-@if (result(); as page) {
-  @if (page.data.length > 0) {
-    <div class="product-grid">
-      @for (product of page.data; track product.id) {
-        <app-product-card [product]="product" />
+  <div class="toolbar">
+    <div class="chips" role="group" aria-label="Filter by category">
+      <button type="button" class="chip" [class.active]="!category()" [attr.aria-pressed]="!category()" (click)="onCategoryChange('')">
+        All <span class="count">{{ stats().total }}</span>
+      </button>
+      @for (c of stats().categories; track c.name) {
+        <button
+          type="button"
+          class="chip"
+          [class.active]="category() === c.name"
+          [attr.aria-pressed]="category() === c.name"
+          (click)="onCategoryChange(c.name)"
+        >
+          {{ c.name }} <span class="count">{{ c.count }}</span>
+        </button>
       }
     </div>
 
-    <app-pagination-control
-      [pageIndex]="pageIndex()"
-      [totalPages]="page.totalPages"
-      (pageChange)="onPageChange($event)"
-    />
-  } @else {
-    <p class="empty-state">No products found.</p>
+    <label class="sort">
+      <span>Sort by</span>
+      <select [value]="sortOption()" (change)="onSortChange($any($event.target).value)">
+        <option value="name-asc">Name (A&ndash;Z)</option>
+        <option value="name-desc">Name (Z&ndash;A)</option>
+        <option value="price-asc">Price: low to high</option>
+        <option value="price-desc">Price: high to low</option>
+      </select>
+    </label>
+  </div>
+
+  @if (loading()) {
+    <div class="grid" aria-busy="true" aria-label="Loading products">
+      @for (n of skeletons; track n) {
+        <div class="skeleton-card">
+          <div class="skeleton-tile"></div>
+          <div class="skeleton-body">
+            <span class="line" style="width: 40%; height: 10px"></span>
+            <span class="line" style="width: 70%; height: 16px"></span>
+            <span class="line" style="width: 45%; height: 22px"></span>
+          </div>
+        </div>
+      }
+    </div>
+  } @else if (failed()) {
+    <div class="error-banner" role="alert">
+      <div>
+        <h2>We couldn't load products</h2>
+        <p>The catalog service didn't respond. Your basket is unaffected.</p>
+      </div>
+      <button type="button" class="es-btn-outline retry" (click)="retry()">Try again</button>
+    </div>
+  } @else if (result(); as page) {
+    @if (page.data.length > 0) {
+      <div class="grid">
+        @for (product of page.data; track product.id) {
+          <app-product-card
+            [product]="product"
+            [inBasket]="basketQuantities().get(product.id) ?? 0"
+            [adding]="addingId() === product.id"
+            (add)="addToBasket($event)"
+          />
+        }
+      </div>
+
+      <app-pagination-control
+        [pageIndex]="pageIndex()"
+        [totalPages]="page.totalPages"
+        (pageChange)="onPageChange($event)"
+      />
+    } @else {
+      <div class="empty">
+        <div class="empty-icon" aria-hidden="true">?</div>
+        <h2>No products match your filters</h2>
+        <p>Try a different category, or clear your search.</p>
+        @if (hasFilters()) {
+          <button type="button" class="es-btn" (click)="clearFilters()">Clear filters</button>
+        }
+      </div>
+    }
   }
-}
+</section>

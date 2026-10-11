@@ -37,9 +37,6 @@ internal class UpdateProductCommandHandler
         UpdateProductCommand command,
         CancellationToken cancellationToken)
     {
-        //logger.LogInformation(
-        //    "UpdateProductCommandHandler.Handle called with {@Command}",
-        //    command);
 
         var product = await session.LoadAsync<Product>(
             command.Id,

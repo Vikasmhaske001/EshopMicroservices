@@ -5,10 +5,6 @@ public class CreateOrderHandler(IApplicationDbContext dbContext, ILogger<CreateO
 {
     public async Task<CreateOrderResult> Handle(CreateOrderCommand command, CancellationToken cancellationToken)
     {
-        //create Order entity from command object
-        //save to database
-        //return result
-
         var order = CreateNewOrder(command.Order);
 
         dbContext.Orders.Add(order);

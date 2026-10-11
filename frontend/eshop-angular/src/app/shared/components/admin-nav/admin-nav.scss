@@ -1,0 +1,29 @@
+.admin-nav {
+  display: flex;
+  gap: 10px;
+}
+
+a {
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 16px;
+  border: 1px solid var(--es-line-3);
+  border-radius: var(--es-radius-ctl);
+  background: var(--es-surface);
+  color: var(--es-text-2);
+  font: 600 14px/1 var(--es-font);
+  text-decoration: none;
+
+  &:hover {
+    border-color: var(--es-grape);
+    color: var(--es-grape);
+  }
+
+  &.active {
+    border: 1.5px solid var(--es-grape);
+    background: var(--es-grape-soft);
+    color: var(--es-grape);
+    font-weight: 700;
+  }
+}

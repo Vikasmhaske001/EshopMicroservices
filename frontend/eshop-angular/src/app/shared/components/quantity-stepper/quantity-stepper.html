@@ -1,0 +1,5 @@
+<div class="stepper" [class.lg]="size() === 'lg'" role="group" [attr.aria-label]="label()">
+  <button type="button" aria-label="Decrease quantity" [disabled]="value() <= min()" (click)="decrease()">&minus;</button>
+  <span class="value" aria-live="polite">{{ value() }}</span>
+  <button type="button" aria-label="Increase quantity" (click)="increase()">+</button>
+</div>

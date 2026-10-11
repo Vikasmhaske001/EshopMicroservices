@@ -10,10 +10,6 @@ public class UpdateOrderHandler(IApplicationDbContext dbContext)
 {
     public async Task<UpdateOrderResult> Handle(UpdateOrderCommand command, CancellationToken cancellationToken)
     {
-        //Update Order entity from command object
-        //save to database
-        //return result
-
         var orderId = OrderId.Of(command.Order.Id);
         var order = await dbContext.Orders
             .FindAsync([orderId], cancellationToken: cancellationToken);

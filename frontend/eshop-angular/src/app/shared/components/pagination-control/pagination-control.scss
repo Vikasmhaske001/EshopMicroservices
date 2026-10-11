@@ -1,13 +1,50 @@
-.pagination-control {
+.pagination {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 1rem 0;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 36px 0 0;
 }
 
-.pagination-status {
-  font: var(--mat-sys-body-medium);
-  min-width: 8rem;
+// Other pages are plain text; the current page is a grape square.
+.page {
+  display: grid;
+  place-items: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: var(--es-radius-ctl);
+  background: transparent;
+  color: var(--es-text-2);
+  font: 700 14px/1 var(--es-font);
+  cursor: pointer;
+
+  &:hover:not(:disabled):not(.current) {
+    background: var(--es-hover-bg);
+    color: var(--es-grape);
+  }
+
+  &.current {
+    background: var(--es-grape);
+    color: #fff;
+    cursor: default;
+  }
+
+  &:disabled {
+    color: var(--es-line-3);
+    cursor: default;
+  }
+
+  &.arrow {
+    font-size: 22px;
+    font-weight: 600;
+  }
+}
+
+.gap {
+  min-width: 24px;
+  color: var(--es-subtle);
   text-align: center;
 }

@@ -1,10 +1,10 @@
-import { CurrencyPipe } from '@angular/common';
+import { InrPipe } from '../../../shared/pipes/inr.pipe';
 import { Component, inject, signal } from '@angular/core';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatSelectModule } from '@angular/material/select';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificationService } from '../../../core/notifications/notification.service';
 import { Order, OrderStatus, getOrderStatusLabel, getOrderTotal } from '../../../shared/models/order.model';
+import { AdminNav } from '../../../shared/components/admin-nav/admin-nav';
+import { EsInput } from '../../../shared/components/form-field/es-input';
 import { PaginationControl } from '../../../shared/components/pagination-control/pagination-control';
 import { OrdersService } from '../../orders/orders.service';
 
@@ -12,13 +12,13 @@ const PAGE_SIZE = 10;
 
 @Component({
   selector: 'app-order-admin',
-  imports: [MatFormFieldModule, MatSelectModule, MatProgressBarModule, CurrencyPipe, PaginationControl],
+  imports: [MatProgressBarModule, InrPipe, PaginationControl, AdminNav, EsInput],
   templateUrl: './order-admin.html',
   styleUrl: './order-admin.scss',
 })
 export class OrderAdmin {
   private readonly ordersService = inject(OrdersService);
-  private readonly snackBar = inject(MatSnackBar);
+  private readonly notifications = inject(NotificationService);
 
   protected readonly loading = signal(true);
   protected readonly orders = signal<Order[]>([]);
@@ -55,6 +55,10 @@ export class OrderAdmin {
     this.loadOrders();
   }
 
+  onStatusChange(order: Order, event: Event): void {
+    this.changeStatus(order, Number((event.target as HTMLSelectElement).value) as OrderStatus);
+  }
+
   changeStatus(order: Order, status: OrderStatus): void {
     if (order.status === status) {
       return;
@@ -64,9 +68,7 @@ export class OrderAdmin {
     this.ordersService.updateOrder({ ...order, status }).subscribe({
       next: () => {
         this.updatingId.set(null);
-        this.snackBar.open(`Order ${order.orderName} marked ${getOrderStatusLabel(status)}.`, 'Dismiss', {
-          duration: 4000,
-        });
+        this.notifications.success(`Order ${order.orderName} marked ${getOrderStatusLabel(status)}.`);
         this.loadOrders();
       },
       error: () => this.updatingId.set(null),

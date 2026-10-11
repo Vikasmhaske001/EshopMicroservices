@@ -1,0 +1,15 @@
+<div class="shell">
+  <aside class="brand-panel">
+    <span class="mark" aria-hidden="true">E</span>
+    <div class="copy">
+      <p class="headline">{{ headline() }}</p>
+      @if (blurb()) {
+        <p class="blurb">{{ blurb() }}</p>
+      }
+    </div>
+  </aside>
+
+  <section class="form-panel">
+    <ng-content />
+  </section>
+</div>
