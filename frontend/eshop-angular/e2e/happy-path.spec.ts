@@ -33,14 +33,12 @@ test('anonymous visitor can browse, register, add to basket, and check out', asy
   await expect(page.getByText(/Added .* to your basket/)).toBeVisible();
 
   await page.goto('/checkout');
-  await page.getByLabel('First name').fill('E2E');
+  await page.getByLabel('First name').fill('Playwright');
   await page.getByLabel('Last name').fill('Tester');
   await page.getByLabel('Address').fill('1 Test Street');
   await page.getByLabel('Country').fill('Testland');
   await page.getByLabel('State').fill('TS');
-  // Stays within Ordering's ZipCode column limit (max 5 chars) - a 6+ digit code currently
-  // crashes the async order-creation consumer server-side (a real backend bug, out of scope here).
-  await page.getByLabel('Zip code').fill('12345');
+  await page.getByLabel('PIN code').fill('411001');
   await page.getByLabel('Name on card').fill('E2E Tester');
   await page.getByLabel('Card number').fill('4111111111111111');
   await page.getByLabel('Expiration (MM/YY)').fill('12/30');
@@ -52,7 +50,8 @@ test('anonymous visitor can browse, register, add to basket, and check out', asy
   await expect(page).toHaveURL(/\/orders\/[0-9a-f-]+/, { timeout: 25000 });
   await expect(page.getByRole('heading', { name: /^Order / })).toBeVisible();
   await expect(page.getByText('Status:')).toBeVisible();
-  // "E2E Tester" appears in both the shipping and payment sections (first/last name and card
-  // name were filled with the same value) - the address line is unambiguous.
+  // The customer name appears in both the shipping and payment sections - the address line is
+  // unambiguous. The 6-digit PIN also proves the widened ZipCode column end to end.
   await expect(page.getByText('1 Test Street')).toBeVisible();
+  await expect(page.getByText(/411001/)).toBeVisible();
 });

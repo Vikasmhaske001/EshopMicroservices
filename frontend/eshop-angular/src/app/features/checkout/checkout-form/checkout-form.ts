@@ -1,4 +1,7 @@
-import { CurrencyPipe } from '@angular/common';
+import { NotificationService } from '../../../core/notifications/notification.service';
+import { FieldError } from '../../../shared/components/field-error/field-error';
+import { InrPipe } from '../../../shared/pipes/inr.pipe';
+import { AppValidators } from '../../../shared/validators/app-validators';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -27,8 +30,9 @@ const POLL_TIMEOUT_MS = 20000;
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    CurrencyPipe,
+    InrPipe,
     ErrorBanner,
+    FieldError,
   ],
   templateUrl: './checkout-form.html',
   styleUrl: './checkout-form.scss',
@@ -40,19 +44,29 @@ export class CheckoutForm {
   protected readonly basketService = inject(BasketService);
   private readonly ordersService = inject(OrdersService);
   private readonly checkoutService = inject(CheckoutService);
+  private readonly notifications = inject(NotificationService);
 
   protected readonly form = this.fb.nonNullable.group({
-    firstName: ['', Validators.required],
-    lastName: ['', Validators.required],
-    emailAddress: [this.authService.currentUser()?.email ?? '', [Validators.required, Validators.email]],
-    addressLine: ['', Validators.required],
-    country: ['', Validators.required],
-    state: ['', Validators.required],
-    zipCode: ['', Validators.required],
-    cardName: ['', Validators.required],
+    // Limits mirror Ordering.Application's AddressDtoValidator/PaymentDtoValidator, so the user is
+    // told here instead of getting a rejected order after the async checkout.
+    firstName: ['', [Validators.required, AppValidators.notBlank, AppValidators.personName, Validators.maxLength(50)]],
+    lastName: ['', [Validators.required, AppValidators.notBlank, AppValidators.personName, Validators.maxLength(50)]],
+    emailAddress: [
+      this.authService.currentUser()?.email ?? '',
+      [Validators.required, Validators.email, Validators.maxLength(50)],
+    ],
+    addressLine: ['', [Validators.required, AppValidators.notBlank, Validators.maxLength(180)]],
+    country: ['', [Validators.required, AppValidators.notBlank, Validators.maxLength(50)]],
+    state: ['', [Validators.required, AppValidators.notBlank, Validators.maxLength(50)]],
+    zipCode: ['', [Validators.required, AppValidators.pincode]],
+    cardName: ['', [Validators.required, AppValidators.notBlank, Validators.maxLength(50)]],
     cardNumber: ['', [Validators.required, Validators.pattern(/^\d{13,19}$/)]],
-    expiration: ['', [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/)]],
-    cvv: ['', [Validators.required, Validators.pattern(/^\d{3,4}$/)]],
+    expiration: [
+      '',
+      [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/), AppValidators.cardNotExpired()],
+    ],
+    // Ordering stores CVV in a 3-character column, so 4-digit (Amex) codes are not accepted yet.
+    cvv: ['', [Validators.required, Validators.pattern(/^\d{3}$/)]],
   });
 
   protected readonly submitting = signal(false);
@@ -117,7 +131,10 @@ export class CheckoutForm {
         })
       )
       .subscribe({
-        next: (order) => this.router.navigate(['/orders', order.id]),
+        next: (order) => {
+          this.notifications.success('Order placed successfully. Thank you for shopping with us!');
+          this.router.navigate(['/orders', order.id]);
+        },
         error: (error: unknown) => {
           this.submitting.set(false);
           this.statusMessage.set(null);

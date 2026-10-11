@@ -2,9 +2,9 @@
   <div class="item-info">
     <span class="item-name">{{ item().productName }}</span>
     <span class="item-unit-price">
-      {{ item().effectivePrice | currency }} each
+      {{ item().effectivePrice | inr }} each
       @if (item().discountAmount > 0) {
-        <span class="item-discount">(save {{ item().discountAmount | currency }} each)</span>
+        <span class="item-discount">(save {{ item().discountAmount | inr }} each)</span>
       }
     </span>
   </div>
@@ -30,7 +30,7 @@
     </button>
   </div>
 
-  <span class="item-line-total">{{ item().effectivePrice * item().quantity | currency }}</span>
+  <span class="item-line-total">{{ item().effectivePrice * item().quantity | inr }}</span>
 
   <button mat-icon-button type="button" (click)="remove.emit()" aria-label="Remove item">
     <mat-icon>delete</mat-icon>

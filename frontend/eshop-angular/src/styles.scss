@@ -37,3 +37,29 @@ body {
   height: 100%;
 }
 /* You can add global styles to this file, and also import other style files */
+
+// Pop-up messages (see core/notifications/notification.service.ts). These classes are applied to
+// the snackbar container, so overriding Material's snackbar tokens here restyles the whole toast.
+.toast {
+  --mat-snack-bar-supporting-text-color: #fff;
+
+  &.toast-success {
+    --mat-snack-bar-container-color: #1b5e20;
+    --mat-snack-bar-button-color: #c8e6c9;
+  }
+
+  &.toast-error {
+    --mat-snack-bar-container-color: #b3261e;
+    --mat-snack-bar-button-color: #ffdad6;
+  }
+
+  &.toast-warning {
+    --mat-snack-bar-container-color: #8a5100;
+    --mat-snack-bar-button-color: #ffddb3;
+  }
+
+  &.toast-info {
+    --mat-snack-bar-container-color: #1f3a5f;
+    --mat-snack-bar-button-color: #cfe5ff;
+  }
+}

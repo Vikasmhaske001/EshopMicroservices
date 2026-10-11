@@ -52,7 +52,7 @@ export class ProductList {
 
   protected readonly categories = toSignal(
     this.catalogService.getProducts({ pageNumber: 1, pageSize: CATEGORY_SAMPLE_SIZE }).pipe(
-      map((result) => [...new Set(result.data.flatMap((p) => p.categories))].sort()),
+      map((result) => [...new Set(result.data.flatMap((p) => p.categories ?? []))].sort()),
       catchError(() => of([] as string[]))
     ),
     { initialValue: [] as string[] }

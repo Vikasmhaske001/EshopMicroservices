@@ -1,4 +1,4 @@
-import { CurrencyPipe } from '@angular/common';
+import { InrPipe } from '../../../shared/pipes/inr.pipe';
 import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -11,7 +11,7 @@ import { LoadingSpinner } from '../../../shared/components/loading-spinner/loadi
 
 @Component({
   selector: 'app-order-detail',
-  imports: [RouterLink, MatButtonModule, CurrencyPipe, LoadingSpinner],
+  imports: [RouterLink, MatButtonModule, InrPipe, LoadingSpinner],
   templateUrl: './order-detail.html',
   styleUrl: './order-detail.scss',
 })

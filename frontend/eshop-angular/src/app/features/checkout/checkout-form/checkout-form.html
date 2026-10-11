@@ -15,12 +15,12 @@
         @for (item of cart.items; track item.productId) {
           <div class="summary-line">
             <span>{{ item.productName }} &times; {{ item.quantity }}</span>
-            <span>{{ item.effectivePrice * item.quantity | currency }}</span>
+            <span>{{ item.effectivePrice * item.quantity | inr }}</span>
           </div>
         }
         <div class="summary-line total">
           <span>Total</span>
-          <span>{{ cart.totalPrice | currency }}</span>
+          <span>{{ cart.totalPrice | inr }}</span>
         </div>
       </section>
     }
@@ -33,38 +33,42 @@
           <mat-form-field appearance="outline">
             <mat-label>First name</mat-label>
             <input matInput formControlName="firstName" />
+            <mat-error appFieldError [control]="form.controls.firstName" label="First name" />
           </mat-form-field>
           <mat-form-field appearance="outline">
             <mat-label>Last name</mat-label>
             <input matInput formControlName="lastName" />
+            <mat-error appFieldError [control]="form.controls.lastName" label="Last name" />
           </mat-form-field>
         </div>
 
         <mat-form-field appearance="outline">
           <mat-label>Email</mat-label>
           <input matInput type="email" formControlName="emailAddress" />
-          @if (form.controls.emailAddress.touched && form.controls.emailAddress.hasError('email')) {
-            <mat-error>Enter a valid email address.</mat-error>
-          }
+          <mat-error appFieldError [control]="form.controls.emailAddress" label="Email" />
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Address</mat-label>
           <input matInput formControlName="addressLine" />
+          <mat-error appFieldError [control]="form.controls.addressLine" label="Address" />
         </mat-form-field>
 
         <div class="field-row">
           <mat-form-field appearance="outline">
             <mat-label>Country</mat-label>
             <input matInput formControlName="country" />
+            <mat-error appFieldError [control]="form.controls.country" label="Country" />
           </mat-form-field>
           <mat-form-field appearance="outline">
             <mat-label>State</mat-label>
             <input matInput formControlName="state" />
+            <mat-error appFieldError [control]="form.controls.state" label="State" />
           </mat-form-field>
           <mat-form-field appearance="outline">
-            <mat-label>Zip code</mat-label>
-            <input matInput formControlName="zipCode" />
+            <mat-label>PIN code</mat-label>
+            <input matInput formControlName="zipCode" inputmode="numeric" maxlength="6" autocomplete="postal-code" />
+            <mat-error appFieldError [control]="form.controls.zipCode" label="PIN code" />
           </mat-form-field>
         </div>
       </fieldset>
@@ -76,29 +80,24 @@
         <mat-form-field appearance="outline">
           <mat-label>Name on card</mat-label>
           <input matInput formControlName="cardName" />
+          <mat-error appFieldError [control]="form.controls.cardName" label="Name on card" />
         </mat-form-field>
 
         <div class="field-row">
           <mat-form-field appearance="outline">
             <mat-label>Card number</mat-label>
             <input matInput formControlName="cardNumber" placeholder="4111111111111111" />
-            @if (form.controls.cardNumber.touched && form.controls.cardNumber.hasError('pattern')) {
-              <mat-error>Enter 13-19 digits, no spaces.</mat-error>
-            }
+            <mat-error appFieldError [control]="form.controls.cardNumber" label="Card number" [messages]="{ pattern: 'Enter 13-19 digits, no spaces.' }" />
           </mat-form-field>
           <mat-form-field appearance="outline">
             <mat-label>Expiration (MM/YY)</mat-label>
             <input matInput formControlName="expiration" placeholder="12/28" />
-            @if (form.controls.expiration.touched && form.controls.expiration.hasError('pattern')) {
-              <mat-error>Use MM/YY format.</mat-error>
-            }
+            <mat-error appFieldError [control]="form.controls.expiration" label="Expiration" [messages]="{ pattern: 'Use MM/YY format.' }" />
           </mat-form-field>
           <mat-form-field appearance="outline">
             <mat-label>CVV</mat-label>
             <input matInput formControlName="cvv" />
-            @if (form.controls.cvv.touched && form.controls.cvv.hasError('pattern')) {
-              <mat-error>3 or 4 digits.</mat-error>
-            }
+            <mat-error appFieldError [control]="form.controls.cvv" label="CVV" [messages]="{ pattern: 'CVV must be 3 digits.' }" />
           </mat-form-field>
         </div>
       </fieldset>

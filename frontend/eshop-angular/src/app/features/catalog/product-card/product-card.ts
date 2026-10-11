@@ -1,4 +1,4 @@
-import { CurrencyPipe } from '@angular/common';
+import { InrPipe } from '../../../shared/pipes/inr.pipe';
 import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,7 +8,7 @@ import { Product } from '../../../shared/models/product.model';
 
 @Component({
   selector: 'app-product-card',
-  imports: [RouterLink, MatButtonModule, MatCardModule, MatIconModule, CurrencyPipe],
+  imports: [RouterLink, MatButtonModule, MatCardModule, MatIconModule, InrPipe],
   templateUrl: './product-card.html',
   styleUrl: './product-card.scss',
 })

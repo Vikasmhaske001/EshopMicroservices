@@ -1,4 +1,4 @@
-import { CurrencyPipe } from '@angular/common';
+import { InrPipe } from '../../../shared/pipes/inr.pipe';
 import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,7 +8,7 @@ import { BasketItem } from '../basket-item/basket-item';
 
 @Component({
   selector: 'app-basket-page',
-  imports: [RouterLink, MatButtonModule, MatProgressBarModule, CurrencyPipe, BasketItem],
+  imports: [RouterLink, MatButtonModule, MatProgressBarModule, InrPipe, BasketItem],
   templateUrl: './basket-page.html',
   styleUrl: './basket-page.scss',
 })

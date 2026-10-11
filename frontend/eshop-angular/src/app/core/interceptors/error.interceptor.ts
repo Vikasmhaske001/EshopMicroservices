@@ -1,12 +1,12 @@
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError, throwError } from 'rxjs';
+import { NotificationService } from '../notifications/notification.service';
 import { AppError } from '../../shared/models/app-error.model';
 import { ProblemDetails } from '../../shared/models/problem-details.model';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
-  const snackBar = inject(MatSnackBar);
+  const notifications = inject(NotificationService);
 
   return next(req).pipe(
     catchError((error: unknown) => {
@@ -16,7 +16,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
       // top of that would be redundant, and "You need to sign in" is a confusing thing to say to
       // someone who is actively trying to sign in.
       if (!isAuthFormRequest(req.url)) {
-        snackBar.open(appError.detail ?? appError.title, 'Dismiss', { duration: 5000 });
+        notifications.error(appError.detail ?? appError.title);
       }
 
       return throwError(() => appError);

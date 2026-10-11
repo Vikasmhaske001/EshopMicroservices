@@ -15,12 +15,12 @@
         @for (item of order()!.orderItems; track item.productId) {
           <div class="order-item">
             <span>{{ item.productName }} &times; {{ item.quantity }}</span>
-            <span>{{ item.price * item.quantity | currency }}</span>
+            <span>{{ item.price * item.quantity | inr }}</span>
           </div>
         }
         <div class="order-item total">
           <span>Total</span>
-          <span>{{ total() | currency }}</span>
+          <span>{{ total() | inr }}</span>
         </div>
       </div>
     </section>

@@ -12,7 +12,7 @@
         </div>
         <div class="order-card-body">
           <span>{{ order.orderItems.length }} item(s)</span>
-          <span class="order-total">{{ orderTotal(order) | currency }}</span>
+          <span class="order-total">{{ orderTotal(order) | inr }}</span>
         </div>
       </a>
     }

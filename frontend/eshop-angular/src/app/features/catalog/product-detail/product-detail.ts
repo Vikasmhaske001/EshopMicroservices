@@ -1,10 +1,10 @@
-import { CurrencyPipe } from '@angular/common';
+import { InrPipe } from '../../../shared/pipes/inr.pipe';
 import { Component, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificationService } from '../../../core/notifications/notification.service';
 import { catchError, of, switchMap } from 'rxjs';
 import { CatalogService } from '../catalog.service';
 import { Product } from '../../../shared/models/product.model';
@@ -14,7 +14,7 @@ import { LoadingSpinner } from '../../../shared/components/loading-spinner/loadi
 
 @Component({
   selector: 'app-product-detail',
-  imports: [RouterLink, MatButtonModule, MatIconModule, CurrencyPipe, LoadingSpinner],
+  imports: [RouterLink, MatButtonModule, MatIconModule, InrPipe, LoadingSpinner],
   templateUrl: './product-detail.html',
   styleUrl: './product-detail.scss',
 })
@@ -24,7 +24,7 @@ export class ProductDetail {
   private readonly catalogService = inject(CatalogService);
   private readonly authService = inject(AuthService);
   private readonly basketService = inject(BasketService);
-  private readonly snackBar = inject(MatSnackBar);
+  private readonly notifications = inject(NotificationService);
 
   // undefined = still loading, null = not found / request failed, Product = loaded
   protected readonly product = toSignal(
@@ -59,7 +59,7 @@ export class ProductDetail {
       next: () => {
         this.adding.set(false);
         this.quantity.set(1);
-        this.snackBar.open(`Added ${product.name} to your basket`, 'View Basket', { duration: 4000 })
+        this.notifications.success(`Added ${product.name} to your basket`, { action: 'View Basket' })
           .onAction()
           .subscribe(() => this.router.navigateByUrl('/basket'));
       },

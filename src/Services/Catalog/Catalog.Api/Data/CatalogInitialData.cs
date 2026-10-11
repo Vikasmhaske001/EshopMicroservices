@@ -24,7 +24,7 @@ public class CatalogInitialData : IInitialData
                     Name = "IPhone X",
                     Description = "This phone is the company's biggest change to its flagship smartphone in years. It includes a borderless.",
                     ImageFile = "product-1.png",
-                    Price = 950.00M,
+                    Price = 79999.00M,
                     Categories = new List<string> { "Smart Phone" }
                 },
                 new Product()
@@ -33,7 +33,7 @@ public class CatalogInitialData : IInitialData
                     Name = "Samsung 10",
                     Description = "This phone is the company's biggest change to its flagship smartphone in years. It includes a borderless.",
                     ImageFile = "product-2.png",
-                    Price = 840.00M,
+                    Price = 69999.00M,
                     Categories = new List<string> { "Smart Phone" }
                 },
                 new Product()
@@ -42,7 +42,7 @@ public class CatalogInitialData : IInitialData
                     Name = "Huawei Plus",
                     Description = "This phone is the company's biggest change to its flagship smartphone in years. It includes a borderless.",
                     ImageFile = "product-3.png",
-                    Price = 650.00M,
+                    Price = 54999.00M,
                     Categories = new List<string> { "White Appliances" }
                 },
                 new Product()
@@ -51,7 +51,7 @@ public class CatalogInitialData : IInitialData
                     Name = "Xiaomi Mi 9",
                     Description = "This phone is the company's biggest change to its flagship smartphone in years. It includes a borderless.",
                     ImageFile = "product-4.png",
-                    Price = 470.00M,
+                    Price = 39999.00M,
                     Categories = new List<string> { "White Appliances" }
                 },
                 new Product()
@@ -60,7 +60,7 @@ public class CatalogInitialData : IInitialData
                     Name = "HTC U11+ Plus",
                     Description = "This phone is the company's biggest change to its flagship smartphone in years. It includes a borderless.",
                     ImageFile = "product-5.png",
-                    Price = 380.00M,
+                    Price = 31999.00M,
                     Categories = new List<string> { "Smart Phone" }
                 },
                 new Product()
@@ -69,7 +69,7 @@ public class CatalogInitialData : IInitialData
                     Name = "LG G7 ThinQ",
                     Description = "This phone is the company's biggest change to its flagship smartphone in years. It includes a borderless.",
                     ImageFile = "product-6.png",
-                    Price = 240.00M,
+                    Price = 19999.00M,
                     Categories = new List<string> { "Home Kitchen" }
                 },
                 new Product()
@@ -78,7 +78,7 @@ public class CatalogInitialData : IInitialData
                     Name = "Panasonic Lumix",
                     Description = "This phone is the company's biggest change to its flagship smartphone in years. It includes a borderless.",
                     ImageFile = "product-6.png",
-                    Price = 240.00M,
+                    Price = 19999.00M,
                     Categories = new List<string> { "Camera" }
                 }
             };

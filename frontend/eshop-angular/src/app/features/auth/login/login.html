@@ -5,17 +5,13 @@
     <mat-form-field appearance="outline">
       <mat-label>Username</mat-label>
       <input matInput formControlName="userName" autocomplete="username" />
-      @if (form.controls.userName.touched && form.controls.userName.hasError('required')) {
-        <mat-error>Username is required.</mat-error>
-      }
+      <mat-error appFieldError [control]="form.controls.userName" label="Username" />
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>Password</mat-label>
       <input matInput type="password" formControlName="password" autocomplete="current-password" />
-      @if (form.controls.password.touched && form.controls.password.hasError('required')) {
-        <mat-error>Password is required.</mat-error>
-      }
+      <mat-error appFieldError [control]="form.controls.password" label="Password" />
     </mat-form-field>
 
     @if (errorMessage(); as message) {

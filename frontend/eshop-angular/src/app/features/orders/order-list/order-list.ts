@@ -1,4 +1,4 @@
-import { CurrencyPipe } from '@angular/common';
+import { InrPipe } from '../../../shared/pipes/inr.pipe';
 import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,7 +9,7 @@ import { OrdersService } from '../orders.service';
 
 @Component({
   selector: 'app-order-list',
-  imports: [RouterLink, CurrencyPipe, MatButtonModule, MatProgressBarModule],
+  imports: [RouterLink, InrPipe, MatButtonModule, MatProgressBarModule],
   templateUrl: './order-list.html',
   styleUrl: './order-list.scss',
 })

@@ -15,8 +15,8 @@
 
     <div class="product-info">
       <h2>{{ product()!.name }}</h2>
-      <p class="categories">{{ product()!.categories.join(', ') }}</p>
-      <p class="price">{{ product()!.price | currency }}</p>
+      <p class="categories">{{ (product()!.categories ?? []).join(', ') }}</p>
+      <p class="price">{{ product()!.price | inr }}</p>
       <p class="description">{{ product()!.description }}</p>
 
       <div class="add-to-basket">

@@ -20,7 +20,7 @@
             <td>{{ order.orderName }}</td>
             <td>{{ order.shippingAddress.firstName }} {{ order.shippingAddress.lastName }}</td>
             <td>{{ order.orderItems.length }}</td>
-            <td>{{ orderTotal(order) | currency }}</td>
+            <td>{{ orderTotal(order) | inr }}</td>
             <td>
               <mat-form-field appearance="outline" class="status-select">
                 <mat-select
