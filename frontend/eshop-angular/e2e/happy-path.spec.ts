@@ -9,10 +9,12 @@ test('anonymous visitor can browse, register, add to basket, and check out', asy
   const password = 'E2eTest@123';
 
   await page.goto('/products');
-  await expect(page.getByRole('heading', { name: 'EShop' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'EShop home' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Discover' })).toBeVisible();
 
   // Catalog is public - no login required to browse or open a product.
-  await page.getByRole('link', { name: 'View Details' }).first().click();
+  // The product name link is stretched over the whole card, so clicking it opens the product.
+  await page.locator('app-product-card h3 a').first().click();
   await expect(page.getByRole('button', { name: 'Add to Basket' })).toBeVisible();
 
   // Adding to basket while anonymous must redirect to login, not fail silently or crash.
@@ -21,10 +23,11 @@ test('anonymous visitor can browse, register, add to basket, and check out', asy
 
   // Register a fresh account (register.html preserves returnUrl from the login page's link).
   await page.locator('main').getByRole('link', { name: 'Register' }).click();
-  await page.getByLabel('Username').fill(username);
-  await page.getByLabel('Email').fill(`${username}@example.com`);
-  await page.getByLabel('Password').fill(password);
-  await page.locator('main').getByRole('button', { name: 'Register' }).click();
+  await page.getByLabel('Username', { exact: true }).fill(username);
+  await page.getByLabel('Email', { exact: true }).fill(`${username}@example.com`);
+  // exact: the Show/Hide toggle is also labelled "Show password".
+  await page.getByLabel('Password', { exact: true }).fill(password);
+  await page.locator('main').getByRole('button', { name: 'Create account' }).click();
 
   // Registering logs the user in and honors returnUrl - should land back on the product page.
   await expect(page.getByRole('button', { name: 'Add to Basket' })).toBeVisible();
@@ -33,14 +36,12 @@ test('anonymous visitor can browse, register, add to basket, and check out', asy
   await expect(page.getByText(/Added .* to your basket/)).toBeVisible();
 
   await page.goto('/checkout');
-  await page.getByLabel('First name').fill('E2E');
+  await page.getByLabel('First name').fill('Playwright');
   await page.getByLabel('Last name').fill('Tester');
-  await page.getByLabel('Address').fill('1 Test Street');
+  await page.getByLabel('Address', { exact: true }).fill('1 Test Street');
   await page.getByLabel('Country').fill('Testland');
   await page.getByLabel('State').fill('TS');
-  // Stays within Ordering's ZipCode column limit (max 5 chars) - a 6+ digit code currently
-  // crashes the async order-creation consumer server-side (a real backend bug, out of scope here).
-  await page.getByLabel('Zip code').fill('12345');
+  await page.getByLabel('PIN code').fill('411001');
   await page.getByLabel('Name on card').fill('E2E Tester');
   await page.getByLabel('Card number').fill('4111111111111111');
   await page.getByLabel('Expiration (MM/YY)').fill('12/30');
@@ -50,9 +51,11 @@ test('anonymous visitor can browse, register, add to basket, and check out', asy
 
   // Checkout is async (RabbitMQ) - the app polls for the new order, so this can take a few seconds.
   await expect(page).toHaveURL(/\/orders\/[0-9a-f-]+/, { timeout: 25000 });
-  await expect(page.getByRole('heading', { name: /^Order / })).toBeVisible();
-  await expect(page.getByText('Status:')).toBeVisible();
-  // "E2E Tester" appears in both the shipping and payment sections (first/last name and card
-  // name were filled with the same value) - the address line is unambiguous.
+  await expect(page.getByRole('heading', { level: 1, name: /^Order / })).toBeVisible();
+  // A new order starts as Pending; the status is shown as a pill next to the title.
+  await expect(page.locator('app-status-badge').first()).toHaveText('Pending');
+  // The customer name appears in both the shipping and payment sections - the address line is
+  // unambiguous. The 6-digit PIN also proves the widened ZipCode column end to end.
   await expect(page.getByText('1 Test Street')).toBeVisible();
+  await expect(page.getByText(/411001/)).toBeVisible();
 });

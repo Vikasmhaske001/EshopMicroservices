@@ -1,18 +1,230 @@
-.basket-summary {
+.page {
   display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-  padding: 1rem 0;
-  font: var(--mat-sys-title-large);
+  flex-direction: column;
+  gap: 28px;
+  padding: 48px 0 72px;
+
+  @media (max-width: 560px) {
+    gap: 20px;
+    padding: 28px 0 48px;
+  }
 }
 
-.basket-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.5rem;
+mat-progress-bar {
+  --mat-progress-bar-active-indicator-color: var(--es-grape);
+  --mat-progress-bar-track-color: var(--es-grape-soft);
 }
 
-.empty-state {
-  color: var(--mat-sys-on-surface-variant);
-  margin-bottom: 1rem;
+.title-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  h1 {
+    font: 800 44px/1.05 var(--es-font);
+    letter-spacing: -0.035em;
+
+    @media (max-width: 560px) {
+      font-size: 34px;
+    }
+  }
+}
+
+.count-pill {
+  padding: 6px 12px;
+  border-radius: 99px;
+  background: var(--es-grape-soft);
+  color: var(--es-grape);
+  font: 700 14px/1.2 var(--es-font);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 32px;
+  align-items: start;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ---- Item list ----------------------------------------------------------------------------------
+.list-card {
+  // Rows and the column header adapt to the card's own width (not the window's), because the card
+  // sits beside the summary on wide screens and full-width below it. See basket-item.scss.
+  container: basket / inline-size;
+  overflow: hidden;
+  border: 1px solid var(--es-line);
+  border-radius: var(--es-radius-panel);
+  background: var(--es-surface);
+}
+
+// Same columns as basket-item.scss.
+.list-head {
+  display: grid;
+  grid-template-columns: 1fr 120px 150px 130px 56px;
+  gap: 16px;
+  padding: 18px 24px;
+  background: var(--es-table-head);
+  color: var(--es-muted);
+  font: 700 12px/1 var(--es-font);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  .right {
+    text-align: right;
+  }
+
+  @container basket (max-width: 840px) {
+    grid-template-columns: 1fr 100px 140px 110px 44px;
+  }
+
+  // Two-line rows have no column header.
+  @container basket (max-width: 730px) {
+    display: none;
+  }
+}
+
+.list-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 24px;
+  border-top: 1px solid var(--es-row-line);
+
+  @media (max-width: 560px) {
+    padding: 16px;
+  }
+}
+
+.continue {
+  color: var(--es-grape);
+  font: 700 14.5px/1.2 var(--es-font);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.clear {
+  padding: 8px 0;
+  border: 0;
+  background: transparent;
+  color: var(--es-muted);
+  font: 600 14.5px/1.2 var(--es-font);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--es-error);
+  }
+}
+
+// ---- Summary ------------------------------------------------------------------------------------
+.summary {
+  position: sticky;
+  top: calc(var(--es-header-height) + 24px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 24px;
+  border: 1px solid var(--es-line);
+  border-radius: var(--es-radius-panel);
+  background: var(--es-surface);
+  box-shadow: var(--es-shadow-summary);
+
+  h2 {
+    margin-bottom: 4px;
+    font: 800 18px/1.3 var(--es-font);
+  }
+
+  @media (max-width: 900px) {
+    position: static;
+  }
+}
+
+.line {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--es-text-2);
+
+  &.saving {
+    color: var(--es-grape);
+    font-weight: 600;
+  }
+}
+
+.total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 6px 0 8px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--es-line-3);
+  font: 700 16px/1 var(--es-font);
+}
+
+.total-value {
+  font: 800 30px/1 var(--es-font);
+  letter-spacing: -0.02em;
+}
+
+.note {
+  color: var(--es-muted);
+  font-size: 12.5px;
+  text-align: center;
+}
+
+// ---- Empty --------------------------------------------------------------------------------------
+.empty {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  align-items: center;
+  gap: 40px;
+  padding: 72px;
+  border: 1px solid var(--es-line);
+  border-radius: var(--es-radius-panel);
+  background: var(--es-surface);
+
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 32px 24px;
+  }
+}
+
+.empty-art {
+  overflow: hidden;
+  border-radius: var(--es-radius-panel);
+
+  @media (max-width: 700px) {
+    width: 140px;
+  }
+}
+
+.empty-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+
+  h2 {
+    font: 800 32px/1.15 var(--es-font);
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    max-width: 440px;
+    color: var(--es-muted);
+    font-size: 17px;
+  }
+
+  .es-btn {
+    margin-top: 8px;
+  }
 }

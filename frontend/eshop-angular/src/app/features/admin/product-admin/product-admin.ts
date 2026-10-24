@@ -1,12 +1,14 @@
-import { CurrencyPipe } from '@angular/common';
+import { AdminNav } from '../../../shared/components/admin-nav/admin-nav';
+import { EsInput } from '../../../shared/components/form-field/es-input';
+import { FormField } from '../../../shared/components/form-field/form-field';
+import { ProductImage } from '../../../shared/components/product-image/product-image';
+import { InrPipe } from '../../../shared/pipes/inr.pipe';
+import { AppValidators } from '../../../shared/validators/app-validators';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificationService } from '../../../core/notifications/notification.service';
 import { map } from 'rxjs';
 import { CatalogService } from '../../catalog/catalog.service';
 import { AppError } from '../../../shared/models/app-error.model';
@@ -18,12 +20,13 @@ import { ConfirmDialog } from '../../../shared/components/confirm-dialog/confirm
   selector: 'app-product-admin',
   imports: [
     ReactiveFormsModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
     MatProgressBarModule,
-    CurrencyPipe,
+    InrPipe,
+    AdminNav,
     ErrorBanner,
+    EsInput,
+    FormField,
+    ProductImage,
   ],
   templateUrl: './product-admin.html',
   styleUrl: './product-admin.scss',
@@ -32,7 +35,7 @@ export class ProductAdmin {
   private readonly catalogService = inject(CatalogService);
   private readonly fb = inject(FormBuilder);
   private readonly dialog = inject(MatDialog);
-  private readonly snackBar = inject(MatSnackBar);
+  private readonly notifications = inject(NotificationService);
 
   protected readonly products = signal<Product[]>([]);
   protected readonly loading = signal(true);
@@ -41,11 +44,15 @@ export class ProductAdmin {
   protected readonly errorMessage = signal<string | null>(null);
 
   protected readonly form = this.fb.nonNullable.group({
-    name: ['', Validators.required],
-    categories: ['', Validators.required],
-    description: ['', Validators.required],
-    imageFile: ['', Validators.required],
-    price: [0, [Validators.required, Validators.min(0.01)]],
+    name: ['', [Validators.required, AppValidators.notBlank, Validators.maxLength(100)]],
+    categories: ['', [Validators.required, AppValidators.notBlank, AppValidators.categoryList]],
+    description: ['', [Validators.required, AppValidators.notBlank, Validators.maxLength(1000)]],
+    imageFile: ['', [Validators.required, AppValidators.imageFileName]],
+    // Catalog.Api requires Price > 0; the upper bound keeps typos (an extra zero) from slipping in.
+    price: [
+      0,
+      [Validators.required, Validators.min(0.01), Validators.max(10000000), AppValidators.maxDecimals(2)],
+    ],
   });
 
   constructor() {
@@ -114,10 +121,8 @@ export class ProductAdmin {
     request.subscribe({
       next: () => {
         this.saving.set(false);
-        this.snackBar.open(
-          editingId ? `Updated "${payload.name}".` : `Created "${payload.name}".`,
-          'Dismiss',
-          { duration: 4000 }
+        this.notifications.success(
+          editingId ? `Updated "${payload.name}".` : `Created "${payload.name}".`
         );
         this.cancelEdit();
         this.loadProducts();
@@ -136,6 +141,7 @@ export class ProductAdmin {
           title: 'Delete product',
           message: `Delete "${product.name}"? This cannot be undone.`,
           confirmLabel: 'Delete',
+          destructive: true,
         },
       })
       .afterClosed()
@@ -146,7 +152,7 @@ export class ProductAdmin {
 
         this.catalogService.deleteProduct(product.id).subscribe({
           next: () => {
-            this.snackBar.open(`Deleted "${product.name}".`, 'Dismiss', { duration: 4000 });
+            this.notifications.success(`Deleted "${product.name}".`);
             this.loadProducts();
           },
           error: () => {},

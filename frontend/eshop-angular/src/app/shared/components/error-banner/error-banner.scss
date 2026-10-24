@@ -1,14 +1,19 @@
 .error-banner {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  margin-bottom: 1rem;
-  border-radius: 4px;
-  background-color: var(--mat-sys-error-container);
-  color: var(--mat-sys-on-error-container);
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid var(--es-error-border);
+  border-radius: var(--es-radius-ctl);
+  background: var(--es-error-bg);
+  color: var(--es-error-ink);
+  font: 600 14px/1.45 var(--es-font);
 
   mat-icon {
-    flex-shrink: 0;
+    flex: none;
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+    color: var(--es-error);
   }
 }

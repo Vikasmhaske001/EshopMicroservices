@@ -5,10 +5,6 @@ using Microsoft.OpenApi.Models;
 
 namespace BuildingBlocks.Swagger;
 
-/// <summary>
-/// Minimal Swagger/OpenAPI setup shared across services, with a Bearer scheme wired in so
-/// protected endpoints (most of Basket, Catalog's writes) can actually be tried from the UI.
-/// </summary>
 public static class SwaggerExtensions
 {
     public static IServiceCollection AddSwaggerWithJwtAuth(this IServiceCollection services, string title)

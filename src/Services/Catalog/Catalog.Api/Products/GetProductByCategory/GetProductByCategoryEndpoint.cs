@@ -1,6 +1,5 @@
 ﻿namespace Catalog.Api.Products.GetProductByCategory
 {
-    //public record GetProductByCategoryRequest();
     public record GetProductByCategoryResponse(IEnumerable<Product> Products);
     public class GetProductByCategoryEndpoint : ICarterModule
     {

@@ -19,10 +19,5 @@ public class OrderItem : Entity<OrderItemId>
     public int Quantity { get; private set; } = default!;
     public decimal Price { get; private set; } = default!;
 
-    /// <summary>
-    /// Snapshot of the product's name at checkout time. Ordering owns no Catalog data, so this
-    /// is captured once here rather than looked up live - order history stays correct even if
-    /// Catalog later renames or deletes the product.
-    /// </summary>
     public string ProductName { get; private set; } = default!;
 }

@@ -1,0 +1,114 @@
+// Layout and table styles shared by the two admin screens (product-admin, order-admin).
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 48px 0 72px;
+
+  @media (max-width: 560px) {
+    gap: 18px;
+    padding: 28px 0 48px;
+  }
+}
+
+.head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  h1 {
+    font: 800 44px/1.05 var(--es-font);
+    letter-spacing: -0.035em;
+
+    @media (max-width: 560px) {
+      font-size: 34px;
+    }
+  }
+}
+
+.subtitle {
+  margin-top: 10px;
+  color: var(--es-muted);
+  font-size: 16px;
+}
+
+// Wide tables scroll sideways inside the card instead of squashing their columns.
+.table-card {
+  overflow-x: auto;
+  border: 1px solid var(--es-line);
+  border-radius: var(--es-radius-panel);
+  background: var(--es-surface);
+}
+
+.admin-table {
+  width: 100%;
+  min-width: 620px;
+  border-collapse: collapse;
+
+  th {
+    padding: 16px 20px;
+    background: var(--es-table-head);
+    color: var(--es-muted);
+    font: 700 12px/1 var(--es-font);
+    letter-spacing: 0.08em;
+    text-align: left;
+    text-transform: uppercase;
+  }
+
+  td {
+    padding: 14px 20px;
+    border-top: 1px solid var(--es-row-line);
+    vertical-align: middle;
+  }
+
+  tbody tr:hover td {
+    background: var(--es-bg);
+  }
+
+  .num {
+    text-align: right;
+  }
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 56px 24px;
+  border: 1px dashed var(--es-line-3);
+  border-radius: var(--es-radius-card);
+  background: var(--es-surface);
+  color: var(--es-muted);
+  text-align: center;
+
+  h2 {
+    color: var(--es-ink);
+    font: 800 22px/1.2 var(--es-font);
+  }
+}
+
+// Small row buttons.
+.btn-sm {
+  height: 36px;
+  padding: 0 14px;
+  border: 1px solid var(--es-line-3);
+  border-radius: var(--es-radius-ctl);
+  background: var(--es-surface);
+  color: var(--es-text-2);
+  font: 700 13.5px/1 var(--es-font);
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--es-grape);
+    color: var(--es-grape);
+  }
+
+  &.danger:hover {
+    border-color: var(--es-error-border);
+    background: var(--es-error-bg);
+    color: var(--es-error);
+  }
+}

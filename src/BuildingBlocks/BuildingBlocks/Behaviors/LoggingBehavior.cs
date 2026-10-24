@@ -11,8 +11,7 @@ public class LoggingBehavior<TRequest, TResponse>
 {
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        // Only request/response type names are logged. Request payloads are never logged because
-        // they can carry sensitive data (card number, CVV, expiry, addresses).
+  
         logger.LogInformation("[START] Handle request={Request} - Response={Response}",
             typeof(TRequest).Name, typeof(TResponse).Name);
 
@@ -23,7 +22,7 @@ public class LoggingBehavior<TRequest, TResponse>
 
         timer.Stop();
         var timeTaken = timer.Elapsed;
-        if (timeTaken.Seconds > 3) // if the request is greater than 3 seconds, then log the warnings
+        if (timeTaken.Seconds > 3) 
             logger.LogWarning("[PERFORMANCE] The request {Request} took {TimeTaken} seconds.",
                 typeof(TRequest).Name, timeTaken.Seconds);
 

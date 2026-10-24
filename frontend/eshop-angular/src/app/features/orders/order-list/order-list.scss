@@ -1,46 +1,204 @@
-.order-list {
+.page {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  max-width: 480px;
-}
+  gap: 28px;
+  padding: 48px 0 72px;
 
-.order-card {
-  display: block;
-  padding: 1rem;
-  border: 1px solid var(--mat-sys-outline-variant);
-  border-radius: 4px;
-  color: inherit;
-  text-decoration: none;
-
-  &:hover {
-    background-color: var(--mat-sys-surface-container);
+  @media (max-width: 560px) {
+    gap: 20px;
+    padding: 28px 0 48px;
   }
 }
 
-.order-card-header {
+.head {
   display: flex;
+  align-items: flex-end;
   justify-content: space-between;
-  font: var(--mat-sys-title-medium);
-  margin-bottom: 0.25rem;
+  gap: 16px;
+
+  h1 {
+    font: 800 44px/1.05 var(--es-font);
+    letter-spacing: -0.035em;
+
+    @media (max-width: 560px) {
+      font-size: 34px;
+    }
+  }
 }
 
-.order-status {
-  color: var(--mat-sys-primary);
+.subtitle {
+  margin-top: 12px;
+  color: var(--es-muted);
+  font-size: 17px;
 }
 
-.order-card-body {
+.shown {
+  color: var(--es-muted);
+  font-size: 14px;
+}
+
+// ---- Order rows ---------------------------------------------------------------------------------
+.list-card {
+  container: orders / inline-size;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--es-line);
+  border-radius: var(--es-radius-panel);
+  background: var(--es-surface);
+  list-style: none;
+
+  li + li {
+    border-top: 1px solid var(--es-row-line);
+  }
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 140px 1fr auto 120px 20px;
+  align-items: center;
+  gap: 20px;
+  padding: 18px 24px;
+  color: var(--es-ink);
+  text-decoration: none;
+
+  &:hover {
+    background: var(--es-bg);
+
+    .chevron {
+      color: var(--es-grape);
+    }
+  }
+
+  &:focus-visible {
+    outline-offset: -3px;
+  }
+
+  // Narrow list: two lines per order (thumbnails and name above, status and total below).
+  @container orders (max-width: 700px) {
+    grid-template-columns: 140px 1fr auto;
+    grid-template-areas:
+      'thumbs info chevron'
+      'status status total';
+    gap: 12px 16px;
+    padding: 16px;
+
+    .thumbs {
+      grid-area: thumbs;
+    }
+
+    .info {
+      grid-area: info;
+    }
+
+    .status {
+      grid-area: status;
+      justify-self: start;
+    }
+
+    .total {
+      grid-area: total;
+    }
+
+    .chevron {
+      grid-area: chevron;
+    }
+  }
+}
+
+.thumbs {
   display: flex;
-  justify-content: space-between;
-  color: var(--mat-sys-on-surface-variant);
 }
 
-.order-total {
-  font-weight: 500;
-  color: var(--mat-sys-on-surface);
+.thumb {
+  width: 56px;
+  margin-left: -14px;
+  overflow: hidden;
+  border: 2px solid var(--es-surface);
+  border-radius: 14px;
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  &.more {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1;
+    background: var(--es-grape-soft);
+    color: var(--es-grape);
+    font: 800 14px/1 var(--es-font);
+  }
 }
 
-.empty-state {
-  color: var(--mat-sys-on-surface-variant);
-  margin-bottom: 1rem;
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.name {
+  font: 700 16px/1.3 var(--es-font);
+}
+
+.products {
+  overflow: hidden;
+  color: var(--es-text-2);
+  font-size: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.count {
+  color: var(--es-muted);
+  font-size: 13px;
+}
+
+.total {
+  font: 800 17px/1 var(--es-font);
+  text-align: right;
+}
+
+.chevron {
+  color: var(--es-subtle);
+  font-size: 26px;
+  line-height: 1;
+}
+
+// ---- Empty --------------------------------------------------------------------------------------
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 72px 24px;
+  border: 1px dashed var(--es-line-3);
+  border-radius: var(--es-radius-card);
+  background: var(--es-surface);
+  text-align: center;
+
+  h2 {
+    font: 800 24px/1.2 var(--es-font);
+  }
+
+  p {
+    color: var(--es-muted);
+  }
+
+  .es-btn {
+    margin-top: 8px;
+  }
+}
+
+.empty-icon {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 4px;
+  border-radius: 16px;
+  background: var(--es-grape-soft);
+  color: var(--es-grape);
+  font: 800 24px/1 var(--es-font);
 }

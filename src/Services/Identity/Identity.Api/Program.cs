@@ -32,8 +32,6 @@ builder.Services
     .AddRoles<IdentityRole<Guid>>()
     .AddEntityFrameworkStores<IdentityDbContext>();
 
-// Signing key comes from configuration/environment (Jwt:Key), never hardcoded in source.
-// See docker-compose.override.yml / appsettings.Development.json for the development-only value.
 builder.Services.AddSingleton(builder.Configuration.GetSection(JwtSettings.SectionName).Get<JwtSettings>()
     ?? throw new InvalidOperationException("Missing 'Jwt' configuration section."));
 builder.Services.AddScoped<ITokenService, TokenService>();

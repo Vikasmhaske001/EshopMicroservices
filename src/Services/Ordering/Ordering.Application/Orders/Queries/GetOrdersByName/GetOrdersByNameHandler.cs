@@ -8,8 +8,6 @@ public class GetOrdersByNameHandler(IApplicationDbContext dbContext)
 {
     public async Task<GetOrdersByNameResult> Handle(GetOrdersByNameQuery query, CancellationToken cancellationToken)
     {
-        // get orders by name using dbContext
-        // return result
 
         var orders = await dbContext.Orders
                 .Include(o => o.OrderItems)

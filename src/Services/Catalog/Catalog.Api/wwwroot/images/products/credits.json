@@ -1,0 +1,58 @@
+{
+  "htc-u11-plus.jpg": {
+    "title": "HTC U11 front.jpg",
+    "author": "Gilly Berlin",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:HTC_U11_front.jpg",
+    "note": "Photo of the HTC U11, the predecessor of the U11+."
+  },
+  "huawei-plus.jpg": {
+    "title": "Huawei P30 Pro.jpg",
+    "author": "Wilfredor",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "source": "https://commons.wikimedia.org/wiki/File:Huawei_P30_Pro.jpg",
+    "note": "Photo of the Huawei P30 Pro."
+  },
+  "iphone-x.jpg": {
+    "title": "Apple iPhone X - front (8121).jpg",
+    "author": "Gregory Varnum",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Apple_iPhone_X_-_front_(8121).jpg",
+    "note": "Apple iPhone X."
+  },
+  "lg-g7-thinq.jpg": {
+    "title": "LG G7 ThinQ.jpg",
+    "author": "LG Electronics",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "source": "https://commons.wikimedia.org/wiki/File:LG_G7_ThinQ.jpg",
+    "note": "LG G7 ThinQ."
+  },
+  "panasonic-lumix.jpg": {
+    "title": "Panasonic Lumix DMC-G80.jpg",
+    "author": "Petar Milošević",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Panasonic_Lumix_DMC-G80.jpg",
+    "note": "Photo of the Panasonic Lumix DMC-G80."
+  },
+  "samsung-10.jpg": {
+    "title": "SAMSUNG Galaxy S10 5G (13).jpg",
+    "author": "Dinkun Chen",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:SAMSUNG_Galaxy_S10_5G_(13).jpg",
+    "note": "Photo of the Samsung Galaxy S10 5G."
+  },
+  "xiaomi-mi-9.jpg": {
+    "title": "Xiaomi Mi 9 SE.jpg",
+    "author": "Noahhs4",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Xiaomi_Mi_9_SE.jpg",
+    "note": "Photo of the Xiaomi Mi 9 SE, a sibling of the Mi 9."
+  }
+}

@@ -5,11 +5,7 @@ public record BasketCheckoutEvent : IntegrationEvent
     public string UserName { get; set; } = default!;
     public Guid CustomerId { get; set; } = default!;
     public decimal TotalPrice { get; set; } = default!;
-
-    // The actual basket lines, so Ordering can build the order without reading Basket's database.
     public List<BasketCheckoutItem> Items { get; set; } = new();
-
-    // Shipping and BillingAddress
     public string FirstName { get; set; } = default!;
     public string LastName { get; set; } = default!;
     public string EmailAddress { get; set; } = default!;
@@ -18,7 +14,6 @@ public record BasketCheckoutEvent : IntegrationEvent
     public string State { get; set; } = default!;
     public string ZipCode { get; set; } = default!;
 
-    // Payment
     public string CardName { get; set; } = default!;
     public string CardNumber { get; set; } = default!;
     public string Expiration { get; set; } = default!;
